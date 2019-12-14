@@ -1,0 +1,34 @@
+.qte-btn{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 5px solid #79271B;
+    border-radius: 50%;
+    padding: 0.5rem;
+}
+
+.help-icon{
+    width: 100px;
+    height: 100px;
+    background: url("../../../assets/icon/Erste_Hilfe.svg") no-repeat center center;
+
+}
+
+.container {
+    padding: 5rem 0rem;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    animation: shrink 3s linear forwards;
+}
+
+@keyframes shrink {
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(0);
+    }
+}

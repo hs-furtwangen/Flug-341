@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <defs>
+  <symbol id="svg_6" viewBox="0 0 167.56 133.78" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+   <title>Stylized Headphones</title>
+   <g id="svg_2" transform="translate(-108.94 -299.09)">
+    <path d="m128.5,363.58c-11.956,6.9162 -20,19.851 -20,34.656c0,14.806 8.0441,27.709 20,34.625l0,-69.281z" id="svg_5"/>
+    <path d="m130,432.36l10,0l0,-91c0,-9.4281 11.29,-20.635 20,-24.243c24.637,-10.205 40.363,-10.205 65,0c8.7104,3.608 20,14.815 20,24.243l0,91l10,0l0,-91c0,-12.018 -9.4036,-24.329 -20,-30c-29.389,-15.729 -55.611,-15.729 -85,0c-10.596,5.671 -20,17.982 -20,30l0,91z" id="svg_4" stroke="#fff" stroke-width="1px"/>
+    <path d="m256.5,363.58c11.956,6.9162 20,19.851 20,34.656c0,14.806 -8.0441,27.709 -20,34.625l0,-69.281z" id="svg_3"/>
+   </g>
+   <metadata>image/svg+xmlOpenclipartStylized Headphones2013-09-13T17:56:14Stylized Headphoneshttps://openclipart.org/detail/183406/stylized-headphones-by-algotruneman-183406algotrunemancansheadphonesmusic</metadata>
+  </symbol>
+ </defs>
+ <g class="layer">
+  <title>Layer 1</title>
+  <use fill="#ffffff" id="svg_7" transform="matrix(0.954882 0 0 0.954882 0 0)" x="0" xlink:href="#svg_6" y="0"/>
+  <g id="svg_8"/>
+ </g>
+</svg>

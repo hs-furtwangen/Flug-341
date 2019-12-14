@@ -1,0 +1,44 @@
+[   	
+    [{
+            "name": "001_ATMO_Flugzeug.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        },
+        {
+            "name": "01_Absturz.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false
+        }
+    ],
+    [
+        {
+            "name": "002_ATMO_WaldWasser.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        },
+        {
+            "name": "02_Erwachen_01.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 36
+        },
+        {
+            "name": "02_Erwachen_02.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 48
+        },
+        {
+            "name": "02_Erwachen_03.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 14
+        }
+    ]
+]

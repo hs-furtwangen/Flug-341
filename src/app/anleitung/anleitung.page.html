@@ -1,0 +1,53 @@
+<ion-content>
+    <ion-slides pager="true" [options]="slideOpts">
+        <ion-slide>
+          <div class="slide-page">
+              <div *ngIf="(ingame== null)" class="back-icon"><a href="/menu"><ion-icon class="icon-undo" name="undo"></ion-icon></a></div>
+              <h1 class="slider-title">So wird gespielt</h1>
+              <div class="img-container">
+                  <img src="/assets/imgs/Slider1.svg" alt="Slider1">
+                  <h2 class="img-title">Navigation</h2>
+              </div>
+              <p class="slider-text">Drehe dich mit deinem Handy um zu navigieren. Achte dabei auf deine Umgebungsgeräusche um dich zu orientieren.</p>
+          </div>
+        </ion-slide>
+        <ion-slide>
+            <div class="slide-page">
+                <h1 class="slider-title">So wird gespielt</h1>
+                <div class="img-container">
+                    <img src="/assets/imgs/Slider2.svg" alt="Slider2">
+                    <h2 class="img-title">Events</h2>
+                </div>
+                <p class="slider-text">Das Gerät vibriert bei Interaktionsmöglichkeiten.
+                    Wenn du die Interaktion auslösen möchtest 
+                    drücke auf das Display.</p>
+            </div>
+        </ion-slide>
+        <ion-slide>
+            <div class="slide-page">
+                <h1 class="slider-title">Mögliche Events</h1>
+                <div class="img-container">
+                    <img src="/assets/imgs/Slider3.svg" alt="Slider1">
+                    <h2 class="img-title">Gegenstände</h2>
+                </div>
+                <p class="slider-text">Drehe dich mit deinem Handy um zu navigieren.
+                    Eine Vibration weist darauf hin, dass ein Gegenstandt 
+                    ausgewählt werden kann. Mit einem Klick auf das 
+                    Display wir er ausgewählt.</p>
+            </div>        
+        </ion-slide>
+        <ion-slide>
+            <div class="slide-page">
+                <h1 class="slider-title">Mögliche Events</h1>
+                <div class="img-container">
+                    <img src="/assets/imgs/Slider4.svg" alt="Slider2">
+                    <h2 class="img-title">Richtung</h2>
+                </div>
+                <p class="slider-text">Das Gerät vibriert bei Interaktionsmöglichkeiten.
+                    Wenn du die Interaktion auslösen möchtest 
+                    drücke auf das Display.</p>
+                <ion-button *ngIf="(ingame== 'ingame')" class="back-to-game-button" href="/szene2-erwachen/fromInstruction">Zurück zum Spiel</ion-button>
+            </div>
+        </ion-slide>
+      </ion-slides>
+</ion-content>

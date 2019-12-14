@@ -1,5 +1,7 @@
 {
   "name": "flug_341",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

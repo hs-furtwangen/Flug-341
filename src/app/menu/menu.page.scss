@@ -1,0 +1,61 @@
+ion-content{
+    text-align: center;
+    font-family: DCCAsh;
+    height: 100%;
+    position: relative;
+    --background: url(../../assets/imgs/Menu_Backgroud.svg) no-repeat left center / cover ;
+    background-position: 20% 0%;
+}
+
+
+.app-title{
+    font-size: 100px;
+    padding-top: 50px;
+    height: 200px;
+}
+
+.menu-container{
+    width: 80%;
+    margin: auto;
+    height: auto;
+    position: relative;
+    top: 150px;
+
+    .menu-items{
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        transform: translateY(-50%);
+
+        .menu-button{
+            margin: 30px 0px;
+            font-family: DCCAsh;
+            font-size: 36px;
+            height: 60px;
+            --ion-color-base: rgba(93, 165, 122, 0.75) !important;
+            --transition: all 0.3s;
+            --border-radius: 5px;
+            letter-spacing: 0.05em;
+        }
+    }
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 20;
+    top: 0;
+    left: 0;
+}
+
+.overlay-content-wrapper {
+    color: #fff;
+    text-align: center;
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    top: calc(50% - 150px);
+    left: calc(50% - 150px);
+}

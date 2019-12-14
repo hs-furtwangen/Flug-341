@@ -1,0 +1,51 @@
+.slide-page{
+    margin-bottom: 20px;
+    font-family: RobotoLight;
+    font-size: 14pt;
+
+    .back-icon{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 48px;
+
+        .icon-undo{
+            padding: 6px;
+            width: 36px;
+            height: 36px;
+        }
+    }
+
+    .slider-title{
+        margin-top: 30px;
+        font-family: DCCAsh;
+        font-size: 30pt;
+        margin-bottom: 20px;
+    }
+    
+    .img-container{
+        font-family: DCCAsh;
+        position: relative;
+
+        .img-title{
+            font-size: 24pt;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: inline;
+        }
+    }
+    
+    .slider-text{
+        max-width: 290px;
+    }
+
+    .swiper-pagination-bullet{
+        width: 16px;
+    }
+
+    .back-to-game-button{
+        display: block;
+        margin-bottom: 20px;
+    }
+}

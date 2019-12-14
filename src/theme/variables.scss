@@ -3,13 +3,17 @@
 
 /** Ionic CSS Variables **/
 :root {
+    /* Set the background of the entire app */
+    --ion-background-color: #06292F;
+
+    --ion-text-color: #fff;
   /** primary **/
-  --ion-color-primary: #3880ff;
-  --ion-color-primary-rgb: 56, 128, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-color-primary: #5DA57A;
+  --ion-color-primary-rgb: 93,165,122;
+  --ion-color-primary-contrast: #fff;
+  --ion-color-primary-contrast-rgb: 0,0,0;
+  --ion-color-primary-shade: #52916b;
+  --ion-color-primary-tint: #6dae87;
 
   /** secondary **/
   --ion-color-secondary: #0cd1e8;
