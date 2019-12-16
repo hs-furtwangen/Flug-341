@@ -1,4 +1,5 @@
 <ion-content>
+    <app-gegenstand *ngIf="(gegenstandsAuswahlOpen)" (clickHandler)="clickGegenstandHandler()"></app-gegenstand>
 <ion-button [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
 <div class="overlay-zu-Anleitung" [hidden]="overlayClosed" >
     <div class="overlay-content">

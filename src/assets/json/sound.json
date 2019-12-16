@@ -40,5 +40,20 @@
             "loop": false,
             "duration": 14
         }
+    ],
+    [
+        {
+            "name": "003_ATMO_Fluss.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        },
+        {
+            "name": "03_Aufbruch.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 77
+        }
     ]
 ]

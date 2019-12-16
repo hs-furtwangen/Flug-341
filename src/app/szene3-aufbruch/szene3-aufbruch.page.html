@@ -1,0 +1,4 @@
+<ion-content>
+  <app-interaktion *ngIf="(showInteraktion)"></app-interaktion>
+  <ion-button [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
+</ion-content>

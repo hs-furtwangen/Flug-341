@@ -143,7 +143,7 @@ initSounds(){
             // Stop playing Sound
             const sound = this.soundMap.get(index);
 
-                sound.stop();
+            sound.stop();
 
             this.soundMap.delete(index);
 
@@ -180,10 +180,8 @@ initSounds(){
 
     //Stop sll Sound currently playing
     stopAllSounds(){
-        for (let value of this.soundArray) {
-            if(this.soundMap.has(value)){
-               const sound= this.stopSound(value);
-            }
+        for (let i=0; i< this.soundArray.length; i++) {
+            this.stopSound(i);
         }
     }
 
@@ -197,5 +195,22 @@ initSounds(){
     getDuration(index: number){
         return this.soundArray[index].duration;
 
+    }
+
+
+    crossfade(indexSound1: number, indexSound2: number, duration: number){
+        // 1. Sound: fades to 0
+        let sound1 = this.soundMap.get(indexSound1);
+        // 2. Sound fades to 1
+        let sound2 = this.soundMap.get(indexSound2);
+        console.log("start Crossfade");
+
+        //ramp gain down to 0
+        sound1.summator.gain.linearRampToValueAtTime(0.0, this.context.currentTime + duration);   //linear
+        //sound1.summator.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + duration);    //exponetial
+
+        //ramp gain up to 1
+        sound2.summator.gain.linearRampToValueAtTime(1.0, this.context.currentTime + duration);   //linear
+        //sound2.summator.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + duration);    //exponetial
     }
 }

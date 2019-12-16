@@ -8,6 +8,9 @@ import { Szene2ErwachenPageRoutingModule } from './szene2-erwachen-routing.modul
 
 import { Szene2ErwachenPage } from './szene2-erwachen.page';
 
+//Custom Components 
+import { GegenstandComponent } from '../components/gegenstand/gegenstand.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +18,6 @@ import { Szene2ErwachenPage } from './szene2-erwachen.page';
     IonicModule,
     Szene2ErwachenPageRoutingModule
   ],
-  declarations: [Szene2ErwachenPage]
+  declarations: [Szene2ErwachenPage, GegenstandComponent]
 })
 export class Szene2ErwachenPageModule {}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,7 +14,8 @@ import { Szene1DerAbsturzPage } from './szene1-der-absturz.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    Szene1DerAbsturzPageRoutingModule
+    Szene1DerAbsturzPageRoutingModule,
+    IonicStorageModule  
   ],
   declarations: [Szene1DerAbsturzPage]
 })

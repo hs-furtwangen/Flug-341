@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'szene2-erwachen',
     loadChildren: () => import('./szene2-erwachen/szene2-erwachen.module').then( m => m.Szene2ErwachenPageModule)
   },
+  {
+    path: 'szene3-aufbruch',
+    loadChildren: () => import('./szene3-aufbruch/szene3-aufbruch.module').then( m => m.Szene3AufbruchPageModule)
+  },
 ];
 
 @NgModule({

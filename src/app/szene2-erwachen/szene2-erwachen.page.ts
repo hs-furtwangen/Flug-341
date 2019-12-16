@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { SoundControllerScene } from '../classes/SoundControllerScene';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-szene2-erwachen',
@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./szene2-erwachen.page.scss'],
 })
 export class Szene2ErwachenPage implements OnInit {
-  linkNextPage='/menu';
+  linkNextPage='/szene3-aufbruch';
 
   soundController;
   heading = 0;
@@ -24,14 +24,16 @@ export class Szene2ErwachenPage implements OnInit {
   currentSoundIndex= 1;
   maxSoundIndex: number;
   overlayClosed= true;
+  gegenstandsAuswahlOpen= false;
   currentDuration;
 
   fromInstruction;  //gets set when user is coming straight from the instructions
 
   timersubscription;
+  subscription;
 
 
-  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: Router, public activeroute: ActivatedRoute ) 
+  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public activeroute: ActivatedRoute, public vibration: Vibration) 
   {
     platform.ready().then(() => {
       //pause when tapping out of app
@@ -72,7 +74,7 @@ export class Szene2ErwachenPage implements OnInit {
         );
     
         // Watch Device Orientation
-        const subscription = this.deviceOrientation.watchHeading().subscribe(
+        this.subscription = this.deviceOrientation.watchHeading().subscribe(
             (data: DeviceOrientationCompassHeading) => {
                 this.heading = data.magneticHeading;
             },
@@ -119,10 +121,15 @@ export class Szene2ErwachenPage implements OnInit {
   skip() {
     if (this.skipButtonActive) {
       if ( this.currentSoundIndex== 1){
+        this.vibration.vibrate(500);
         this.overlayClosed= false;
-      } else if
-      (this.currentSoundIndex >= this.maxSoundIndex) {
-        this.router.navigate([this.linkNextPage]);
+      } else if (this.currentSoundIndex== 2) 
+      {
+        this.gegenstandsAuswahlOpen= true;
+        this.vibration.vibrate(500);
+      }
+      else if (this.currentSoundIndex >= this.maxSoundIndex) {
+        this.closeSite();
       } else {
         this.currentSoundIndex++;
         this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
@@ -153,4 +160,20 @@ export class Szene2ErwachenPage implements OnInit {
     console.log("timer stoped")
   }
 
+  closeSite(){
+    //this.soundController.stopSound(0);
+    this.soundController.stopAllSounds();
+    this.subscription.unsubscribe();
+    this.timersubscription.unsubscribe();
+    this.router.navigateRoot(this.linkNextPage);
+  }
+
+  clickGegenstandHandler(){
+    this.gegenstandsAuswahlOpen= false;
+    this.currentSoundIndex++;
+    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+    this.skipButtonActive= false;
+    this.soundController.playSound(this.currentSoundIndex);
+    this.startTimerforNextSound(this.currentDuration);
+  }
 }
