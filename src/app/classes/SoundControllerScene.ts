@@ -5,8 +5,10 @@ declare const ambisonics;
 
 export class SoundControllerScene extends SoundController {
 
+initheading
     //init just the Controller
 initController() {
+    this.initheading = 0;
 
     //Initialise Device Orientation Listener
     var subscription = this.deviceOrientation.watchHeading().subscribe(
@@ -14,7 +16,7 @@ initController() {
             this.heading = data.magneticHeading;
 
             //Update Rotation
-            this.rotator.yaw = this.heading;
+            this.rotator.yaw = (this.heading - this.initheading) % 360;
             this.rotator.updateRotMtx();
         },
     );

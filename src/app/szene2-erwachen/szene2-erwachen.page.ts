@@ -163,6 +163,7 @@ export class Szene2ErwachenPage implements OnInit {
   closeSite(){
     //this.soundController.stopSound(0);
     this.soundController.stopAllSounds();
+    this.soundController= null;
     this.subscription.unsubscribe();
     this.timersubscription.unsubscribe();
     this.router.navigateRoot(this.linkNextPage);

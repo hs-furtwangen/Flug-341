@@ -23,7 +23,7 @@ export class SoundController {
     heading: number;                    //Current Rotation from Device Orientation
     order= 4;                           //Max Order
     loader_filters;                     //for Loading Filters like HRTF-Curves(sofa.json-files)
-    initheading: number;                //Initial Rotation
+    initheading= 0;                //Initial Rotation
 
     rotator;                            //Scene Rotator
     decoder;                            //Ambisonics Bineural Decoder

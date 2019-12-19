@@ -1,10 +1,11 @@
 <div class="interaction-container">
+  <h1 class="anweisung">Entscheide Dich</h1>
   <div class="schild-container">
-      <div class="interaction">
+      <div class="interaction" (click)="onclick('/menu')">
           <span class="interaction-name">Den Fluss Entlanglaufen</span>
           <img class="interaction-icon interaction-icon-left" src="assets/imgs/Pfeil Links.svg" alt="">
         </div>
-        <div class="interaction">
+        <div class="interaction" (click)="onclick('/anleitung')">
           <span class="interaction-name">Durch den Fluss schwimmen</span>
           <img class="interaction-icon interaction-icon-right" src="assets/imgs/Pfeil Rechts.svg" alt="">
         </div>

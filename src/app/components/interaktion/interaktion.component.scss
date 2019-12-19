@@ -5,12 +5,13 @@
     background-color: #06292F;
     text-align: center;
     z-index: 2;
+    transition: all 0.3s;
 
     &::after{
         content: "";
         z-index: -1;
         width: 40px;
-        height: 80%;
+        height: 75%;
         background-color: #996a4b;
         position: absolute;
         bottom: 0;
@@ -71,4 +72,14 @@
         transform: translateY(-50%);
     }
     
+    .anweisung{
+        font-family: DCCAsh;
+        font-size: 36pt;
+        margin-top: 30px;
+        word-spacing: 2pt;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1;
+    }
 }

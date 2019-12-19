@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-interaktion',
@@ -6,9 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./interaktion.component.scss'],
 })
 export class InteraktionComponent implements OnInit {
+  @Output() clickHandler : EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {}
 
+  onclick(url) {
+    this.clickHandler.emit(url);
+  }
 }

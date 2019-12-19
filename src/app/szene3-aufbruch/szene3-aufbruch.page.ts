@@ -15,7 +15,7 @@ export class Szene3AufbruchPage implements OnInit {
   soundController;
   heading = 0;
   skipButtonActive= false;
-  showInteraktion= true;
+  showInteraktion= false;
 
   currentTimer;
 
@@ -96,7 +96,8 @@ export class Szene3AufbruchPage implements OnInit {
 
   skip(){
     if (this.skipButtonActive) {
-      
+      this.vibration.vibrate(500);
+      this.showInteraktion= true;
     }
   }
 
@@ -120,12 +121,19 @@ export class Szene3AufbruchPage implements OnInit {
     console.log("timer stoped")
   }
 
-  closeSite(){
+  closeSite(url){
     //this.soundController.stopSound(0);
     this.soundController.stopAllSounds();
+    this.soundController= null;
     this.subscription.unsubscribe();
     this.timersubscription.unsubscribe();
-    this.router.navigateRoot('/menu');
+    this.router.navigateRoot(url);
+  }
+
+  interaktionClickHandler(url){
+    console.log(url);
+    this.showInteraktion= false;
+    this.closeSite(url);
   }
 }
 
