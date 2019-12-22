@@ -23,6 +23,14 @@ const routes: Routes = [
     path: 'szene3-aufbruch',
     loadChildren: () => import('./szene3-aufbruch/szene3-aufbruch.module').then( m => m.Szene3AufbruchPageModule)
   },
+  {
+    path: 'szene3-a-im-fluss',
+    loadChildren: () => import('./szene3-a-im-fluss/szene3-a-im-fluss.module').then( m => m.Szene3AImFlussPageModule)
+  },
+  {
+    path: 'szene3-b-wasserfall',
+    loadChildren: () => import('./szene3-b-wasserfall/szene3-b-wasserfall.module').then( m => m.Szene3BWasserfallPageModule)
+  },
 ];
 
 @NgModule({

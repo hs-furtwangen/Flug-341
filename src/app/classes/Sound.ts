@@ -4,7 +4,7 @@ import {path} from "@angular-devkit/core";
 //declare ambisonics
 declare const ambisonics;
 
-export abstract class Sound {
+export class Sound {
 
     /* Class Attributes*/
     context;

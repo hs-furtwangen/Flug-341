@@ -45,4 +45,8 @@ export class HRTFSound extends Sound {
     //     console.log(this.loader_filters);
     }
 
+    onDestroy(){
+        this.subscription.unsubscribe();
+    }
+
 }

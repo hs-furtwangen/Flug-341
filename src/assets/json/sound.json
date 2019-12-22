@@ -1,15 +1,10 @@
 [   	
     [{
-            "name": "001_ATMO_Flugzeug.wav",
+            "name": "01_DIALOG_Absturz_01.wav",
             "order": 1,
             "startpoint": 0,
-            "loop": true
-        },
-        {
-            "name": "01_Absturz.wav",
-            "order": 1,
-            "startpoint": 0,
-            "loop": false
+            "loop": false,
+            "duration": 37
         }
     ],
     [
@@ -20,21 +15,21 @@
             "loop": true
         },
         {
-            "name": "02_Erwachen_01.wav",
+            "name": "02_DIALOG_Absturz_02.wav",
             "order": 1,
             "startpoint": 0,
             "loop": false,
-            "duration": 36
+            "duration": 44
         },
         {
-            "name": "02_Erwachen_02.wav",
+            "name": "03_DIALOG_Absturz_03.wav",
             "order": 1,
             "startpoint": 0,
             "loop": false,
-            "duration": 48
+            "duration": 53
         },
         {
-            "name": "02_Erwachen_03.wav",
+            "name": "04_DIALOG_Absturz_04.wav",
             "order": 1,
             "startpoint": 0,
             "loop": false,
@@ -49,11 +44,18 @@
             "loop": true
         },
         {
-            "name": "03_Aufbruch.wav",
+            "name": "05_DIALOG_Aufbruch_01.wav",
             "order": 1,
             "startpoint": 0,
             "loop": false,
-            "duration": 77
+            "duration": 19
+        },
+        {
+            "name": "06_DIALOG_Aufbruch_02.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 57
         }
     ]
 ]

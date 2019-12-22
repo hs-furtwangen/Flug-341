@@ -1,5 +1,6 @@
 
 //Custom Classes
+import { SceneSound } from './SceneSound';
 import { Sound } from './Sound';
 import { HRTFSound } from './HRTFSound'; //class for multichannel Sounds
 import { MultichannelSound } from './MultichannelSound'; //class for multichannel Sounds
@@ -23,10 +24,12 @@ export class SoundController {
     heading: number;                    //Current Rotation from Device Orientation
     order= 4;                           //Max Order
     loader_filters;                     //for Loading Filters like HRTF-Curves(sofa.json-files)
-    initheading= 0;                //Initial Rotation
+    initheading= 0;
+    subscription;                //Initial Rotation
 
     rotator;                            //Scene Rotator
-    decoder;                            //Ambisonics Bineural Decoder
+    decoder;
+    mirror                            //Ambisonics Bineural Decoder
 
     constructor(protected deviceOrientation: DeviceOrientation, chapter: number) {
         this.soundMap = new Map();
@@ -35,7 +38,7 @@ export class SoundController {
         this.orientation = this.deviceOrientation;
         this.heading = 0;
         this.soundArray = json[chapter - 1];
-        this.decoder = new ambisonics.binDecoder(this.context, this.order);
+        this.decoder = new ambisonics.binDecoder2D(this.context, this.order);
     }
 
 
@@ -43,7 +46,7 @@ export class SoundController {
 initController() {
 
         //Initialise Device Orientation Listener
-        var subscription = this.deviceOrientation.watchHeading().subscribe(
+        this.subscription = this.deviceOrientation.watchHeading().subscribe(
             (data: DeviceOrientationCompassHeading) => {
                 this.heading = data.magneticHeading;
 
@@ -56,7 +59,6 @@ initController() {
         
         // intitalise Bineural Decoder
         //this.encoder = new ambisonics.monoEncoder(this.context, this.order);
-        this.decoder = new ambisonics.binDecoder(this.context, this.order);
 
         //initalise Scene Rotator
         this.rotator = new ambisonics.sceneRotator(this.context, this.order);
@@ -135,13 +137,16 @@ initSounds(){
     }
 
     //Stop Sound with index from json-File
-    stopSound(index: number) {
+    stopSound(index: number, hrtf= false) {
 
         // Check if sound is inside the Map
         if (this.soundMap.has(index)) {
 
             // Stop playing Sound
             const sound = this.soundMap.get(index);
+            if(hrtf){
+                sound.onDestroy();
+            }
 
             sound.stop();
 
@@ -160,7 +165,10 @@ initSounds(){
         //check Sound-Type
         if(typ=== "multi"){
             this.soundMap.set(index, new MultichannelSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator));
-        } else {
+        } else if(typ==="normal"){
+            this.soundMap.set(index, new SceneSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
+        }
+        else {
             this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator));
 
         }
@@ -212,5 +220,9 @@ initSounds(){
         //ramp gain up to 1
         sound2.summator.gain.linearRampToValueAtTime(1.0, this.context.currentTime + duration);   //linear
         //sound2.summator.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + duration);    //exponetial
+    }
+
+    onDestroy(){
+        this.subscription.unsubscribe();
     }
 }

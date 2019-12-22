@@ -58,10 +58,10 @@ export class Szene2ErwachenPage implements OnInit {
   ngOnInit() {
     this.soundController= new SoundControllerScene(this.deviceOrientation, 2);
     this.soundController.initController();
-    this.soundController.initSound(0, 0, "multi");
-    this.soundController.initSound(1, 0, "multi");
-    this.soundController.initSound(2, 0, "multi");
-    this.soundController.initSound(3, 0, "multi");
+    this.soundController.initSound(0, 0, "scene");
+    this.soundController.initSound(1, 0, "scene");
+    this.soundController.initSound(2, 0, "scene");
+    this.soundController.initSound(3, 0, "scene");
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 3000);
 
@@ -71,13 +71,6 @@ export class Szene2ErwachenPage implements OnInit {
               this.heading = data.magneticHeading;
           },
           (error: any) => console.log(error)
-        );
-    
-        // Watch Device Orientation
-        this.subscription = this.deviceOrientation.watchHeading().subscribe(
-            (data: DeviceOrientationCompassHeading) => {
-                this.heading = data.magneticHeading;
-            },
         );
   }
 
@@ -103,8 +96,8 @@ export class Szene2ErwachenPage implements OnInit {
 
   unpauseGame = () => {
     this.skipButtonActive= false;
-    this.soundController.initSound(0, 0, "multi" );
-    this.soundController.initSound(this.currentSoundIndex, 0, "multi");
+    this.soundController.initSound(0, 0, "scene" );
+    this.soundController.initSound(this.currentSoundIndex, 0, "scene");
     this.sceneLoading(this.currentSoundIndex, 2000);
     this.startTimerforNextSound(this.currentDuration);
   }
@@ -161,8 +154,8 @@ export class Szene2ErwachenPage implements OnInit {
   }
 
   closeSite(){
-    //this.soundController.stopSound(0);
     this.soundController.stopAllSounds();
+    this.soundController.onDestroy();
     this.soundController= null;
     this.subscription.unsubscribe();
     this.timersubscription.unsubscribe();

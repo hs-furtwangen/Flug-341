@@ -47,8 +47,10 @@ export class Szene3AufbruchPage implements OnInit {
   ngOnInit() {
     this.soundController= new SoundControllerScene(this.deviceOrientation, 3);
     this.soundController.initController();
-    this.soundController.initSound(0, 0, "multi", 0.3);
-    this.soundController.initSound(1, 0, "multi");
+    this.soundController.initSound(0, 0, "scene", 0.5);
+    this.soundController.initSound(1, 0, "scene");
+    this.soundController.initSound(2, 0, "scene");
+    this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 3000);
 
             //Device Orientation
@@ -58,12 +60,7 @@ export class Szene3AufbruchPage implements OnInit {
               },
               (error: any) => console.log(error)
             );
-
-            this.subscription = this.deviceOrientation.watchHeading().subscribe(
-              (data: DeviceOrientationCompassHeading) => {
-                  this.heading = data.magneticHeading;
-              },
-          );
+;
   }
 
   pauseGame = () =>{
@@ -74,8 +71,8 @@ export class Szene3AufbruchPage implements OnInit {
 
   unpauseGame = () => {
     this.skipButtonActive= false;
-    this.soundController.initSound(0, 0, "multi", 0.5);
-    this.soundController.initSound(this.currentSoundIndex, 0, "multi");
+    this.soundController.initSound(0, 0, "scene", 0.5);
+    this.soundController.initSound(this.currentSoundIndex, 0, "scene");
     this.sceneLoading(this.currentSoundIndex, 2000);
     this.startTimerforNextSound(this.currentDuration);
   }
@@ -96,8 +93,16 @@ export class Szene3AufbruchPage implements OnInit {
 
   skip(){
     if (this.skipButtonActive) {
+      if ( this.currentSoundIndex== 2){
       this.vibration.vibrate(500);
       this.showInteraktion= true;
+      } else {
+        this.currentSoundIndex++;
+        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+        this.skipButtonActive= false;
+        this.soundController.playSound(this.currentSoundIndex);
+        this.startTimerforNextSound(this.currentDuration);
+      }
     }
   }
 
@@ -122,8 +127,8 @@ export class Szene3AufbruchPage implements OnInit {
   }
 
   closeSite(url){
-    //this.soundController.stopSound(0);
     this.soundController.stopAllSounds();
+    this.soundController.onDestroy();
     this.soundController= null;
     this.subscription.unsubscribe();
     this.timersubscription.unsubscribe();

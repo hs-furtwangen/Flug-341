@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SoundControllerScene } from '../classes/SoundControllerScene';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
-import { Vibration } from '@ionic-native/vibration/ngx';
 import { Platform } from '@ionic/angular';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-szene1-der-absturz',
@@ -11,23 +11,18 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./szene1-der-absturz.page.scss'],
 })
 export class Szene1DerAbsturzPage implements OnInit {
+  nextSite= "/szene2-erwachen";
+
   soundController;
   heading = 0;
+  currentTimer;
+  timersubscription;
+  titleTimersub;
+  hideTitleScreen= true;
 
-  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform) 
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController) 
   {
-    platform.ready().then(() => {
-      //pause when tapping out of app
-      this.platform.pause.subscribe(() => {
-        this.pauseGame();
-        console.log("pause");
-      });
 
-      //continue when tapping into app
-       this.platform.resume.subscribe(() => {
-         this.unpauseGame();
-       });
-    });
   }
 
   ngOnInit() {
@@ -40,44 +35,57 @@ export class Szene1DerAbsturzPage implements OnInit {
           (error: any) => console.log(error)
         );
     
-        // Watch Device Orientation
-        const subscription = this.deviceOrientation.watchHeading().subscribe(
-            (data: DeviceOrientationCompassHeading) => {
-                this.heading = data.magneticHeading;
-            },
-        );
   }
 
   async loadLoading() {
     const loading = await this.loadingController.create({
       spinner: null,
       duration: 5000,
-      message: 'Loading Scene',
+      message: 'Lade Abenteuer',
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });
     await loading.present();
-      
+    await loading.onDidDismiss();
+
+    this.startSounds();  
   }
 
   ionViewDidEnter(){
-        //this.loadLoading();
+        this.loadLoading();
         this.soundController= new SoundControllerScene(this.deviceOrientation, 1);
         this.soundController.initController();
-        this.soundController.initSound(0, 0, "multi", .5);
-        this.soundController.initSound(1, 0, "multi", 1);
-        this.soundController.playSound(0);
-        this.soundController.playSound(1);
+        this.soundController.initSound(0, 0,"scene", 1);
+
   }
 
-  pauseGame = () =>{
-    //suspends Audiocontext
-    this.soundController.context.suspend().then(() => {
+  startTimerforNextSound(timerlength: number){
+    console.log(timerlength);
+    this.currentTimer = timer(timerlength*1000);
+    this.timersubscription = this.currentTimer.subscribe(() => {
+        this.closeSite(this.nextSite);
     });
+
+    const titletimer= timer(28000);
+    this.titleTimersub= titletimer.subscribe(()=>{
+      this.hideTitleScreen= false;
+    });
+
   }
 
-  unpauseGame = () => {
-    this.soundController.context.resume().then(() => {
-    });
+  startSounds(){
+    let currentDuration= this.soundController.getDuration(0);
+    this.soundController.playSound(0);
+    this.startTimerforNextSound(currentDuration);
   }
+
+  closeSite(url){
+    //this.soundController.stopSound(0);
+    this.soundController.stopAllSounds();
+    this.soundController.onDestroy();
+    this.soundController= null;
+    this.timersubscription.unsubscribe();
+    this.router.navigateRoot(url);
+  }
+
 }

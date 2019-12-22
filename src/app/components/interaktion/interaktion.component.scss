@@ -4,7 +4,7 @@
     position: absolute;
     background-color: #06292F;
     text-align: center;
-    z-index: 2;
+    z-index: 100;
     transition: all 0.3s;
 
     &::after{
@@ -30,10 +30,7 @@
         height: 100px;
         display: block;
         transition: all 0.2s;
-        
-        &:hover, &:active{
-            transform: scale(1.1);
-        }
+        opacity: 0.5;
 
         &:first-of-type{
             margin-top: 0px;
@@ -45,24 +42,27 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            z-index: 4;
+            z-index: 102;
         }
 
         .interaction-icon{
-            position: absolute;
-            top: 0;
             height: 100px;
             width: 300px;
         }
 
         
         .interaction-icon-left{
-            left: -20px
+            transform: translateX(-20px);
         }
 
         .interaction-icon-right{
-            left: 20px;
+            transform: translateX(20px);
         }
+    }
+
+    .isactive{
+        opacity: 1;
+        transform: scale(1.1);
     }
 
     .schild-container{
@@ -81,5 +81,11 @@
         margin-left: auto;
         margin-right: auto;
         line-height: 1;
+    }
+
+    .unterschrift{
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
