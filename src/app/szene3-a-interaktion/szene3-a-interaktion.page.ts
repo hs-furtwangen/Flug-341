@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { SoundController } from '../classes/SoundController';
 import { LoadingController } from '@ionic/angular';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-szene3-a-interaktion',
@@ -13,6 +14,12 @@ export class Szene3AInteraktionPage implements OnInit {
 
   subscription;
   heading;
+
+  currentTimer;
+  timersubscription;
+
+  currentSoundIndex= 1;
+  currentDuration;
 
   constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController ) { }
 
@@ -33,7 +40,10 @@ export class Szene3AInteraktionPage implements OnInit {
         );
         this.soundController = new SoundController(this.deviceOrientation, 5);
         this.soundController.initController();
-        this.soundController.initSound(0, 0, "scene"); 
+        this.soundController.initSound(0, 0, "scene");
+        this.soundController.initSound(1, 0, "scene"); 
+        this.soundController.initSound(2, 0, "scene");
+        this.soundController.initSound(3, 90, "hrtf");    
         this.sceneLoading(2000);
   }
 
@@ -51,7 +61,35 @@ export class Szene3AInteraktionPage implements OnInit {
     this.startgame();
   }
 
+  startTimerforNextSound(timerlength: number, callback){
+    console.log(timerlength);
+    this.currentTimer = timer(timerlength*1000);
+    this.timersubscription = this.currentTimer.subscribe(() => {
+      callback();
+      this.timersubscription.unsubscribe();
+    });
+  }
+
+  startsound = () => {
+    this.currentSoundIndex++;
+    if(this.currentSoundIndex==3){
+      this.startfight();
+    } else {
+      this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+      this.soundController.playSound(this.currentSoundIndex);
+      this.startTimerforNextSound(this.currentDuration, this.startsound);
+    }
+  }
+
   startgame(){
+    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(0);
+    //this.soundController.playSound(this.currentSoundIndex);
+    //this.startTimerforNextSound(this.currentDuration, this.startsound);
+    this.startfight();
+  }
+
+  startfight(){
+    this.soundController.playSound(3);
   }
 }

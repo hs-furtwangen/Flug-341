@@ -51,8 +51,8 @@ initController() {
                 this.heading = data.magneticHeading;
 
                 //Update Rotation
-                this.rotator.yaw = this.heading;
-                this.rotator.updateRotMtx();
+                //this.rotator.yaw = this.heading;
+                //this.rotator.updateRotMtx();
                 //this.hoaEncoder(data.magneticHeading);
             },
         );
@@ -75,7 +75,7 @@ initController() {
         this.mirror.mirror(2);
                 
         //load HRTF-Curves
-        this.loader_filters = new ambisonics.HRIRloader_ircam(this.context, this.order, (buffer)=> {
+        this.loader_filters = new ambisonics.HRIRloader2D_local(this.context, this.order, (buffer)=> {
             console.log('successfully loaded HOA buffer:', buffer);
             console.log(this.decoder);
             this.decoder.updateFilters(buffer);
@@ -171,7 +171,7 @@ initSounds(){
         //check Sound-Type
         if(typ=== "multi"){
             this.soundMap.set(index, new MultichannelSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator));
-        } else if(typ==="normal"){
+        } else if(typ==="scene"){
             this.soundMap.set(index, new SceneSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
         }
         else {

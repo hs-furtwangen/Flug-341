@@ -121,6 +121,26 @@
             "order": 1,
             "startpoint": 0,
             "loop": true
+        },
+        {
+            "name": "08_DIALOG_ImFluss_02.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 5
+        },
+        {
+            "name": "09_DIALOG_ImFluss_03.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 6
+        },
+        {
+            "name": "01_HFX_Krokodil.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false
         }
     ]
 ]

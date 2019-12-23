@@ -37,7 +37,7 @@ export class Sound {
         this.order = order;                                 //Max Order
         this.heading= 0;
         this.startpoint = startpoint;                       //Position relativ to Starting-Pos
-        this.encoder = new ambisonics.monoEncoder(this.context, this.order);
+        this.encoder = new ambisonics.monoEncoder2D(this.context, this.order);
         this.rotator = rotator;
 
     }

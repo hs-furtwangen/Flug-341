@@ -118,6 +118,7 @@ export class Szene3AufbruchPage implements OnInit {
     this.currentTimer = timer(timerlength*1000);
     this.timersubscription = this.currentTimer.subscribe(() => {
         this.skipButtonActive = true;
+        this.timersubscription.unsubscribe();
     });
   }
 

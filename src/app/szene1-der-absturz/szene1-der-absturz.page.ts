@@ -64,6 +64,7 @@ export class Szene1DerAbsturzPage implements OnInit {
     this.currentTimer = timer(timerlength*1000);
     this.timersubscription = this.currentTimer.subscribe(() => {
         this.closeSite(this.nextSite);
+        this.timersubscription.unsubscribe();
     });
 
     const titletimer= timer(28000);
