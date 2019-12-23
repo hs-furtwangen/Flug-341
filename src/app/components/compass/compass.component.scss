@@ -6,6 +6,7 @@
     width: 100%;
     position: relative;
     margin-bottom: 1rem;
+    z-index: 10;
 }
 
 .compass-Background {
@@ -13,7 +14,7 @@
     margin: auto;
     width: 200px;
     height: 200px;
-    background-image: url("../../../assets/img/Kompass.svg");
+    background-image: url("../../../assets/imgs/compass.svg");
 }
 
 .pointer {

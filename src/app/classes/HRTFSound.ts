@@ -5,10 +5,11 @@ import { Sound } from './Sound';
 declare const ambisonics;
 
 export class HRTFSound extends Sound {
+    mirror
 
-
-    constructor(context, protected deviceOrientation: DeviceOrientation, path: String, order: number, startpoint: number, rotator){
+    constructor(context, protected deviceOrientation: DeviceOrientation, path: String, order: number, startpoint: number, rotator, mirror){
         super(context, deviceOrientation, path, order, startpoint, rotator);
+        this.mirror= mirror;
 
         this.subscription = this.deviceOrientation.watchHeading().subscribe(
             (data: DeviceOrientationCompassHeading) => {
@@ -21,6 +22,32 @@ export class HRTFSound extends Sound {
                 //this.rotator.updateRotMtx();
             },
         );
+    }
+
+    init() {
+
+        // Summing and routing of Audio Sources
+        this.summator.connect(this.mirror.in);
+        //console.log(this.source.buffer);
+        //this.hoaEncoder(this.order, this.startpoint);
+
+    }
+
+    play() {
+        //this.source.connect(this.encoder.in);
+        //this.encoder.out.connect(this.summator);
+        this.source.connect(this.encoder.in);
+        this.source.start(0);
+        this.isPlaying = true;
+    }
+
+       playloop(s = 0) {
+        this.source.connect(this.encoder.in);
+        this.encoder.out.connect(this.summator);
+        this.source.loop = true;
+        this.source.loopStart = 3;
+        this.source.start(0);
+        this.isPlaying = true;
     }
 
     loadSound() {
@@ -49,4 +76,9 @@ export class HRTFSound extends Sound {
         this.subscription.unsubscribe();
     }
 
+    setGain(value){
+        this.summator.gain.value= value;
+        this.summator.connect(this.mirror.in);
+        this.source.connect(this.summator);
+    }
 }

@@ -57,5 +57,70 @@
             "loop": false,
             "duration": 57
         }
+    ],
+    [
+        {
+            "name": "003_ATMO_Fluss.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        },
+        {
+            "name": "07_DIALOG_ImFluss_01.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 65
+        },
+        {
+            "name": "08_DIALOG_ImFluss_02.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 4
+        },
+        {
+            "name": "09_DIALOG_ImFluss_03.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 4
+        },
+        {
+            "name": "10_DIALOG_ImFluss_04.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 57
+        },
+        {
+            "name": "11_DIALOG_ImFluss_05.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 4
+        },
+        {
+            "name": "12_DIALOG_ImFluss_06.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 5
+        },
+        {
+            "name": "13_DIALOG_ImFluss_07.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 75
+        }
+    ],
+    [
+        {
+            "name": "01_MUSIK_Kampf.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        }
     ]
 ]

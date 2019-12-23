@@ -51,22 +51,28 @@ initController() {
                 this.heading = data.magneticHeading;
 
                 //Update Rotation
-                //this.rotator.yaw = this.heading;
-                //this.rotator.updateRotMtx();
+                this.rotator.yaw = this.heading;
+                this.rotator.updateRotMtx();
                 //this.hoaEncoder(data.magneticHeading);
             },
         );
         
         // intitalise Bineural Decoder
         //this.encoder = new ambisonics.monoEncoder(this.context, this.order);
-
+    
         //initalise Scene Rotator
-        this.rotator = new ambisonics.sceneRotator(this.context, this.order);
-
+        this.mirror = new ambisonics.sceneMirror2D(this.context, this.order);
+        const firstmirror= new ambisonics.sceneMirror2D(this.context, this.order);
+        this.rotator = new ambisonics.sceneRotator2D(this.context, this.order);
+        
         //connect to Context
+        this.mirror.out.connect(firstmirror.in);
+        firstmirror.out.connect(this.rotator.in)
         this.rotator.out.connect(this.decoder.in);
         this.decoder.out.connect(this.context.destination);
         this.decoder.resetFilters();
+        firstmirror.mirror(1);
+        this.mirror.mirror(2);
                 
         //load HRTF-Curves
         this.loader_filters = new ambisonics.HRIRloader_ircam(this.context, this.order, (buffer)=> {
@@ -90,7 +96,7 @@ initSounds(){
         //Init all Sounds inside Array
         for (let value of this.soundArray) {
             //Bye Default All sound are Initialised as HRTF Sounds
-            this.soundMap.set(value, new HRTFSound(this.context, this.orientation, value.name, value.order, value.startpoint, this.rotator));
+            this.soundMap.set(value, new HRTFSound(this.context, this.orientation, value.name, value.order, value.startpoint, this.rotator, this.mirror));
             const sound = this.soundMap.get(value);
             sound.init();
             sound.loadSound();
@@ -119,7 +125,7 @@ initSounds(){
             // load the Sound and start playing it
             const value = this.soundArray[index];
 
-            this.soundMap.set(value.name, new HRTFSound(this.context, this.orientation, value.name, value.order, value.startpoint, this.rotator));
+            this.soundMap.set(value.name, new HRTFSound(this.context, this.orientation, value.name, value.order, value.startpoint, this.rotator, this.mirror));
 
             const sound = this.soundMap.get(value.name);
             sound.init();
@@ -169,7 +175,7 @@ initSounds(){
             this.soundMap.set(index, new SceneSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
         }
         else {
-            this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator));
+            this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator, this.mirror));
 
         }
         const sound = this.soundMap.get(index);
@@ -189,7 +195,10 @@ initSounds(){
     //Stop sll Sound currently playing
     stopAllSounds(){
         for (let i=0; i< this.soundArray.length; i++) {
+            const isPlaying = this.soundMap.get(i).isPlaying;
+            if(isPlaying) {
             this.stopSound(i);
+            }
         }
     }
 

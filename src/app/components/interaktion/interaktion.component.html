@@ -2,7 +2,7 @@
   <h1 class="anweisung">Entscheide Dich</h1>
   <h3 class="unterschrift">Drehe dich zum oder vom Fluss weg</h3>
   <div class="schild-container">
-      <div class="interaction" [ngClass]="(element== 1)? 'isactive': ''">
+        <div class="interaction" (click)="selectWay(1)" [ngClass]="(element== 1)? 'isactive': ''">
           <span class="interaction-name">Den Fluss Entlanglaufen</span>
           <img class="interaction-icon interaction-icon-left" src="assets/imgs/Pfeil Links.svg" alt="">
         </div>

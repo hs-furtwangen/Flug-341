@@ -73,7 +73,7 @@ initSound(index, startpoint= 0, typ= "", gain= 1) /* Typ: "multi" or else HRTF, 
         this.soundMap.set(index, new SceneSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
     }
     else {
-        this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator));
+        this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator, this.mirror));
 
     }
     const sound = this.soundMap.get(index);

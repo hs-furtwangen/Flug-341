@@ -31,6 +31,18 @@ const routes: Routes = [
     path: 'szene3-b-wasserfall',
     loadChildren: () => import('./szene3-b-wasserfall/szene3-b-wasserfall.module').then( m => m.Szene3BWasserfallPageModule)
   },
+  {
+    path: 'szene4-der-baum',
+    loadChildren: () => import('./szene4-der-baum/szene4-der-baum.module').then( m => m.Szene4DerBaumPageModule)
+  },
+  {
+    path: 'scene3-a-interaktion',
+    loadChildren: () => import('./scene3-a-interaktion/scene3-a-interaktion.module').then( m => m.Scene3AInteraktionPageModule)
+  },
+  {
+    path: 'szene3-a-interaktion',
+    loadChildren: () => import('./szene3-a-interaktion/szene3-a-interaktion.module').then( m => m.Szene3AInteraktionPageModule)
+  },
 ];
 
 @NgModule({
