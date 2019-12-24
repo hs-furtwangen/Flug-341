@@ -15,7 +15,7 @@ import json from '../../assets/json/sound.json';
 //declare ambisonics
 declare const ambisonics;
 
-export class SoundController {
+export class SoundControllerGame {
 
     soundMap: Map<number, any>;         //Map with all the currently playing sound
     context;                            //Audio Context
@@ -25,7 +25,8 @@ export class SoundController {
     order= 4;                           //Max Order
     loader_filters;                     //for Loading Filters like HRTF-Curves(sofa.json-files)
     initheading= 0;
-    subscription;                //Initial Rotation
+    subscription;
+    encoder;                //Initial Rotation
 
     rotator;                            //Scene Rotator
     decoder;
@@ -58,7 +59,7 @@ initController() {
         );
         
         // intitalise Bineural Decoder
-        //this.encoder = new ambisonics.monoEncoder(this.context, this.order);
+        this.encoder = new ambisonics.monoEncoder2D(this.context, this.order);
     
         //initalise Scene Rotator
         this.mirror = new ambisonics.sceneMirror2D(this.context, this.order);
@@ -87,6 +88,20 @@ initController() {
         this.initheading= this.heading;
         this.rotator.yaw = this.heading;
         this.rotator.updateRotMtx();
+    }
+
+//init all Sound for this Chapter
+initSounds(){
+        console.log(this.soundArray);
+        
+        //Init all Sounds inside Array
+        for (let value of this.soundArray) {
+            //Bye Default All sound are Initialised as HRTF Sounds
+            this.soundMap.set(value, new SceneSound(this.context, this.orientation, value.name, value.order, value.startpoint, this.rotator, this.mirror));
+            const sound = this.soundMap.get(value);
+            sound.init();
+            sound.loadSound();
+        }
     }
 
     playSound(index: number, isHrtf= false) {
@@ -157,8 +172,10 @@ initController() {
         //check Sound-Type
         if(typ=== "multi"){
             this.soundMap.set(index, new MultichannelSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator));
-        } else {
+        } else if("scene") {
             this.soundMap.set(index, new SceneSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
+        } else {
+            this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
         }
         const sound = this.soundMap.get(index);
         sound.init();

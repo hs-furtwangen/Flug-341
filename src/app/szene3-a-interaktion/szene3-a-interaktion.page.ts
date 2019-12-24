@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
-import { SoundController } from '../classes/SoundController';
+import { SoundControllerGame } from '../classes/SoundControllerGame';
 import { LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
 
@@ -38,12 +38,12 @@ export class Szene3AInteraktionPage implements OnInit {
                 this.heading = data.magneticHeading;
             },
         );
-        this.soundController = new SoundController(this.deviceOrientation, 5);
+        this.soundController = new SoundControllerGame(this.deviceOrientation, 5);
         this.soundController.initController();
         this.soundController.initSound(0, 0, "scene");
         this.soundController.initSound(1, 0, "scene"); 
         this.soundController.initSound(2, 0, "scene");
-        this.soundController.initSound(3, 90, "hrtf");    
+        this.soundController.initSound(3, 270, "hrtf");    
         this.sceneLoading(2000);
   }
 
@@ -83,7 +83,7 @@ export class Szene3AInteraktionPage implements OnInit {
 
   startgame(){
     this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
-    this.soundController.playSound(0);
+    //this.soundController.playSound(0);
     //this.soundController.playSound(this.currentSoundIndex);
     //this.startTimerforNextSound(this.currentDuration, this.startsound);
     this.startfight();

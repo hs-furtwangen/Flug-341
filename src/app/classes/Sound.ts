@@ -35,9 +35,7 @@ export class Sound {
         this.summator = this.context.createGain();          //Gain
         this.path = path;
         this.order = order;                                 //Max Order
-        this.heading= 0;
         this.startpoint = startpoint;                       //Position relativ to Starting-Pos
-        this.encoder = new ambisonics.monoEncoder2D(this.context, this.order);
         this.rotator = rotator;
 
     }

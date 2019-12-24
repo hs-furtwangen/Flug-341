@@ -10,28 +10,14 @@ export class HRTFSound extends Sound {
     constructor(context, protected deviceOrientation: DeviceOrientation, path: String, order: number, startpoint: number, rotator, mirror){
         super(context, deviceOrientation, path, order, startpoint, rotator);
         this.mirror= mirror;
-
-        this.subscription = this.deviceOrientation.watchHeading().subscribe(
-            (data: DeviceOrientationCompassHeading) => {
-                this.heading = data.magneticHeading;
-
-                //Update Rotation
-                this.hoaEncoder((0-startpoint)%360);
-                console.log("He you")
-                //this.rotator.yaw = this.heading;
-                //this.rotator.updateRotMtx();
-            },
-        );
-        this.hoaEncoder((0-startpoint)%360);
         console.log("He you")
     }
     /*Methods*/
     play() {
-        //this.source.connect(this.encoder.in);
-        //this.encoder.out.connect(this.summator);
         this.source.connect(this.encoder.in);
+        this.encoder.out.connect(this.summator);
         this.source.start(0);
-        this.isPlaying = false;
+        this.isPlaying = true;
     }
 
        playloop(s = 0) {
@@ -52,10 +38,9 @@ export class HRTFSound extends Sound {
         fetch(url, {method: 'GET'}).then(response => response.arrayBuffer().
         then(
             buffer => {
-                this.context.decodeAudioData(buffer, (audioBuffer) => 
+                this.context.decodeAudioData(buffer, audioBuffer => 
                     { 
-                        this.source.buffer= audioBuffer; 
-                        //console.log(audioBuffer);
+                        this.source.buffer = audioBuffer; 
                     });
             }
         ));
@@ -73,6 +58,7 @@ export class HRTFSound extends Sound {
 
         // Summing and routing of Audio Sources
         this.summator.connect(this.mirror.in);
+        this.hoaEncoder(this.startpoint);
         //console.log(this.source.buffer);
         //this.hoaEncoder(this.order, this.startpoint);
 
@@ -80,6 +66,7 @@ export class HRTFSound extends Sound {
 
     //Set the Sounds position
     hoaEncoder(azim: number) {
+        this.encoder= new ambisonics.monoEncoder2D(this.context, this.order);
         this.encoder.azim = azim; // Horizontal Position
         // this.encoder.elev = this.elev; // Vertical Position
         this.encoder.updateGains();
@@ -88,13 +75,9 @@ export class HRTFSound extends Sound {
 
     //set Gain
     setGain(value){
-        this.summator.gain.value= value;
-        this.summator.connect(this.mirror.in);
-        this.source.connect(this.summator);
-    }
-
-    onDestroy(){
-        this.subscription.unsubscribe();
+        // this.summator.gain.value= value;
+        // this.summator.connect(this.mirror.in);
+        // this.source.connect(this.summator);
     }
 
 }
