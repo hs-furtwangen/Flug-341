@@ -1,5 +1,5 @@
 <div [ngStyle]="{'animation-duration': animationTime}"  class="container">
   <div (click)="onClickHandler()" class="qte-btn">
-    <div class="help-icon"></div>
+    <div class="help-icon" [ngStyle]="{'background': getIcon()}"></div>
   </div>
 </div>

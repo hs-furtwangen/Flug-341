@@ -9,7 +9,7 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
 export class InteraktionComponent implements OnInit {
   subscription;
   heading= 0;
-  element= 2;
+  element= 1;
   links=['/menu', '/szene3-a-im-fluss'];
 
   @Output() clickHandler : EventEmitter<any> = new EventEmitter();
@@ -21,22 +21,18 @@ export class InteraktionComponent implements OnInit {
       (data: DeviceOrientationCompassHeading) => {
           this.heading = data.magneticHeading;
           if(this.heading>=0 && this.heading< 180){
-            this.element=2;
-          } else {
             this.element=1;
+          } else {
+            this.element=0;
           }
       },
     );
   }
 
-  onclick(id) {
-    this.subscription.unsubscribe();
-    this.clickHandler.emit(this.links[id]);
-  }
-
   selectWay(id){
     if(id == this.element){
-      this.onclick(id);
+      this.subscription.unsubscribe();
+      this.clickHandler.emit(this.links[id]);
     }
   }
 }

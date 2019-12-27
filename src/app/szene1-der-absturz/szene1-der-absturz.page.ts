@@ -25,17 +25,23 @@ export class Szene1DerAbsturzPage implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit() {         
 
-        //Device Orientation
-        this.deviceOrientation.getCurrentHeading().then(
-          (data: DeviceOrientationCompassHeading) => {
-              this.heading = data.magneticHeading;
-          },
-          (error: any) => console.log(error)
-        );
-    
+      this.soundController= new SoundControllerScene(this.deviceOrientation, 1);
+      this.soundController.initController();
+      this.soundController.initSound(0, 0,"scene", 1);
+        this.loadLoading();
+
+                      //Device Orientation
+                      this.deviceOrientation.getCurrentHeading().then(
+                        (data: DeviceOrientationCompassHeading) => {
+                            this.heading = data.magneticHeading;
+                        },
+                        (error: any) => console.log(error)
+                      );
   }
+    
+
 
   async loadLoading() {
     const loading = await this.loadingController.create({
@@ -49,14 +55,6 @@ export class Szene1DerAbsturzPage implements OnInit {
     await loading.onDidDismiss();
 
     this.startSounds();  
-  }
-
-  ionViewDidEnter(){
-        this.loadLoading();
-        this.soundController= new SoundControllerScene(this.deviceOrientation, 1);
-        this.soundController.initController();
-        this.soundController.initSound(0, 0,"scene", 1);
-
   }
 
   startTimerforNextSound(timerlength: number){
@@ -75,6 +73,7 @@ export class Szene1DerAbsturzPage implements OnInit {
   }
 
   startSounds(){
+    this.soundController.getinitHeading();
     let currentDuration= this.soundController.getDuration(0);
     this.soundController.playSound(0);
     this.startTimerforNextSound(currentDuration);

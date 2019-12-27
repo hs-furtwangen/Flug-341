@@ -52,7 +52,7 @@ initController() {
                 this.heading = data.magneticHeading;
 
                 //Update Rotation
-                this.rotator.yaw = this.heading;
+                this.rotator.yaw = ((this.heading) + this.initheading) % 360;
                 this.rotator.updateRotMtx();
                 //this.hoaEncoder(data.magneticHeading);
             },
@@ -76,7 +76,7 @@ initController() {
         this.mirror.mirror(2);
                 
         //load HRTF-Curves
-        this.loader_filters = new ambisonics.HRIRloader2D_local(this.context, this.order, (buffer)=> {
+        this.loader_filters = new ambisonics.HRIRloader_ircam(this.context, this.order, (buffer)=> {
             console.log('successfully loaded HOA buffer:', buffer);
             console.log(this.decoder);
             this.decoder.updateFilters(buffer);
@@ -84,10 +84,6 @@ initController() {
         this.loader_filters.load("assets/IRs/IRC_1076_C_HRIR_44100.sofa.json");
         console.log(this.loader_filters);
 
-        //set Initial Heading and update the Scene Rotator
-        this.initheading= this.heading;
-        this.rotator.yaw = this.heading;
-        this.rotator.updateRotMtx();
     }
 
 //init all Sound for this Chapter
@@ -143,6 +139,14 @@ initSounds(){
         }
     }
 
+    getinitHeading(){
+                //set Initial Heading and update the Scene Rotator
+                this.initheading= this.heading;
+                console.log(this.initheading);
+                this.rotator.yaw = this.heading;
+                this.rotator.updateRotMtx();
+    }
+
     //Stop Sound with index from json-File
     stopSound(index: number, hrtf= false) {
 
@@ -172,7 +176,7 @@ initSounds(){
         //check Sound-Type
         if(typ=== "multi"){
             this.soundMap.set(index, new MultichannelSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator));
-        } else if("scene") {
+        } else if(typ==="scene") {
             this.soundMap.set(index, new SceneSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
         } else {
             this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
@@ -194,9 +198,11 @@ initSounds(){
     //Stop sll Sound currently playing
     stopAllSounds(){
         for (let i=0; i< this.soundArray.length; i++) {
-            const isPlaying = this.soundMap.get(i).isPlaying;
-            if(isPlaying) {
-            this.stopSound(i);
+            if(this.soundMap.has(i)){
+                const isPlaying = this.soundMap.get(i).isPlaying;
+                if(isPlaying) {
+                this.stopSound(i);
+                }
             }
         }
     }

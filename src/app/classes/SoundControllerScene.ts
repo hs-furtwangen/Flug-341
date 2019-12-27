@@ -25,10 +25,9 @@ initController() {
             this.heading = data.magneticHeading;
 
             //Update Rotation
-            this.rotator.yaw = ((this.heading) - this.initheading) % 360;
-            //this.rotator.pitch= 0;
-            //this.rotator.roll= 0;
-            this.rotator.updateRotMtx();
+                //Update Rotation
+                this.rotator.yaw = ((this.heading) + this.initheading) % 360;
+                this.rotator.updateRotMtx();
         },
     );
     
@@ -59,10 +58,15 @@ initController() {
     // console.log(this.loader_filters);
 
     //set Initial Heading and update the Scene Rotator
-    this.initheading= 0;
-    console.log(this.mirror);
-    this.rotator.yaw = ((this.heading) - this.initheading) % 360;
     //this.rotator.updateRotMtx();
+}
+
+getinitHeading(){
+    //set Initial Heading and update the Scene Rotator
+    this.initheading= this.heading;
+    console.log(this.initheading);
+    this.rotator.yaw = this.heading;
+    this.rotator.updateRotMtx();
 }
 
 initSound(index, startpoint= 0, typ= "", gain= 1) /* Typ: "multi" or else HRTF, Index: Index from JSON-Array */{

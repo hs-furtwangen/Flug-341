@@ -24,13 +24,14 @@ export class HRTFSound extends Sound {
         this.source.connect(this.encoder.in);
         this.encoder.out.connect(this.summator);
         this.source.loop = true;
-        this.source.loopStart = 3;
+        this.source.loopStart = 100;
         this.source.start(0);
         this.isPlaying = true;
     }
 
     stop() {
         this.source.stop();
+        this.isPlaying = false;
     }
 
     loadSound() {
@@ -57,8 +58,9 @@ export class HRTFSound extends Sound {
     init() {
 
         // Summing and routing of Audio Sources
-        this.summator.connect(this.mirror.in);
+        this.summator.connect(this.rotator.in);
         this.hoaEncoder(this.startpoint);
+        console.log("hrtf loaded")
         //console.log(this.source.buffer);
         //this.hoaEncoder(this.order, this.startpoint);
 
@@ -70,7 +72,7 @@ export class HRTFSound extends Sound {
         this.encoder.azim = azim; // Horizontal Position
         // this.encoder.elev = this.elev; // Vertical Position
         this.encoder.updateGains();
-        console.log(this.encoder);
+        console.log("baum");
     }
 
     //set Gain

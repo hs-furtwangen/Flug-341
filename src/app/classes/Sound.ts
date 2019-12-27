@@ -46,7 +46,7 @@ export class Sound {
         //this.encoder.out.connect(this.summator);
         this.source.connect(this.encoder.in);
         this.source.start(0);
-        this.isPlaying = false;
+        this.isPlaying = true;
     }
 
        playloop(s = 0) {
@@ -60,6 +60,7 @@ export class Sound {
 
     stop() {
         this.source.stop();
+        this.isPlaying = false;
     }
 
     loadSound() {
@@ -88,6 +89,7 @@ export class Sound {
 
         // Summing and routing of Audio Sources
         this.summator.connect(this.rotator.in);
+        console.log("Huhn")
         //console.log(this.source.buffer);
         //this.hoaEncoder(this.order, this.startpoint);
 

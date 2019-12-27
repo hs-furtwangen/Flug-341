@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-qte-button',
@@ -7,12 +7,19 @@ import { Component, OnInit, Input} from '@angular/core';
 })
 export class QteButtonComponent implements OnInit {
   @Input() animationTime= '5s';
+  @Input() iconFile= '';
+
+  @Output() clickHandler : EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {}
 
   onClickHandler() {
-    console.log('Jeff');
+    this.clickHandler.emit();
+  }
+
+  getIcon(){
+    return 'url("../../../assets/imgs/'+ this.iconFile+ '") no-repeat center center';
   }
 }

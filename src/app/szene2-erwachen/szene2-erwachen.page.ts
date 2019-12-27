@@ -39,7 +39,6 @@ export class Szene2ErwachenPage implements OnInit {
       //pause when tapping out of app
       this.platform.pause.subscribe(() => {
         this.pauseGame();
-        console.log("pause");
       });
 
       //continue when tapping into app
@@ -72,6 +71,10 @@ export class Szene2ErwachenPage implements OnInit {
           },
           (error: any) => console.log(error)
         );
+  }
+
+  ionViewDidEnter(){
+    this.soundController.getinitHeading();
   }
 
   async sceneLoading(index, dur) {
@@ -134,6 +137,7 @@ export class Szene2ErwachenPage implements OnInit {
   }
 
   startSounds(index){
+    this.soundController.getinitHeading();
     this.currentDuration= this.soundController.getDuration(index);
     this.soundController.playSound(0);
     this.soundController.playSound(index);
@@ -158,7 +162,6 @@ export class Szene2ErwachenPage implements OnInit {
     this.soundController.stopAllSounds();
     this.soundController.onDestroy();
     this.soundController= null;
-    this.subscription.unsubscribe();
     this.timersubscription.unsubscribe();
     this.router.navigateRoot(this.linkNextPage);
   }

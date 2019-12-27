@@ -8,6 +8,7 @@ import { Szene3AInteraktionPageRoutingModule } from './szene3-a-interaktion-rout
 
 import { Szene3AInteraktionPage } from './szene3-a-interaktion.page';
 import { CompassComponent} from '../components/compass/compass.component';
+import { QteButtonComponent } from '../components/qte-button/qte-button.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { CompassComponent} from '../components/compass/compass.component';
     IonicModule,
     Szene3AInteraktionPageRoutingModule
   ],
-  declarations: [Szene3AInteraktionPage, CompassComponent]
+  declarations: [Szene3AInteraktionPage, CompassComponent, QteButtonComponent]
 })
 export class Szene3AInteraktionPageModule {}

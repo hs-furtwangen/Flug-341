@@ -17,7 +17,7 @@ export class SceneSound extends Sound{
         //this.encoder.out.connect(this.summator);
         this.source.connect(this.converter.in);
         this.source.start(0);
-        this.isPlaying = false;
+        this.isPlaying = true;
     }
 
        playloop(s = 0) {

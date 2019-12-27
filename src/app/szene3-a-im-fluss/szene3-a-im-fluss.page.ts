@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { SoundControllerScene } from '../classes/SoundControllerScene';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
-import { Platform, NavController } from '@ionic/angular';
-import { LoadingController } from '@ionic/angular';
+import { Platform, NavController, LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
 import { Storage } from '@ionic/storage';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-szene3-a-im-fluss',
@@ -36,13 +36,12 @@ export class Szene3AImFlussPage implements OnInit {
   weg1= true;
 
 
-  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public vibration: Vibration, private storage: Storage) 
+  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public vibration: Vibration, private storage: Storage, public activeroute: ActivatedRoute) 
   {
     platform.ready().then(() => {
       //pause when tapping out of app
       this.platform.pause.subscribe(() => {
         this.pauseGame();
-        console.log("pause");
       });
 
       //continue when tapping into app
@@ -50,12 +49,14 @@ export class Szene3AImFlussPage implements OnInit {
          this.unpauseGame();
        });
     });
+
+    this.fromInstruction = this.activeroute.snapshot.paramMap.get('frominteraktion');
+    if (this.fromInstruction != null) {
+      this.currentSoundIndex= 2;
+    }
   }
 
   ngOnInit() {
-
-  //
-  this.storage.set('gegenstand', 'Messer');
 
     this.storage.get('gegenstand').then((val)=> {
       this.gegenstand= val;
@@ -66,10 +67,6 @@ export class Szene3AImFlussPage implements OnInit {
     this.soundController.initSound(1, 0, "scene");
     this.soundController.initSound(2, 0, "scene");
     this.soundController.initSound(3, 0, "scene");
-    this.soundController.initSound(4, 0, "scene");
-    this.soundController.initSound(5, 0, "scene");
-    this.soundController.initSound(6, 0, "scene");
-    this.soundController.initSound(7, 0, "scene");
 
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 3000);
@@ -123,15 +120,18 @@ export class Szene3AImFlussPage implements OnInit {
   skip() {
     if (this.skipButtonActive) {
       if ( !this.weg1 && this.currentSoundIndex== 1){
-        this.currentSoundIndex= 7;
+        this.currentSoundIndex= 3;
         this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
         this.skipButtonActive= false;
         this.soundController.playSound(this.currentSoundIndex);
         this.startTimerforNextSound(this.currentDuration);
-      } else if(this.weg1 && this.currentSoundIndex== 1){
+      } else if (this.weg1 && this.currentSoundIndex== 2) {
+        this.linkNextPage= '/szene4-der-baum';
+        this.closeSite();
+      } else if (this.weg1 && this.currentSoundIndex== 1) {
         this.linkNextPage= '/szene3-a-interaktion';
         this.closeSite();
-      } else if (!this.weg1 && this.currentSoundIndex == 7){
+      } else if (!this.weg1 && this.currentSoundIndex == 3) {
         this.linkNextPage= '/szene4-der-baum';
         this.closeSite();
       } else {
@@ -145,6 +145,7 @@ export class Szene3AImFlussPage implements OnInit {
   }
 
   startSounds(index){
+    this.soundController.getinitHeading();
     this.weg1= (this.gegenstand == 'Messer')? true: false;
     console.log(this.gegenstand);
     this.currentDuration= this.soundController.getDuration(index);
@@ -173,15 +174,6 @@ export class Szene3AImFlussPage implements OnInit {
     this.soundController= null;
     this.timersubscription.unsubscribe();
     this.router.navigateRoot(this.linkNextPage);
-  }
-
-  clickGegenstandHandler(){
-    this.gegenstandsAuswahlOpen= false;
-    this.currentSoundIndex++;
-    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
-    this.skipButtonActive= false;
-    this.soundController.playSound(this.currentSoundIndex);
-    this.startTimerforNextSound(this.currentDuration);
   }
 
 }

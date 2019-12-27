@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: Szene3AImFlussPage
+  },
+  {
+    path: ':frominteraktion',
+    component: Szene3AImFlussPage
   }
 ];
 

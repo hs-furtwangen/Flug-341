@@ -60,7 +60,6 @@ export class Szene3AufbruchPage implements OnInit {
               },
               (error: any) => console.log(error)
             );
-;
   }
 
   pauseGame = () =>{
@@ -107,6 +106,7 @@ export class Szene3AufbruchPage implements OnInit {
   }
 
   startSounds(index){
+    this.soundController.getinitHeading();
     this.currentDuration= this.soundController.getDuration(index);
     this.soundController.playSound(0);
     this.soundController.playSound(index);
@@ -131,7 +131,6 @@ export class Szene3AufbruchPage implements OnInit {
     this.soundController.stopAllSounds();
     this.soundController.onDestroy();
     this.soundController= null;
-    this.subscription.unsubscribe();
     this.timersubscription.unsubscribe();
     this.router.navigateRoot(url);
   }
