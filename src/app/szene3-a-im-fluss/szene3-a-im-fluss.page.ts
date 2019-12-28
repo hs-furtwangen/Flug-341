@@ -125,14 +125,11 @@ export class Szene3AImFlussPage implements OnInit {
         this.skipButtonActive= false;
         this.soundController.playSound(this.currentSoundIndex);
         this.startTimerforNextSound(this.currentDuration);
-      } else if (this.weg1 && this.currentSoundIndex== 2) {
+      } else if ((this.weg1 && this.currentSoundIndex== 2) || (!this.weg1 && this.currentSoundIndex == 3)) {
         this.linkNextPage= '/szene4-der-baum';
         this.closeSite();
       } else if (this.weg1 && this.currentSoundIndex== 1) {
         this.linkNextPage= '/szene3-a-interaktion';
-        this.closeSite();
-      } else if (!this.weg1 && this.currentSoundIndex == 3) {
-        this.linkNextPage= '/szene4-der-baum';
         this.closeSite();
       } else {
         this.currentSoundIndex++;

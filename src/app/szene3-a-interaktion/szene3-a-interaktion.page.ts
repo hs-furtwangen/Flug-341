@@ -131,7 +131,7 @@ export class Szene3AInteraktionPage implements OnInit {
   }
 
   clickFightButton(){
-    let direction= ((this.heading) + this.soundController.initheading) % 360;
+    let direction= ((this.heading) - this.soundController.initheading) % 360;
     if(direction<(270+5)&& direction>(270-5)){
       this.crocodileSub.unsubscribe();
       this.vibration.vibrate(500);

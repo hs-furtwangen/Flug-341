@@ -77,9 +77,9 @@ export class HRTFSound extends Sound {
 
     //set Gain
     setGain(value){
-        // this.summator.gain.value= value;
-        // this.summator.connect(this.mirror.in);
-        // this.source.connect(this.summator);
+        this.summator.gain.value= value;
+        this.summator.connect(this.rotator.in);
+        this.source.connect(this.summator);
     }
 
 }

@@ -73,10 +73,6 @@ export class Szene2ErwachenPage implements OnInit {
         );
   }
 
-  ionViewDidEnter(){
-    this.soundController.getinitHeading();
-  }
-
   async sceneLoading(index, dur) {
     const loading = await this.loadingController.create({
       spinner: null,

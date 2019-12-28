@@ -128,5 +128,70 @@
             "loop": false,
             "duration": 5
         }
+    ],
+    [
+        {
+            "name": "004_ATMO_Wasserfall_01.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        },
+        {
+            "name": "15_DIALOG_Wasserfall_01.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 21
+        },
+        {
+            "name": "16_DIALOG_Wasserfall_02.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 20
+        },
+        {
+            "name": "17_DIALOG_Wasserfall_03.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 94
+        },
+        {
+            "name": "18_DIALOG_Wasserfall_04.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 33
+        }
+    ],
+    [
+        {
+            "name": "005_ATMO_Baum.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        },
+        {
+            "name": "14_DIALOG_Wollaffen_01.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 128
+        },
+        {
+            "name": "19_DIALOG_DerBaum_01.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 65
+        },
+        {
+            "name": "20_DIALOG_DerBaum_02.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 40
+        }
     ]
 ]

@@ -12,8 +12,6 @@ declare const ambisonics;
 
 export class SoundControllerScene extends SoundController {
 
-initheading;
-
     //init just the Controller
 initController() {
     this.initheading = 0;
@@ -26,7 +24,7 @@ initController() {
 
             //Update Rotation
                 //Update Rotation
-                this.rotator.yaw = ((this.heading) + this.initheading) % 360;
+                this.rotator.yaw = ((this.heading) - this.initheading) % 360;
                 this.rotator.updateRotMtx();
         },
     );
@@ -35,17 +33,20 @@ initController() {
     //this.encoder = new ambisonics.monoEncoder(this.context, this.order);
 
     //initalise Scene Rotator
-    this.mirror = new ambisonics.sceneMirror2D(this.context, this.order);
-    const firstmirror= new ambisonics.sceneMirror2D(this.context, this.order);
+    this.mirror = new ambisonics.sceneMirror(this.context, this.order);
+    const firstmirror= new ambisonics.sceneMirror(this.context, this.order);
+    const secondmirror= new ambisonics.sceneMirror(this.context, this.order);
     this.rotator = new ambisonics.sceneRotator2D(this.context, this.order);
     
     //connect to Context
-    this.mirror.out.connect(firstmirror.in);
+    this.mirror.out.connect(secondmirror.in);
+    secondmirror.out.connect(firstmirror.in);
     firstmirror.out.connect(this.rotator.in)
     this.rotator.out.connect(this.decoder.in);
     this.decoder.out.connect(this.context.destination);
     this.decoder.resetFilters();
     firstmirror.mirror(1);
+    secondmirror.mirror(3);
     this.mirror.mirror(2);
             
     //load HRTF-Curves
@@ -61,28 +62,4 @@ initController() {
     //this.rotator.updateRotMtx();
 }
 
-getinitHeading(){
-    //set Initial Heading and update the Scene Rotator
-    this.initheading= this.heading;
-    console.log(this.initheading);
-    this.rotator.yaw = this.heading;
-    this.rotator.updateRotMtx();
-}
-
-initSound(index, startpoint= 0, typ= "", gain= 1) /* Typ: "multi" or else HRTF, Index: Index from JSON-Array */{
-    //check Sound-Type
-    if(typ=== "multi"){
-        this.soundMap.set(index, new MultichannelSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator));
-    } else if(typ==="scene"){
-        this.soundMap.set(index, new SceneSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
-    }
-    else {
-        this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator, this.mirror));
-
-    }
-    const sound = this.soundMap.get(index);
-    sound.init();
-    sound.loadSound();
-    sound.setGain(gain);
-}
 }

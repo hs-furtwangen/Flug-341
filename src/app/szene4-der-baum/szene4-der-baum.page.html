@@ -1,9 +1,4 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>szene4-derBaum</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="scene-content">
+  <ion-button [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
 </ion-content>
+

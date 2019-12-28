@@ -29,6 +29,8 @@ export class Szene3AufbruchPage implements OnInit {
   timersubscription;
   subscription;
 
+  initheading;
+
   constructor(protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public vibration: Vibration) {
     platform.ready().then(() => {
       //pause when tapping out of app
@@ -107,6 +109,7 @@ export class Szene3AufbruchPage implements OnInit {
 
   startSounds(index){
     this.soundController.getinitHeading();
+    this.initheading= this.soundController.initheading;
     this.currentDuration= this.soundController.getDuration(index);
     this.soundController.playSound(0);
     this.soundController.playSound(index);
@@ -140,5 +143,7 @@ export class Szene3AufbruchPage implements OnInit {
     this.showInteraktion= false;
     this.closeSite(url);
   }
+  
+
 }
 
