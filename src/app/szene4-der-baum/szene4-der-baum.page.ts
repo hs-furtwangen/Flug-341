@@ -20,8 +20,10 @@ export class Szene4DerBaumPage implements OnInit {
   soundController;
   timersubscription;
   interaktionSub;
+  subscrib
   currentDuration;
   currentTimer;
+  subscription;
 
   currentSoundIndex= 1;
   maxSoundIndex: number;
@@ -68,6 +70,13 @@ export class Szene4DerBaumPage implements OnInit {
               },
               (error: any) => console.log(error)
             );
+                
+        // Watch Device Orientation
+        this.subscription = this.deviceOrientation.watchHeading().subscribe(
+          (data: DeviceOrientationCompassHeading) => {
+              this.heading = data.magneticHeading;
+          },
+      );
   }
 
   skip(){
@@ -161,6 +170,7 @@ export class Szene4DerBaumPage implements OnInit {
       this.soundController.onDestroy();
       this.soundController= null;
       this.timersubscription.unsubscribe();
+      this.subscription.unsubscribe();
       closesub.unsubscribe();
       this.router.navigateRoot(this.linkNextPage);
     });

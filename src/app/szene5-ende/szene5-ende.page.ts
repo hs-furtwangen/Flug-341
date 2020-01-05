@@ -21,6 +21,7 @@ export class Szene5EndePage implements OnInit {
 
   currentTimer;
   timersubscription;
+  subscription;
   showInteraktion= false;
   initheading;
 
@@ -81,6 +82,22 @@ export class Szene5EndePage implements OnInit {
     });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 5000);
+
+    
+            //Device Orientation
+            this.deviceOrientation.getCurrentHeading().then(
+              (data: DeviceOrientationCompassHeading) => {
+                  this.heading = data.magneticHeading;
+              },
+              (error: any) => console.log(error)
+            );
+                
+        // Watch Device Orientation
+        this.subscription = this.deviceOrientation.watchHeading().subscribe(
+          (data: DeviceOrientationCompassHeading) => {
+              this.heading = data.magneticHeading;
+          },
+      );
   }
 
   pauseGame = () =>{
@@ -178,6 +195,7 @@ export class Szene5EndePage implements OnInit {
       this.soundController.onDestroy();
       this.soundController= null;
       this.timersubscription.unsubscribe();
+      this.subscription.unsubscribe();
       closesub.unsubscribe();
       this.router.navigateRoot(this.linkNextPage);
     });
