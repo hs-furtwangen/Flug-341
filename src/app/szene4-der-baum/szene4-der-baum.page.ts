@@ -13,18 +13,24 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./szene4-der-baum.page.scss'],
 })
 export class Szene4DerBaumPage implements OnInit {
+  linkNextPage= "/szene5-ende";
+
   skipButtonActive= false;
   
   soundController;
   timersubscription;
+  interaktionSub;
   currentDuration;
   currentTimer;
 
   currentSoundIndex= 1;
   maxSoundIndex: number;
+  initheading;
   heading= 0;
 
-  constructor(protected deviceOrientation: DeviceOrientation, public platform: Platform, public loadingController: LoadingController ) { 
+  showInteraktion=false;
+
+  constructor(protected deviceOrientation: DeviceOrientation, public platform: Platform, public loadingController: LoadingController, public vibration: Vibration, private router: NavController, private storage: Storage ) { 
     platform.ready().then(() => {
       //pause when tapping out of app
       this.platform.pause.subscribe(() => {
@@ -40,12 +46,18 @@ export class Szene4DerBaumPage implements OnInit {
   }
 
   ngOnInit() {
-    this.soundController= new SoundControllerScene(this.deviceOrientation, 3);
+    this.soundController= new SoundControllerScene(this.deviceOrientation, 7);
     this.soundController.initController();
     this.soundController.initSound(0, 0, "scene", 0.5);
     this.soundController.initSound(1, 0, "scene");
     this.soundController.initSound(2, 0, "scene");
     this.soundController.initSound(3, 0, "scene");
+    this.soundController.initSound(4, 0, "scene");
+    this.soundController.initSound(5, 0, "scene");
+                //get Initheading
+                this.storage.get('initheading').then((val) => {
+                  this.soundController.setinitHeading(val);
+                });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 2000);
 
@@ -59,7 +71,19 @@ export class Szene4DerBaumPage implements OnInit {
   }
 
   skip(){
-
+    if (this.skipButtonActive) {
+      if(this.currentSoundIndex== 2){
+        this.currentSoundIndex++;
+        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+        this.skipButtonActive= false;
+        this.soundController.playSound(this.currentSoundIndex);
+        this.startTimerforNextSound(this.currentDuration, true);
+      } else {
+        this.currentSoundIndex++;
+        this.skipButtonActive= false;
+        this.startNextSound(this.currentSoundIndex);
+      }
+    }
   }
 
   pauseGame = () =>{
@@ -73,7 +97,6 @@ export class Szene4DerBaumPage implements OnInit {
     this.soundController.initSound(0, 0, "scene", 0.5);
     this.soundController.initSound(this.currentSoundIndex, 0, "scene");
     this.sceneLoading(this.currentSoundIndex, 2000);
-    this.startTimerforNextSound(this.currentDuration);
   }
  
   stopTimer(){
@@ -81,13 +104,22 @@ export class Szene4DerBaumPage implements OnInit {
     console.log("timer stoped")
   }
 
-  startTimerforNextSound(timerlength: number){
+  startTimerforNextSound(timerlength: number, interaktion=false){
     console.log(timerlength);
     this.currentTimer = timer(timerlength*1000);
-    this.timersubscription = this.currentTimer.subscribe(() => {
+    if(!interaktion){
+      this.timersubscription = this.currentTimer.subscribe(() => {
         this.skipButtonActive = true;
         this.timersubscription.unsubscribe();
     });
+    } else {
+      this.timersubscription = this.currentTimer.subscribe(() => {
+        this.showInteraktion= true;
+        this.vibration.vibrate(500);
+        this.startInteractionTimer();
+        this.timersubscription.unsubscribe();
+    });
+    }
   }
 
   async sceneLoading(index, dur) {
@@ -105,9 +137,44 @@ export class Szene4DerBaumPage implements OnInit {
   }
 
   startSounds(index){
-    this.soundController.getinitHeading();
-    this.currentDuration= this.soundController.getDuration(index);
+    this.initheading= this.soundController.initheading;
     this.soundController.playSound(0);
+    this.startNextSound(index);
+  }
+
+  startInteractionTimer(){
+    const interaktionTimer= timer(10000);
+    this.interaktionSub= interaktionTimer.subscribe(()=>{
+      this.showInteraktion= false;
+      this.currentSoundIndex=5;
+      this.closeSite()
+      this.interaktionSub.unsubscribe();
+    });
+  }
+
+  closeSite(){
+    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+    this.soundController.playSound(this.currentSoundIndex);
+    const closetimer= timer(this.currentDuration*1000);
+    const closesub= closetimer.subscribe(()=>{
+      this.soundController.stopAllSounds();
+      this.soundController.onDestroy();
+      this.soundController= null;
+      this.timersubscription.unsubscribe();
+      closesub.unsubscribe();
+      this.router.navigateRoot(this.linkNextPage);
+    });
+  }
+
+  onClickHandler(){
+    this.interaktionSub.unsubscribe();
+    this.showInteraktion= false;
+    this.currentSoundIndex=4;
+    this.closeSite()
+  }
+
+  startNextSound(index){
+    this.currentDuration= this.soundController.getDuration(index);
     this.soundController.playSound(index);
     this.startTimerforNextSound(this.currentDuration);
   }

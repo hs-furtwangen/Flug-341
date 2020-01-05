@@ -1,15 +1,21 @@
-.compass-pos{
-    position: absolute;
-    z-index: 10;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-}
 
-.qte-pos{
+
+.interaktion-container{
     position: absolute;
-    z-index: 12;
-    left: 50%;
-    transform: translateX(-50%);
-    top:300px;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+
+    .box{
+        position: relative;
+        width: 100%;
+    }
+
+    .compass-pos{
+        z-index: 21;
+    }
+    
+    .qte-pos{
+        z-index: 22;
+    }
 }

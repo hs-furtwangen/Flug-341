@@ -5,6 +5,7 @@ import { Vibration } from '@ionic-native/vibration/ngx';
 import { Platform, NavController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-szene3-aufbruch',
@@ -31,7 +32,7 @@ export class Szene3AufbruchPage implements OnInit {
 
   initheading;
 
-  constructor(protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public vibration: Vibration) {
+  constructor(protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public vibration: Vibration, private storage: Storage) {
     platform.ready().then(() => {
       //pause when tapping out of app
       this.platform.pause.subscribe(() => {
@@ -47,11 +48,16 @@ export class Szene3AufbruchPage implements OnInit {
    }
 
   ngOnInit() {
+
     this.soundController= new SoundControllerScene(this.deviceOrientation, 3);
     this.soundController.initController();
     this.soundController.initSound(0, 0, "scene", 0.5);
     this.soundController.initSound(1, 0, "scene");
     this.soundController.initSound(2, 0, "scene");
+        //get Initheading
+        this.storage.get('initheading').then((val) => {
+          this.soundController.setinitHeading(val);
+        });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 3000);
 
@@ -75,7 +81,6 @@ export class Szene3AufbruchPage implements OnInit {
     this.soundController.initSound(0, 0, "scene", 0.5);
     this.soundController.initSound(this.currentSoundIndex, 0, "scene");
     this.sceneLoading(this.currentSoundIndex, 2000);
-    this.startTimerforNextSound(this.currentDuration);
   }
 
   async sceneLoading(index, dur) {
@@ -99,21 +104,16 @@ export class Szene3AufbruchPage implements OnInit {
       this.showInteraktion= true;
       } else {
         this.currentSoundIndex++;
-        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
         this.skipButtonActive= false;
-        this.soundController.playSound(this.currentSoundIndex);
-        this.startTimerforNextSound(this.currentDuration);
+        this.startNextSound(this.currentSoundIndex);
       }
     }
   }
 
   startSounds(index){
-    this.soundController.getinitHeading();
     this.initheading= this.soundController.initheading;
-    this.currentDuration= this.soundController.getDuration(index);
     this.soundController.playSound(0);
-    this.soundController.playSound(index);
-    this.startTimerforNextSound(this.currentDuration);
+    this.startNextSound(index);
   }
 
   startTimerforNextSound(timerlength: number){
@@ -144,6 +144,10 @@ export class Szene3AufbruchPage implements OnInit {
     this.closeSite(url);
   }
   
-
+  startNextSound(index){
+    this.currentDuration= this.soundController.getDuration(index);
+    this.soundController.playSound(index);
+    this.startTimerforNextSound(this.currentDuration);
+  }
 }
 

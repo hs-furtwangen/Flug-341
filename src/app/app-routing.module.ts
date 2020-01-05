@@ -38,7 +38,11 @@ const routes: Routes = [
   {
     path: 'szene3-a-interaktion',
     loadChildren: () => import('./szene3-a-interaktion/szene3-a-interaktion.module').then( m => m.Szene3AInteraktionPageModule)
+  },  {
+    path: 'szene5-ende',
+    loadChildren: () => import('./szene5-ende/szene5-ende.module').then( m => m.Szene5EndePageModule)
   },
+
 ];
 
 @NgModule({

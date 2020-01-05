@@ -11,6 +11,8 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
 
 import json from '../../assets/json/sound.json';
 
+import { timer } from 'rxjs';
+
 // TODO: Need a lot of work. Don't know what to say.
 //declare ambisonics
 declare const ambisonics;
@@ -62,7 +64,7 @@ initController() {
 this.mirror = new ambisonics.sceneMirror(this.context, this.order);
 const firstmirror= new ambisonics.sceneMirror(this.context, this.order);
 const secondmirror= new ambisonics.sceneMirror(this.context, this.order);
-this.rotator = new ambisonics.sceneRotator2D(this.context, this.order);
+this.rotator = new ambisonics.sceneRotator(this.context, this.order);
 
 //connect to Context
 this.mirror.out.connect(secondmirror.in);
@@ -129,6 +131,12 @@ getinitHeading(){
             console.log(this.initheading);
             this.rotator.yaw = this.heading;
             this.rotator.updateRotMtx();
+}
+
+setinitHeading(initheading){
+    this.initheading= initheading;
+    this.rotator.yaw = this.heading;
+    this.rotator.updateRotMtx();
 }
 
 //Stop Sound with index from json-File
@@ -218,6 +226,39 @@ crossfade(indexSound1: number, indexSound2: number, duration: number){
     //ramp gain up to 1
     sound2.summator.gain.linearRampToValueAtTime(1.0, this.context.currentTime + duration);   //linear
     //sound2.summator.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + duration);    //exponetial
+
+    const fadetimer= timer(duration*1000);
+    const subscription= fadetimer.subscribe(()=>{
+        this.stopSound(indexSound1);
+        subscription.unsubscribe();
+    });
+}
+
+fadeout(indexSound1: number, duration: number){
+    // 1. Sound: fades to 0
+    let sound1 = this.soundMap.get(indexSound1);
+    // 2. Sound fades to 1
+    console.log("start Crossfade");
+
+    //ramp gain down to 0
+    sound1.summator.gain.linearRampToValueAtTime(0.0, this.context.currentTime + duration);   //linear
+    //sound1.summator.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + duration);    //exponetial
+
+    const fadetimer= timer(duration*1000);
+    const subscription= fadetimer.subscribe(()=>{
+        this.stopSound(indexSound1);
+        subscription.unsubscribe();
+    });
+}
+
+fadein(indexSound1: number, duration: number){
+        // 1. Sound: fades to 0
+        let sound1 = this.soundMap.get(indexSound1);
+    
+        //ramp gain up to 1
+        sound1.summator.gain.linearRampToValueAtTime(1.0, this.context.currentTime + duration);   //linear
+        //sound2.summator.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + duration);    //exponetial
+    
 }
 
 onDestroy(){

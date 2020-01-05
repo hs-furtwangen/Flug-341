@@ -1,0 +1,11 @@
+<div class="interaction">
+  <div class="container">
+    <h1 class="title">Drehe dich nach <b>Links</b> zum Rauch</h1>
+    <app-compass [heading]="heading" class="compass"></app-compass>
+    <div class="qte-button-container">
+      <div class="qte-btn" (click)="onClick()" [ngClass]="(isActive)? '': 'not-active'">
+        <div class="icon" ></div>
+      </div>
+    </div>
+  </div>
+</div>

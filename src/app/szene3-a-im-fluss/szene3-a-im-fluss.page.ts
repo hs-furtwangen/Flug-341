@@ -57,7 +57,6 @@ export class Szene3AImFlussPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.storage.get('gegenstand').then((val)=> {
       this.gegenstand= val;
     });
@@ -67,7 +66,10 @@ export class Szene3AImFlussPage implements OnInit {
     this.soundController.initSound(1, 0, "scene");
     this.soundController.initSound(2, 0, "scene");
     this.soundController.initSound(3, 0, "scene");
-
+    //get Initheading
+    this.storage.get('initheading').then((val) => {
+      this.soundController.setinitHeading(val);
+    });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 3000);
 
@@ -105,50 +107,38 @@ export class Szene3AImFlussPage implements OnInit {
     this.soundController.initSound(0, 0, "scene" );
     this.soundController.initSound(this.currentSoundIndex, 0, "scene");
     this.sceneLoading(this.currentSoundIndex, 2000);
-    this.startTimerforNextSound(this.currentDuration);
   }
 
   closeOverlay(){
     this.currentSoundIndex++;
-    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
     this.overlayClosed=true;
     this.skipButtonActive= false;
-    this.soundController.playSound(this.currentSoundIndex);
-    this.startTimerforNextSound(this.currentDuration);
+    this.startNextSound();
   }
 
   skip() {
     if (this.skipButtonActive) {
       if ( !this.weg1 && this.currentSoundIndex== 1){
         this.currentSoundIndex= 3;
-        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
         this.skipButtonActive= false;
-        this.soundController.playSound(this.currentSoundIndex);
-        this.startTimerforNextSound(this.currentDuration);
+        this.startNextSound();
       } else if ((this.weg1 && this.currentSoundIndex== 2) || (!this.weg1 && this.currentSoundIndex == 3)) {
-        this.linkNextPage= '/szene4-der-baum';
-        this.closeSite();
+        this.closeSite('/szene4-der-baum');
       } else if (this.weg1 && this.currentSoundIndex== 1) {
-        this.linkNextPage= '/szene3-a-interaktion';
-        this.closeSite();
+        this.closeSite('/szene3-a-interaktion');
       } else {
         this.currentSoundIndex++;
-        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+        this.startNextSound();
         this.skipButtonActive= false;
-        this.soundController.playSound(this.currentSoundIndex);
-        this.startTimerforNextSound(this.currentDuration);
       }
     }
   }
 
   startSounds(index){
-    this.soundController.getinitHeading();
     this.weg1= (this.gegenstand == 'Messer')? true: false;
     console.log(this.gegenstand);
-    this.currentDuration= this.soundController.getDuration(index);
     this.soundController.playSound(0);
-    this.soundController.playSound(index);
-    this.startTimerforNextSound(this.currentDuration);
+    this.startNextSound();
   }
 
   startTimerforNextSound(timerlength: number){
@@ -165,12 +155,18 @@ export class Szene3AImFlussPage implements OnInit {
     console.log("timer stoped")
   }
 
-  closeSite(){
+  closeSite = (url) =>{
     this.soundController.stopAllSounds();
     this.soundController.onDestroy();
     this.soundController= null;
     this.timersubscription.unsubscribe();
-    this.router.navigateRoot(this.linkNextPage);
+    this.router.navigateRoot(url);
+  }
+
+  startNextSound(){
+    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+    this.soundController.playSound(this.currentSoundIndex);
+    this.startTimerforNextSound(this.currentDuration);
   }
 
 }

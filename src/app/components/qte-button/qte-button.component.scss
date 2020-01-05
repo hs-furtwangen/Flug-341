@@ -6,12 +6,18 @@
     border: 5px solid #5DA57A;
     border-radius: 50%;
     padding: 0.5rem;
+    opacity: 1;
+    z-index: 15;
+
+    &.not-active{
+        opacity: 0.4;
+    }
+
 }
 
 .help-icon{
     width: 150px;
     height: 150px;
-    background: url("../../../assets/imgs/Seil.svg") no-repeat center center;
 
 }
 

@@ -4,6 +4,7 @@ import { SoundControllerGame } from '../classes/SoundControllerGame';
 import { Platform, LoadingController, NavController } from '@ionic/angular';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { timer } from 'rxjs';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-szene3-a-interaktion',
@@ -28,7 +29,7 @@ export class Szene3AInteraktionPage implements OnInit {
 
   showQTE= false;
 
-  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, private router:NavController, public vibration: Vibration,  public platform: Platform) { 
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, private router:NavController, public vibration: Vibration,  public platform: Platform, private storage: Storage) { 
     platform.ready().then(() => {
       //pause when tapping out of app
       this.platform.pause.subscribe(() => {
@@ -65,7 +66,11 @@ export class Szene3AInteraktionPage implements OnInit {
         this.soundController.initSound(2, 0, "scene", 0.5);
         this.soundController.initSound(3, 270, "hrtf", 1);
         this.soundController.initSound(4, 270, "scene", 0.5);
-        this.soundController.initSound(5, 270, "scene", 0.5);    
+        this.soundController.initSound(5, 270, "scene", 0.5);  
+    //get Initheading
+    this.storage.get('initheading').then((val) => {
+      this.soundController.setinitHeading(val);
+    }); 
         this.sceneLoading(2000);
         this.initheading= this.heading;
         console.log(this.initheading);
@@ -95,7 +100,6 @@ export class Szene3AInteraktionPage implements OnInit {
   }
 
   startsound() {
-    this.soundController.getinitHeading();
     this.currentSoundIndex++;
     this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);

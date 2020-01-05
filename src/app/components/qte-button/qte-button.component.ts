@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 export class QteButtonComponent implements OnInit {
   @Input() animationTime= '5s';
   @Input() iconFile= '';
+  @Input() isActive= true;
 
   @Output() clickHandler : EventEmitter<any> = new EventEmitter();
 
@@ -20,6 +21,10 @@ export class QteButtonComponent implements OnInit {
   }
 
   getIcon(){
-    return 'url("../../../assets/imgs/'+ this.iconFile+ '") no-repeat center center';
+    if(this.iconFile!= ""){
+      return 'url("../../../assets/imgs/'+ this.iconFile+ '") no-repeat center center';
+    } else {
+      return '';
+    }
   }
 }

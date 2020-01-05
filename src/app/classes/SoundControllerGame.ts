@@ -38,7 +38,7 @@ initController() {
     this.mirror = new ambisonics.sceneMirror(this.context, this.order);
     const firstmirror= new ambisonics.sceneMirror(this.context, this.order);
     const secondmirror= new ambisonics.sceneMirror(this.context, this.order);
-    this.rotator = new ambisonics.sceneRotator2D(this.context, this.order);
+    this.rotator = new ambisonics.sceneRotator(this.context, this.order);
     
     //connect to Context
     this.mirror.out.connect(secondmirror.in);

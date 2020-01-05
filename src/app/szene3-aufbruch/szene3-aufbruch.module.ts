@@ -7,16 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { Szene3AufbruchPageRoutingModule } from './szene3-aufbruch-routing.module';
 
 import { Szene3AufbruchPage } from './szene3-aufbruch.page';
+import { ComponentsModule } from '../components/components.module';
 
-import { InteraktionComponent } from '../components/interaktion/interaktion.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ComponentsModule,
     Szene3AufbruchPageRoutingModule
   ],
-  declarations: [Szene3AufbruchPage, InteraktionComponent]
+  declarations: [Szene3AufbruchPage]
 })
 export class Szene3AufbruchPageModule {}

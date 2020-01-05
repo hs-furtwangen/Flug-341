@@ -4,11 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { Szene2ErwachenPageRoutingModule } from './szene2-erwachen-routing.module';
+import { Szene5EndePageRoutingModule } from './szene5-ende-routing.module';
 
-import { Szene2ErwachenPage } from './szene2-erwachen.page';
+import { Szene5EndePage } from './szene5-ende.page';
 import { ComponentsModule } from '../components/components.module';
-
 
 @NgModule({
   imports: [
@@ -16,8 +15,8 @@ import { ComponentsModule } from '../components/components.module';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    Szene2ErwachenPageRoutingModule
+    Szene5EndePageRoutingModule,
   ],
-  declarations: [Szene2ErwachenPage]
+  declarations: [Szene5EndePage]
 })
-export class Szene2ErwachenPageModule {}
+export class Szene5EndePageModule {}

@@ -6,6 +6,7 @@ import { Platform, NavController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-szene2-erwachen',
@@ -33,7 +34,7 @@ export class Szene2ErwachenPage implements OnInit {
   subscription;
 
 
-  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public activeroute: ActivatedRoute, public vibration: Vibration) 
+  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public activeroute: ActivatedRoute, public vibration: Vibration, private storage: Storage) 
   {
     platform.ready().then(() => {
       //pause when tapping out of app
@@ -61,6 +62,11 @@ export class Szene2ErwachenPage implements OnInit {
     this.soundController.initSound(1, 0, "scene");
     this.soundController.initSound(2, 0, "scene");
     this.soundController.initSound(3, 0, "scene");
+
+    //get Initheading
+    this.storage.get('initheading').then((val) => {
+      this.soundController.setinitHeading(val);
+    });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 3000);
 
@@ -98,16 +104,13 @@ export class Szene2ErwachenPage implements OnInit {
     this.soundController.initSound(0, 0, "scene" );
     this.soundController.initSound(this.currentSoundIndex, 0, "scene");
     this.sceneLoading(this.currentSoundIndex, 2000);
-    this.startTimerforNextSound(this.currentDuration);
   }
 
   closeOverlay(){
     this.currentSoundIndex++;
-    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
     this.overlayClosed=true;
     this.skipButtonActive= false;
-    this.soundController.playSound(this.currentSoundIndex);
-    this.startTimerforNextSound(this.currentDuration);
+    this.startNextSound();
   }
 
   skip() {
@@ -124,20 +127,15 @@ export class Szene2ErwachenPage implements OnInit {
         this.closeSite();
       } else {
         this.currentSoundIndex++;
-        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+        this.startNextSound();
         this.skipButtonActive= false;
-        this.soundController.playSound(this.currentSoundIndex);
-        this.startTimerforNextSound(this.currentDuration);
       }
     }
   }
 
   startSounds(index){
-    this.soundController.getinitHeading();
-    this.currentDuration= this.soundController.getDuration(index);
     this.soundController.playSound(0);
-    this.soundController.playSound(index);
-    this.startTimerforNextSound(this.currentDuration);
+    this.startNextSound();
   }
 
   startTimerforNextSound(timerlength: number){
@@ -165,8 +163,12 @@ export class Szene2ErwachenPage implements OnInit {
   clickGegenstandHandler(){
     this.gegenstandsAuswahlOpen= false;
     this.currentSoundIndex++;
-    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+    this.startNextSound();
     this.skipButtonActive= false;
+  }
+
+  startNextSound(){
+    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);
     this.startTimerforNextSound(this.currentDuration);
   }

@@ -3,6 +3,7 @@ import { SoundControllerScene } from '../classes/SoundControllerScene';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { Platform } from '@ionic/angular';
 import { LoadingController, NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { timer } from 'rxjs';
 
 @Component({
@@ -15,14 +16,26 @@ export class Szene1DerAbsturzPage implements OnInit {
 
   soundController;
   heading = 0;
-  currentTimer;
-  timersubscription;
-  titleTimersub;
-  hideTitleScreen= true;
+  currentTimer; 
 
-  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController) 
+  //Subsciptions must be unsubscribed before leaving Site
+  timersubscription;  //Subsciption for timer, to Skip to the next Sound
+  titleTimersub;  //Subscription for titlescreen timer
+  hideTitleScreen= true;  //bool for hiding titlescreen
+
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, private storage: Storage) 
   {
+    platform.ready().then(() => {
+      //pause when tapping out of app
+      this.platform.pause.subscribe(() => {
+        this.pauseGame();
+      });
 
+      //continue when tapping into app
+       this.platform.resume.subscribe(() => {
+         this.unpauseGame();
+       });
+    });
   }
 
   ngOnInit() {         
@@ -76,7 +89,8 @@ export class Szene1DerAbsturzPage implements OnInit {
     this.soundController.getinitHeading();
     let currentDuration= this.soundController.getDuration(0);
     this.soundController.playSound(0);
-    this.startTimerforNextSound(currentDuration);
+    this.startTimerforNextSound(currentDuration)    
+    this.storage.set('initheading', this.soundController.initheading);;
   }
 
   closeSite(url){
@@ -88,4 +102,15 @@ export class Szene1DerAbsturzPage implements OnInit {
     this.router.navigateRoot(url);
   }
 
+  
+  pauseGame(){
+    this.soundController.stopAllSounds();
+    this.soundController.onDestroy();
+    this.soundController= null;
+    this.timersubscription.unsubscribe();
+  }
+
+  unpauseGame(){
+    window.location.reload();
+  }
 }

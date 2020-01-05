@@ -1,4 +1,8 @@
 <ion-content class="scene-content">
-    <app-compass [heading]="heading" class="compass-pos"></app-compass>
-    <app-qte-button *ngIf="showQTE" [iconFile]="'Messer_primary.svg'" [animationTime]="'10s'" (clickHandler)="clickFightButton()" class="qte-pos"></app-qte-button>
+    <div class="interaktion-container">
+        <div class="box">
+            <app-compass [heading]="heading" class="compass-pos"></app-compass>
+            <app-qte-button *ngIf="showQTE" [isActive]="true" [iconFile]="'Messer_primary.svg'" [animationTime]="'10s'" (clickHandler)="clickFightButton()" class="qte-pos"></app-qte-button>
+        </div>
+    </div>
 </ion-content>

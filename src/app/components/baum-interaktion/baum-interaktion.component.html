@@ -1,0 +1,11 @@
+<div class="baum-interaktion">
+  <div class="qte-button" class="container">
+    <h1 class="title">Dreh dich rechts zur Liane</h1>
+    <div class="compass">
+      <app-compass [heading]="heading" ></app-compass>
+    </div>
+    <div class="qte-button">
+      <app-qte-button (clickHandler)="onclickHandler()" [animationTime]= "'10s'" [isActive]="isActive"></app-qte-button>
+    </div>
+  </div>
+</div>

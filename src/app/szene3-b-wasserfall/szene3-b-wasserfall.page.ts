@@ -20,6 +20,7 @@ export class Szene3BWasserfallPage implements OnInit {
 
   currentTimer;
 
+  currentAthmoIndex=0;
   currentSoundIndex= 1;
   maxSoundIndex: number;
   currentDuration;
@@ -50,11 +51,16 @@ export class Szene3BWasserfallPage implements OnInit {
     });
     this.soundController= new SoundControllerScene(this.deviceOrientation, 6);
     this.soundController.initController();
-    this.soundController.initSound(0, 0, "scene");
+    this.soundController.initSound(0, 0, "scene", 0.5);
     this.soundController.initSound(1, 0, "scene");
     this.soundController.initSound(2, 0, "scene");
     this.soundController.initSound(3, 0, "scene");
     this.soundController.initSound(4, 0, "scene");
+    this.soundController.initSound(5, 0, "scene", 0.01);
+    //get Initheading
+    this.storage.get('initheading').then((val) => {
+      this.soundController.setinitHeading(val);
+    });
     this.sceneLoading(this.currentSoundIndex, 3000);
 
     //Device Orientation
@@ -88,20 +94,16 @@ export class Szene3BWasserfallPage implements OnInit {
 
   unpauseGame = () => {
     this.skipButtonActive= false;
-    this.soundController.initSound(0, 0, "scene" );
+    this.soundController.initSound(this.currentAthmoIndex, 0, "scene" );
     this.soundController.initSound(this.currentSoundIndex, 0, "scene");
     this.sceneLoading(this.currentSoundIndex, 2000);
-    this.startTimerforNextSound(this.currentDuration);
   }
 
   startSounds(index){
-    this.soundController.getinitHeading();
     this.weg1= (this.gegenstand == 'Seil')? true: false;
     console.log(this.gegenstand);
-    this.currentDuration= this.soundController.getDuration(index);
-    this.soundController.playSound(0);
-    this.soundController.playSound(index);
-    this.startTimerforNextSound(this.currentDuration);
+    this.soundController.playSound(this.currentAthmoIndex);
+    this.startNextSound(index);
   }
 
   startTimerforNextSound(timerlength: number){
@@ -123,29 +125,36 @@ export class Szene3BWasserfallPage implements OnInit {
 
   skip() {
     if (this.skipButtonActive) {
-      if(this.weg1 && this.currentSoundIndex== 2){
-        this.currentSoundIndex= 3;
-        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+      if(this.currentSoundIndex== 1){
+        this.currentAthmoIndex= 5
+        this.soundController.playSound(5);
+        this.currentSoundIndex++;
         this.skipButtonActive= false;
-        this.soundController.playSound(this.currentSoundIndex);
-        this.startTimerforNextSound(this.currentDuration);
+        this.soundController.crossfade(0, 5, 20);
+        this.startNextSound(this.currentSoundIndex);
+      } else if(this.weg1 && this.currentSoundIndex== 2){
+        this.currentSoundIndex= 3;
+        this.skipButtonActive= false;
+        this.startNextSound(this.currentSoundIndex);
       } else if(!this.weg1 && this.currentSoundIndex== 2){
         this.currentSoundIndex= 4;
-        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
         this.skipButtonActive= false;
-        this.soundController.playSound(this.currentSoundIndex);
-        this.startTimerforNextSound(this.currentDuration);
+        this.startNextSound(this.currentSoundIndex);
       } else if(this.currentSoundIndex== 3|| this.currentSoundIndex== 4) {
         this.linkNextPage= '/szene4-der-baum';
         this.closeSite();
       } else {
         this.currentSoundIndex++;
-        this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
         this.skipButtonActive= false;
-        this.soundController.playSound(this.currentSoundIndex);
-        this.startTimerforNextSound(this.currentDuration);
+        this.startNextSound(this.currentSoundIndex);
       }
     }
+  }
+
+  startNextSound(index){
+    this.currentDuration= this.soundController.getDuration(index);
+    this.soundController.playSound(index);
+    this.startTimerforNextSound(this.currentDuration);
   }
 
 }
