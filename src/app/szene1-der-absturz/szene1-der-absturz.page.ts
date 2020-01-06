@@ -52,6 +52,7 @@ export class Szene1DerAbsturzPage implements OnInit {
                         },
                         (error: any) => console.log(error)
                       );
+
   }
     
 

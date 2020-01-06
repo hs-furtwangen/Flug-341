@@ -1,25 +1,26 @@
 <ion-content class="scene-content">
-    <app-gegenstand *ngIf="(gegenstandsAuswahlOpen)" (clickHandler)="clickGegenstandHandler()"></app-gegenstand>
-<ion-button [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
+    <app-gegenstand  *ngIf="(gegenstandsAuswahlOpen)" (clickHandler)="clickGegenstandHandler()"></app-gegenstand >
+    <app-static-interaction [iconFile]="'Erste_Hilfe.svg'" [text]="'Drehe dich nach hinten'" [interaktiondirection]="180" (clickHandler)="onClickHandler()" [initheading]="initheading" [heading]="heading" *ngIf="(showInteraktion)"></app-static-interaction>
+<ion-button [hidden]="showInteraktion" [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
 <div class="overlay-zu-Anleitung" [hidden]="overlayClosed" >
     <div class="overlay-content">
         <ion-grid>
                 <ion-row align-items-center>
                   <ion-col>
-                        <h4>Für den Fall, das Sie die Anleitung noch nicht gesehen haben, können sie dies noch schnell nachholen</h4>
+                        <h4>Für den Fall, das Sie die Anleitung noch nicht gesehen haben, können sie dies nachholen.</h4>
                   </ion-col>
                 </ion-row>
                 <ion-row align-items-center>
                     <ion-col>
-                        <h4>möchten Sie...</h4>
+                        <h4>Möchten Sie...</h4>
                     </ion-col>
                 </ion-row>
                 <ion-row align-items-center>
                     <ion-col>
-                        <ion-button class="button-style" href="/anleitung/ingame" size="large" color="primary">Die Anleitung anschauen</ion-button>
+                        <ion-button class="button-style" href="/anleitung/ingame" size="large" color="primary">die Anleitung anschauen</ion-button>
                     </ion-col>
                     <ion-col>
-                        <ion-button class="button-style" (click)="closeOverlay()" size="large" color="secondary">Weitermachen</ion-button>
+                        <ion-button class="button-style" (click)="closeOverlay()" size="large" color="secondary">weitermachen</ion-button>
                     </ion-col>
                 </ion-row>
         </ion-grid>      

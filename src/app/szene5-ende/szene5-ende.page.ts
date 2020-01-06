@@ -23,7 +23,7 @@ export class Szene5EndePage implements OnInit {
   timersubscription;
   subscription;
   showInteraktion= false;
-  initheading;
+  initheading= 0;
 
   currentAthmoIndex=0;
   currentSoundIndex= 2;
@@ -79,6 +79,7 @@ export class Szene5EndePage implements OnInit {
     //get Initheading
     this.storage.get('initheading').then((val) => {
       this.soundController.setinitHeading(val);
+      this.initheading= val;
     });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 5000);
@@ -107,10 +108,7 @@ export class Szene5EndePage implements OnInit {
   }
 
   unpauseGame = () => {
-    this.skipButtonActive= false;
-    this.soundController.initSound(this.currentAthmoIndex, 0, "scene" );
-    this.soundController.initSound(this.currentSoundIndex, 0, "scene");
-    this.sceneLoading(this.currentSoundIndex, 2000);
+    window.location.reload();
   }
 
   startNextSound(){

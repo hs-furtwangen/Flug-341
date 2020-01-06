@@ -18,6 +18,7 @@ export class Szene2ErwachenPage implements OnInit {
 
   soundController;
   heading = 0;
+  initheading= 0;
   skipButtonActive= false;
 
   currentTimer;
@@ -26,6 +27,7 @@ export class Szene2ErwachenPage implements OnInit {
   maxSoundIndex: number;
   overlayClosed= true;
   gegenstandsAuswahlOpen= false;
+  showInteraktion= false;
   currentDuration;
 
   fromInstruction;  //gets set when user is coming straight from the instructions
@@ -49,9 +51,6 @@ export class Szene2ErwachenPage implements OnInit {
     });
 
     this.fromInstruction = this.activeroute.snapshot.paramMap.get('fromInstruction');
-    if (this.fromInstruction != null) {
-      this.currentSoundIndex= 2;
-    }
 
   }
 
@@ -66,6 +65,7 @@ export class Szene2ErwachenPage implements OnInit {
     //get Initheading
     this.storage.get('initheading').then((val) => {
       this.soundController.setinitHeading(val);
+      this.initheading= val;
     });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 3000);
@@ -77,6 +77,13 @@ export class Szene2ErwachenPage implements OnInit {
           },
           (error: any) => console.log(error)
         );
+
+        // Watch Device Orientation
+          this.subscription = this.deviceOrientation.watchHeading().subscribe(
+            (data: DeviceOrientationCompassHeading) => {
+              this.heading = data.magneticHeading;
+            },
+          );
   }
 
   async sceneLoading(index, dur) {
@@ -100,17 +107,13 @@ export class Szene2ErwachenPage implements OnInit {
   }
 
   unpauseGame = () => {
-    this.skipButtonActive= false;
-    this.soundController.initSound(0, 0, "scene" );
-    this.soundController.initSound(this.currentSoundIndex, 0, "scene");
-    this.sceneLoading(this.currentSoundIndex, 2000);
+    window.location.reload();
   }
 
   closeOverlay(){
-    this.currentSoundIndex++;
     this.overlayClosed=true;
     this.skipButtonActive= false;
-    this.startNextSound();
+    this.showInteraktion= true;
   }
 
   skip() {
@@ -118,10 +121,12 @@ export class Szene2ErwachenPage implements OnInit {
       if ( this.currentSoundIndex== 1){
         this.vibration.vibrate(500);
         this.overlayClosed= false;
+        this.skipButtonActive= false;
       } else if (this.currentSoundIndex== 2) 
       {
         this.gegenstandsAuswahlOpen= true;
         this.vibration.vibrate(500);
+        this.skipButtonActive= false;
       }
       else if (this.currentSoundIndex >= this.maxSoundIndex) {
         this.closeSite();
@@ -135,7 +140,12 @@ export class Szene2ErwachenPage implements OnInit {
 
   startSounds(index){
     this.soundController.playSound(0);
-    this.startNextSound();
+    if (this.fromInstruction == null) {
+      this.startNextSound();
+    } else {
+      this.skipButtonActive= false;
+      this.showInteraktion= true;
+    }
   }
 
   startTimerforNextSound(timerlength: number){
@@ -157,6 +167,7 @@ export class Szene2ErwachenPage implements OnInit {
     this.soundController.onDestroy();
     this.soundController= null;
     this.timersubscription.unsubscribe();
+    this.subscription.unsubscribe();
     this.router.navigateRoot(this.linkNextPage);
   }
 
@@ -171,5 +182,11 @@ export class Szene2ErwachenPage implements OnInit {
     this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);
     this.startTimerforNextSound(this.currentDuration);
+  }
+
+  onClickHandler(){
+    this.currentSoundIndex++;
+    this.startNextSound();
+    this.showInteraktion= false;
   }
 }

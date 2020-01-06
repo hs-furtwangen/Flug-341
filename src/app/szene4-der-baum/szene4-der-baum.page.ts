@@ -59,6 +59,7 @@ export class Szene4DerBaumPage implements OnInit {
                 //get Initheading
                 this.storage.get('initheading').then((val) => {
                   this.soundController.setinitHeading(val);
+                  this.initheading= val;
                 });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 2000);
@@ -102,10 +103,7 @@ export class Szene4DerBaumPage implements OnInit {
   }
 
   unpauseGame = () => {
-    this.skipButtonActive= false;
-    this.soundController.initSound(0, 0, "scene", 0.5);
-    this.soundController.initSound(this.currentSoundIndex, 0, "scene");
-    this.sceneLoading(this.currentSoundIndex, 2000);
+    window.location.reload();
   }
  
   stopTimer(){

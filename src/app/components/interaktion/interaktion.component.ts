@@ -22,7 +22,7 @@ export class InteraktionComponent implements OnInit {
       (data: DeviceOrientationCompassHeading) => {
           this.heading = data.magneticHeading;
 
-          let direction= ((this.heading) - this.initheading) % 360;
+          let direction= (((this.heading - this.initheading)%360)+360) % 360;
           if(direction>=0 && direction< 180){
             this.element=1;
           } else {

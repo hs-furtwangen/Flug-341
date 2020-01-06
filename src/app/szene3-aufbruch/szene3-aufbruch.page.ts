@@ -77,10 +77,7 @@ export class Szene3AufbruchPage implements OnInit {
   }
 
   unpauseGame = () => {
-    this.skipButtonActive= false;
-    this.soundController.initSound(0, 0, "scene", 0.5);
-    this.soundController.initSound(this.currentSoundIndex, 0, "scene");
-    this.sceneLoading(this.currentSoundIndex, 2000);
+    window.location.reload();
   }
 
   async sceneLoading(index, dur) {
@@ -102,6 +99,7 @@ export class Szene3AufbruchPage implements OnInit {
       if ( this.currentSoundIndex== 2){
       this.vibration.vibrate(500);
       this.showInteraktion= true;
+      this.skipButtonActive= false;
       } else {
         this.currentSoundIndex++;
         this.skipButtonActive= false;

@@ -8,6 +8,10 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChange
 export class StaticInteractionComponent implements OnInit, OnChanges {
   @Input() heading;
   @Input() initheading;
+  @Input() interaktiondirection: number;
+  @Input() text: String;
+  @Input() iconFile= "";
+  direction;
 
   @Output() clickHandler : EventEmitter<any> = new EventEmitter();
 
@@ -18,8 +22,8 @@ export class StaticInteractionComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    let direction= (this.heading-this.initheading)% 360;
-    if((direction+5)>270 && (direction-5)<270 ){
+    this.direction= (((this.heading - this.initheading)%360)+360) % 360;
+    if((this.direction+5)>this.interaktiondirection && (this.direction-5)<this.interaktiondirection ){
       this.isActive= true;
     } else {
       this.isActive= false;
@@ -29,6 +33,14 @@ export class StaticInteractionComponent implements OnInit, OnChanges {
   onClick(){
     if(this.isActive){
       this.clickHandler.emit();
+    }
+  }
+
+  getIcon(){
+    if(this.iconFile!= ""){
+      return 'url("../../../assets/imgs/'+ this.iconFile+ '") no-repeat center center';
+    } else {
+      return '';
     }
   }
 }

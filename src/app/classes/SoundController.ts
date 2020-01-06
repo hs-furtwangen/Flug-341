@@ -126,17 +126,11 @@ playSound(index: number, isHrtf= false) {
 }
 
 getinitHeading(){
-            //set Initial Heading and update the Scene Rotator
             this.initheading= this.heading;
-            console.log(this.initheading);
-            this.rotator.yaw = this.heading;
-            this.rotator.updateRotMtx();
 }
 
 setinitHeading(initheading){
     this.initheading= initheading;
-    this.rotator.yaw = this.heading;
-    this.rotator.updateRotMtx();
 }
 
 //Stop Sound with index from json-File

@@ -93,10 +93,7 @@ export class Szene3BWasserfallPage implements OnInit {
   }
 
   unpauseGame = () => {
-    this.skipButtonActive= false;
-    this.soundController.initSound(this.currentAthmoIndex, 0, "scene" );
-    this.soundController.initSound(this.currentSoundIndex, 0, "scene");
-    this.sceneLoading(this.currentSoundIndex, 2000);
+    window.location.reload();
   }
 
   startSounds(index){
