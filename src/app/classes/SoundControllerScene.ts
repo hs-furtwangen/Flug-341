@@ -24,7 +24,7 @@ initController() {
 
             //Update Rotation
                 //Update Rotation
-                this.rotator.yaw = ((this.heading) - this.initheading) % 360;
+                this.rotator.yaw = (((this.heading - this.initheading)%360)+360) % 360;
                 this.rotator.updateRotMtx();
         },
     );

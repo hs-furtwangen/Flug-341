@@ -23,7 +23,7 @@ export class StaticInteractionComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.direction= (((this.heading - this.initheading)%360)+360) % 360;
-    if((this.direction+5)>this.interaktiondirection && (this.direction-5)<this.interaktiondirection ){
+    if((this.direction+10)>this.interaktiondirection && (this.direction-10)<this.interaktiondirection ){
       this.isActive= true;
     } else {
       this.isActive= false;

@@ -28,7 +28,7 @@ export class BaumInteraktionComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     
     let direction= (((this.heading - this.initheading)%360)+360) % 360;
-    if((direction+5)>90 && (direction-5)<90 ){
+    if((direction+10)>90 && (direction-10)<90 ){
       this.isActive= true;
     } else {
       this.isActive= false;
