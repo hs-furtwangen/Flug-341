@@ -29,6 +29,7 @@ export class Szene2ErwachenPage implements OnInit {
   gegenstandsAuswahlOpen= false;
   showInteraktion= false;
   currentDuration;
+  showWayInteraktion= false;
 
   fromInstruction;  //gets set when user is coming straight from the instructions
 
@@ -54,13 +55,24 @@ export class Szene2ErwachenPage implements OnInit {
 
   }
 
+  async sceneLoading(index, dur) {
+    const loading = await this.loadingController.create({
+      spinner: "bubbles",
+      message: 'Lade Scene',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    await loading.present();      //called when Loader is shown
+    await this.soundController.initSounds();
+    await loading.dismiss(); //called when Loader is Dismissed
+
+    this.startScene(index);      
+  }
+
   ngOnInit() {
     this.soundController= new SoundControllerScene(this.deviceOrientation, 2);
     this.soundController.initController();
-    this.soundController.initSound(0, 0, "scene");
-    this.soundController.initSound(1, 0, "scene");
-    this.soundController.initSound(2, 0, "scene");
-    this.soundController.initSound(3, 0, "scene");
+    this.soundController.initSounds();
 
     //get Initheading
     this.storage.get('initheading').then((val) => {
@@ -86,24 +98,13 @@ export class Szene2ErwachenPage implements OnInit {
           );
   }
 
-  async sceneLoading(index, dur) {
-    const loading = await this.loadingController.create({
-      spinner: null,
-      duration: dur,
-      message: 'Loading Scene',
-      translucent: true,
-      cssClass: 'custom-class custom-loading'
-    });
-    await loading.present();      //called when Loader is shown
-    await loading.onDidDismiss(); //called when Loader is Dismissed
-
-    this.startSounds(index);      
-  }
-
   pauseGame = () =>{
     this.stopTimer();
-    this.soundController.stopSound(0);
-    this.soundController.stopSound(this.currentSoundIndex);
+    this.soundController.stopAllSounds();
+    this.soundController.onDestroy();
+    this.soundController= null;
+    this.timersubscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   unpauseGame = () => {
@@ -121,24 +122,26 @@ export class Szene2ErwachenPage implements OnInit {
       if ( this.currentSoundIndex== 1){
         this.vibration.vibrate(500);
         this.overlayClosed= false;
-        this.skipButtonActive= false;
-      } else if (this.currentSoundIndex== 2) 
-      {
+      } else if (this.currentSoundIndex== 2) {
         this.gegenstandsAuswahlOpen= true;
         this.vibration.vibrate(500);
-        this.skipButtonActive= false;
-      }
-      else if (this.currentSoundIndex >= this.maxSoundIndex) {
-        this.closeSite();
+      } else if(this.currentSoundIndex== 5){
+        this.vibration.vibrate(500);
+        this.showWayInteraktion=true;
+      } else if(this.currentSoundIndex== 3){
+        this.soundController.playSound(6)
+        this.currentSoundIndex++;
+        this.startNextSound();
+        this.soundController.crossfade(0, 6, 14);
       } else {
         this.currentSoundIndex++;
         this.startNextSound();
-        this.skipButtonActive= false;
       }
+      this.skipButtonActive= false;
     }
   }
 
-  startSounds(index){
+  startScene(index){
     this.soundController.playSound(0);
     if (this.fromInstruction == null) {
       this.startNextSound();
@@ -162,7 +165,7 @@ export class Szene2ErwachenPage implements OnInit {
     console.log("timer stoped")
   }
 
-  closeSite(){
+  closeSite(url){
     this.soundController.stopAllSounds();
     this.soundController.onDestroy();
     this.soundController= null;
@@ -188,5 +191,11 @@ export class Szene2ErwachenPage implements OnInit {
     this.currentSoundIndex++;
     this.startNextSound();
     this.showInteraktion= false;
+  }
+
+  interaktionClickHandler(url){
+    console.log(url);
+    this.showInteraktion= false;
+    this.closeSite(url);
   }
 }

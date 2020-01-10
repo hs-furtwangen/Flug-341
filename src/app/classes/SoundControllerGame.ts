@@ -57,9 +57,14 @@ initController() {
             console.log(this.decoder);
             this.decoder.updateFilters(buffer);
         });
-        this.loader_filters.load("assets/IRs/IRC_1076_C_HRIR_44100.sofa.json");
-        console.log(this.loader_filters);
-
     }
 
+    resetFilter(){
+        this.decoder.resetFilters();
+    }
+
+    loadHRTF(){
+        this.loader_filters.load("assets/IRs/IRC_1076_C_HRIR_44100.sofa.json");
+        console.log(this.loader_filters);
+    }
 }

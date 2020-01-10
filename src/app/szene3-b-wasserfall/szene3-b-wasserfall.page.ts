@@ -45,18 +45,27 @@ export class Szene3BWasserfallPage implements OnInit {
     });
    }
 
+   async sceneLoading(index, dur) {
+    const loading = await this.loadingController.create({
+      spinner: "bubbles",
+      message: 'Lade Scene',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    await loading.present();      //called when Loader is shown
+    await this.soundController.initSounds(); //load all Soundbuffer
+    await loading.dismiss(); //called when Loader is Dismissed
+
+    this.startSounds(index);      
+  }
+
   ngOnInit() {
     this.storage.get('gegenstand').then((val)=> {
       this.gegenstand= val;
     });
-    this.soundController= new SoundControllerScene(this.deviceOrientation, 6);
+    this.soundController= new SoundControllerScene(this.deviceOrientation, 4);
     this.soundController.initController();
-    this.soundController.initSound(0, 0, "scene", 0.5);
-    this.soundController.initSound(1, 0, "scene");
-    this.soundController.initSound(2, 0, "scene");
-    this.soundController.initSound(3, 0, "scene");
-    this.soundController.initSound(4, 0, "scene");
-    this.soundController.initSound(5, 0, "scene", 0.01);
+
     //get Initheading
     this.storage.get('initheading').then((val) => {
       this.soundController.setinitHeading(val);
@@ -72,19 +81,6 @@ export class Szene3BWasserfallPage implements OnInit {
     );
   }
 
-  async sceneLoading(index, dur) {
-    const loading = await this.loadingController.create({
-      spinner: null,
-      duration: dur,
-      message: 'Loading Scene',
-      translucent: true,
-      cssClass: 'custom-class custom-loading'
-    });
-    await loading.present();      //called when Loader is shown
-    await loading.onDidDismiss(); //called when Loader is Dismissed
-
-    this.startSounds(index);      
-  }
 
   pauseGame = () =>{
     this.timersubscription.unsubscribe();

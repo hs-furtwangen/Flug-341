@@ -38,6 +38,20 @@ export class Szene1DerAbsturzPage implements OnInit {
     });
   }
 
+  async loadLoading() {
+    const loading = await this.loadingController.create({
+      spinner: "bubbles",
+      duration: 5000,
+      message: '<h2>Lade Abenteuer</h2><p>Bitte halten sie ihr Gerät still. Es wird kalibriert</p>',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    await loading.present();
+    await loading.onDidDismiss();
+
+    this.startScene();  
+  }
+
   ngOnInit() {         
 
       this.soundController= new SoundControllerScene(this.deviceOrientation, 1);
@@ -53,22 +67,6 @@ export class Szene1DerAbsturzPage implements OnInit {
                         (error: any) => console.log(error)
                       );
 
-  }
-    
-
-
-  async loadLoading() {
-    const loading = await this.loadingController.create({
-      spinner: null,
-      duration: 5000,
-      message: 'Lade Abenteuer',
-      translucent: true,
-      cssClass: 'custom-class custom-loading'
-    });
-    await loading.present();
-    await loading.onDidDismiss();
-
-    this.startSounds();  
   }
 
   startTimerforNextSound(timerlength: number){
@@ -86,7 +84,7 @@ export class Szene1DerAbsturzPage implements OnInit {
 
   }
 
-  startSounds(){
+  startScene(){
     this.soundController.getinitHeading();
     let currentDuration= this.soundController.getDuration(0);
     this.soundController.playSound(0);

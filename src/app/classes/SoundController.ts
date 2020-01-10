@@ -89,16 +89,23 @@ this.mirror.mirror(2);
 }
 
 //init all Sound for this Chapter
-initSounds(){
-    console.log(this.soundArray);
+async initSounds(){
     
     //Init all Sounds inside Array
-    for (let value of this.soundArray) {
-        //Bye Default All sound are Initialised as HRTF Sounds
-        this.soundMap.set(value, new SceneSound(this.context, this.orientation, value.name, value.order, value.startpoint, this.rotator, this.mirror));
-        const sound = this.soundMap.get(value);
+    for (let [index ,value] of this.soundArray.entries()) {
+        if(value.isHrtf=== true){
+            this.soundMap.set(index, new HRTFSound(this.context, this.orientation, value.name, value.order, value.startpoint , this.rotator, this.mirror));
+        } else {
+            this.soundMap.set(index, new SceneSound(this.context, this.orientation, value.name, value.order, value.startpoint, this.rotator, this.mirror));
+        }
+        const sound = this.soundMap.get(index);
         sound.init();
-        sound.loadSound();
+        await sound.loadSound();
+        if(value.gain != null){
+            sound.setGain(value.gain);
+        } else {
+            sound.setGain(1);
+        }
     }
 }
 
@@ -206,7 +213,7 @@ getDuration(index: number){
 }
 
 
-crossfade(indexSound1: number, indexSound2: number, duration: number){
+crossfade(indexSound1: number, indexSound2: number, duration: number, gainSound2=1.0){
     // 1. Sound: fades to 0
     let sound1 = this.soundMap.get(indexSound1);
     // 2. Sound fades to 1

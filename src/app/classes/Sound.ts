@@ -63,9 +63,9 @@ export class Sound {
         this.isPlaying = false;
     }
 
-    loadSound() {
-        const url: string = 'assets/sounds/' + this.path;
-        fetch(url, {method: 'GET'}).then(response => response.arrayBuffer().
+    async loadSound() {
+        const url: string = 'assets/sounds/' + this.path;    
+        await fetch(url, {method: 'GET'}).then(response => response.arrayBuffer().
         then(
             buffer => {
                 this.context.decodeAudioData(buffer, (audioBuffer) => 
@@ -75,15 +75,10 @@ export class Sound {
                     });
             }
         ));
+        return true;
 
-    //     this.loader_filters = new ambisonics.HRIRloader_ircam(this.context, this.order, (buffer)=> {
-    //         console.log('successfully loaded HOA buffer:', buffer);
-    //         console.log(this.binDecoder);
-    //         this.binDecoder.updateFilters(buffer);
-    //     });
-    //     this.loader_filters.load("assets/IRs/IRC_1076_C_HRIR_44100.sofa.json");
-    //     console.log(this.loader_filters);
     }
+
     
     init() {
 

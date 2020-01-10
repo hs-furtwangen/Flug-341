@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SoundControllerScene } from '../classes/SoundControllerScene';
+import { SoundControllerGame } from '../classes/SoundControllerGame';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { Platform, NavController, LoadingController } from '@ionic/angular';
@@ -18,19 +18,24 @@ export class Szene3AImFlussPage implements OnInit {
 
   soundController;
   heading = 0;
+  initheading= 0;
   skipButtonActive= false;
 
   currentTimer;
 
-  currentSoundIndex= 1;
+  currentSoundIndex= 2;
   maxSoundIndex: number;
   overlayClosed= true;
   gegenstandsAuswahlOpen= false;
+  showQTE= false
   currentDuration;
 
   fromInstruction;  //gets set when user is coming straight from the instructions
 
   timersubscription;
+  subscription;
+  fighttimesub;
+  crocodileSub;
 
   gegenstand;
   weg1= true;
@@ -50,28 +55,38 @@ export class Szene3AImFlussPage implements OnInit {
        });
     });
 
-    this.fromInstruction = this.activeroute.snapshot.paramMap.get('frominteraktion');
-    if (this.fromInstruction != null) {
-      this.currentSoundIndex= 2;
-    }
+  }
+
+  async sceneLoading(index, dur) {
+    const loading = await this.loadingController.create({
+      spinner: "bubbles",
+      message: 'Lade Scene',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    await loading.present();      //called when Loader is shown
+    await this.soundController.initSounds(); //load all Soundbuffer
+    await loading.dismiss(); //called when Loader is Dismissed
+
+    this.startScene(index);      
   }
 
   ngOnInit() {
+    //get Storage Value 'gegenstand'
     this.storage.get('gegenstand').then((val)=> {
       this.gegenstand= val;
     });
-    this.soundController= new SoundControllerScene(this.deviceOrientation, 4);
+    //Initialise SoundController
+    this.soundController= new SoundControllerGame(this.deviceOrientation, 3);
     this.soundController.initController();
-    this.soundController.initSound(0, 0, "scene");
-    this.soundController.initSound(1, 0, "scene");
-    this.soundController.initSound(2, 0, "scene");
-    this.soundController.initSound(3, 0, "scene");
+
     //get Initheading
     this.storage.get('initheading').then((val) => {
       this.soundController.setinitHeading(val);
+      this.initheading= val;
     });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
-    this.sceneLoading(this.currentSoundIndex, 3000);
+    this.sceneLoading(this.currentSoundIndex, 4000);
 
         //Device Orientation
         this.deviceOrientation.getCurrentHeading().then(
@@ -80,26 +95,22 @@ export class Szene3AImFlussPage implements OnInit {
           },
           (error: any) => console.log(error)
         );
-  }
 
-  async sceneLoading(index, dur) {
-    const loading = await this.loadingController.create({
-      spinner: null,
-      duration: dur,
-      message: 'Loading Scene',
-      translucent: true,
-      cssClass: 'custom-class custom-loading'
-    });
-    await loading.present();      //called when Loader is shown
-    await loading.onDidDismiss(); //called when Loader is Dismissed
-
-    this.startSounds(index);      
+          // Watch Device Orientation
+          this.subscription = this.deviceOrientation.watchHeading().subscribe(
+            (data: DeviceOrientationCompassHeading) => {
+                this.heading = data.magneticHeading;
+            },
+        );
   }
 
   pauseGame = () =>{
     this.stopTimer();
-    this.soundController.stopSound(0);
-    this.soundController.stopSound(this.currentSoundIndex);
+    this.soundController.stopAllSounds();
+    this.soundController.onDestroy();
+    this.soundController= null;
+    this.subscription.unsubscribe();
+    this.timersubscription.unsubscribe();
   }
 
   unpauseGame = () => {
@@ -115,36 +126,65 @@ export class Szene3AImFlussPage implements OnInit {
 
   skip() {
     if (this.skipButtonActive) {
-      if ( !this.weg1 && this.currentSoundIndex== 1){
-        this.currentSoundIndex= 3;
+      if ( !this.weg1 && this.currentSoundIndex== 2){
+        this.currentSoundIndex= 4;
         this.skipButtonActive= false;
         this.startNextSound();
-      } else if ((this.weg1 && this.currentSoundIndex== 2) || (!this.weg1 && this.currentSoundIndex == 3)) {
+      } else if ((this.currentSoundIndex== 4) ||  this.currentSoundIndex == 3) {
         this.closeSite('/szene4-der-baum');
-      } else if (this.weg1 && this.currentSoundIndex== 1) {
-        this.closeSite('/szene3-a-interaktion');
+      } else if (this.weg1 && this.currentSoundIndex== 2) {
+        this.startInteraction();
+      } else if(this.currentSoundIndex== 9 || this.currentSoundIndex== 8){
+        this.currentSoundIndex=3;
+        this.startNextSound();
       } else {
         this.currentSoundIndex++;
         this.startNextSound();
-        this.skipButtonActive= false;
       }
+      this.skipButtonActive= false;
     }
   }
 
-  startSounds(index){
+  startsound() {
+    this.currentSoundIndex++;
+    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+    this.soundController.playSound(this.currentSoundIndex);
+    this.startTimerforNextSound(this.currentDuration, true);
+  }
+  
+  startInteraction(){
+    this.skipButtonActive= false;
+    this.currentSoundIndex=5;
+    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+    this.soundController.playSound(this.currentSoundIndex);
+    this.startTimerforNextSound(this.currentDuration, true);
+    this.fighttimer(10);
+    //this.startfight();
+  }
+
+  startScene(index){
+    this.soundController.playSound(0);
     this.weg1= (this.gegenstand == 'Messer')? true: false;
     console.log(this.gegenstand);
-    this.soundController.playSound(0);
     this.startNextSound();
   }
 
-  startTimerforNextSound(timerlength: number){
+
+  startTimerforNextSound(timerlength: number, ingame= false){
     console.log(timerlength);
-    this.currentTimer = timer(timerlength*1000);
-    this.timersubscription = this.currentTimer.subscribe(() => {
-        this.skipButtonActive = true;
+    if(!ingame){
+      this.currentTimer = timer(timerlength*1000);
+      this.timersubscription = this.currentTimer.subscribe(() => {
+          this.skipButtonActive = true;
+          this.timersubscription.unsubscribe();
+      });
+    } else {
+      this.currentTimer = timer(timerlength*1000);
+      this.timersubscription = this.currentTimer.subscribe(() => {
+        this.startsound();
         this.timersubscription.unsubscribe();
-    });
+      });
+    }
   }
 
   stopTimer(){
@@ -152,10 +192,20 @@ export class Szene3AImFlussPage implements OnInit {
     console.log("timer stoped")
   }
 
-  closeSite = (url) =>{
+  afterInteraction(index){
+    this.soundController.resetFilter();
+    this.soundController.stopSound(1);
+    this.soundController.stopSound(7);
+    this.showQTE= false;
+    this.currentSoundIndex= index;
+    this.startNextSound();
+  }
+
+  closeSite(url){
     this.soundController.stopAllSounds();
     this.soundController.onDestroy();
     this.soundController= null;
+    this.subscription.unsubscribe();
     this.timersubscription.unsubscribe();
     this.router.navigateRoot(url);
   }
@@ -166,4 +216,38 @@ export class Szene3AImFlussPage implements OnInit {
     this.startTimerforNextSound(this.currentDuration);
   }
 
+  async fighttimer(timerlength){
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("done!"), ((timerlength*1000)-500))
+    });
+    await promise;
+    this.soundController.loadHRTF();
+
+    const fighttime= timer(500)
+    this.fighttimesub= fighttime.subscribe(() => {
+      this.startfight();
+      this.fighttimesub.unsubscribe();
+    });
+  }
+
+  startfight(){
+    this.soundController.playSound(1);
+    this.soundController.playSound(7);
+    this.showQTE=true;
+    this.vibration.vibrate(500);
+    const crocTimer= timer(10000);
+    this.crocodileSub= crocTimer.subscribe(()=> {
+      this.afterInteraction(9);
+    });
+  }
+
+  clickFightButton(){
+    let direction= (((this.heading - this.initheading)%360)+360) % 360; //adjust to Initial Direction
+    if(direction<(270+10)&& direction>(270-10)){
+      this.crocodileSub.unsubscribe();
+      this.vibration.vibrate(500);
+      this.afterInteraction(8);
+      this.showQTE= false;
+    }
+  }
 }

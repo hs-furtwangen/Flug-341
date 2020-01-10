@@ -11,7 +11,7 @@ export class MultichannelSound extends Sound{
         super(context, deviceOrientation, path, order, startpoint, rotator);
     }
 
-    loadSound() {
+    async loadSound() {
         console.log(this.decoder);
         const url: string = 'assets/sounds/' + this.path;
         this.loader_sound = new ambisonics.HOAloader(this.context, this.order, url, (buffer)=>{
@@ -21,6 +21,8 @@ export class MultichannelSound extends Sound{
 
         });
         this.loader_sound.load();
+
+        return true;
     }
 
 }

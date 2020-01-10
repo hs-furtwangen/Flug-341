@@ -34,9 +34,9 @@ export class HRTFSound extends Sound {
         this.isPlaying = false;
     }
 
-    loadSound() {
+    async loadSound() {
         const url: string = 'assets/sounds/' + this.path;
-        fetch(url, {method: 'GET'}).then(response => response.arrayBuffer().
+        await (await fetch(url, {method: 'GET'}).then(response => response.arrayBuffer().
         then(
             buffer => {
                 this.context.decodeAudioData(buffer, audioBuffer => 
@@ -44,7 +44,9 @@ export class HRTFSound extends Sound {
                         this.source.buffer = audioBuffer; 
                     });
             }
-        ));
+        )));
+        console.log("loaded");
+        return true;
 
     //     this.loader_filters = new ambisonics.HRIRloader_ircam(this.context, this.order, (buffer)=> {
     //         console.log('successfully loaded HOA buffer:', buffer);

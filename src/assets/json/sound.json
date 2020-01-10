@@ -34,14 +34,6 @@
             "startpoint": 0,
             "loop": false,
             "duration": 14
-        }
-    ],
-    [
-        {
-            "name": "003_ATMO_Fluss.wav",
-            "order": 1,
-            "startpoint": 0,
-            "loop": true
         },
         {
             "name": "05_DIALOG_Aufbruch_01.wav",
@@ -56,6 +48,12 @@
             "startpoint": 0,
             "loop": false,
             "duration": 57
+        },
+        {
+            "name": "003_ATMO_Fluss.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
         }
     ],
     [
@@ -64,6 +62,14 @@
             "order": 1,
             "startpoint": 0,
             "loop": true
+        },
+        {
+            "name": "01_MUSIK_Kampf.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 9,
+            "gain": 0.4
         },
         {
             "name": "07_DIALOG_ImFluss_01.wav",
@@ -85,14 +91,6 @@
             "startpoint": 0,
             "loop": false,
             "duration": 75
-        }
-    ],
-    [
-        {
-            "name": "01_MUSIK_Kampf.wav",
-            "order": 1,
-            "startpoint": 0,
-            "loop": true
         },
         {
             "name": "08_DIALOG_ImFluss_02.wav",
@@ -111,8 +109,9 @@
         {
             "name": "01_HFX_Krokodil.wav",
             "order": 3,
-            "startpoint": 0,
-            "loop": true
+            "startpoint": 270,
+            "loop": true,
+            "isHrtf": true
         },
         {
             "name": "11_DIALOG_ImFluss_05.wav",
@@ -168,7 +167,8 @@
             "name": "004_ATMO_Wasserfall_01.wav",
             "order": 1,
             "startpoint": 0,
-            "loop": true
+            "loop": true,
+            "gain": 0.01
         }
     ],
     [
@@ -176,7 +176,8 @@
             "name": "005_ATMO_Baum.wav",
             "order": 1,
             "startpoint": 0,
-            "loop": true
+            "loop": true,
+            "gain": 0.4
         },
         {
             "name": "14_DIALOG_Wollaffen_01.wav",
@@ -225,7 +226,8 @@
             "name": "008_ATMO_Siedlung.wav",
             "order": 1,
             "startpoint": 0,
-            "loop": true
+            "loop": true,
+            "gain": 0.01
         },
         {
             "name": "23_DIALOG_Kakaobohne_01.wav",

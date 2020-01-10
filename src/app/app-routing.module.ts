@@ -20,10 +20,6 @@ const routes: Routes = [
     loadChildren: () => import('./szene2-erwachen/szene2-erwachen.module').then( m => m.Szene2ErwachenPageModule)
   },
   {
-    path: 'szene3-aufbruch',
-    loadChildren: () => import('./szene3-aufbruch/szene3-aufbruch.module').then( m => m.Szene3AufbruchPageModule)
-  },
-  {
     path: 'szene3-a-im-fluss',
     loadChildren: () => import('./szene3-a-im-fluss/szene3-a-im-fluss.module').then( m => m.Szene3AImFlussPageModule)
   },
@@ -36,9 +32,6 @@ const routes: Routes = [
     loadChildren: () => import('./szene4-der-baum/szene4-der-baum.module').then( m => m.Szene4DerBaumPageModule)
   },
   {
-    path: 'szene3-a-interaktion',
-    loadChildren: () => import('./szene3-a-interaktion/szene3-a-interaktion.module').then( m => m.Szene3AInteraktionPageModule)
-  },  {
     path: 'szene5-ende',
     loadChildren: () => import('./szene5-ende/szene5-ende.module').then( m => m.Szene5EndePageModule)
   },

@@ -49,33 +49,25 @@ export class Szene5EndePage implements OnInit {
 
    async sceneLoading(index, dur) {
     const loading = await this.loadingController.create({
-      spinner: null,
-      duration: dur,
+      spinner: "bubbles",
       message: 'Lade Scene',
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });
     await loading.present();      //called when Loader is shown
-    await loading.onDidDismiss(); //called when Loader is Dismissed
+    await this.soundController.initSounds(); //load all Soundbuffer
+    await loading.dismiss(); //called when Loader is Dismissed
 
-    this.startSounds(index);      
+    this.startScene(index);      
   }
 
   ngOnInit() {
     this.storage.get('gegenstand').then((val)=> {
       this.gegenstand= val;
     });
-    this.soundController= new SoundControllerScene(this.deviceOrientation, 8);
+    this.soundController= new SoundControllerScene(this.deviceOrientation, 6);
     this.soundController.initController();
-    this.soundController.initSound(0, 0, "scene");
-    this.soundController.initSound(1, 0, "scene", 0.01);
-    this.soundController.initSound(2, 0, "scene");
-    this.soundController.initSound(3, 0, "scene");
-    this.soundController.initSound(4, 0, "scene");
-    this.soundController.initSound(5, 0, "scene");
-    this.soundController.initSound(6, 0, "scene");
-    this.soundController.initSound(7, 0, "scene");
-    this.soundController.initSound(8, 0, "scene");
+
     //get Initheading
     this.storage.get('initheading').then((val) => {
       this.soundController.setinitHeading(val);
@@ -134,7 +126,7 @@ export class Szene5EndePage implements OnInit {
     }
   }
 
-  startSounds(index){
+  startScene(index){
     this.weg1= (this.gegenstand == 'Taschenlampe')? true: false;
     this.initheading= this.soundController.initheading;
     this.soundController.playSound(this.currentAthmoIndex);
