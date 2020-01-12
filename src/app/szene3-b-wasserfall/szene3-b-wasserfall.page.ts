@@ -58,8 +58,17 @@ export class Szene3BWasserfallPage implements OnInit {
 
     this.startSounds(index);      
   }
+  ngOnInit(){
 
-  ngOnInit() {
+  }
+
+  ionViewDidEnter() {
+    this.subscription = this.deviceOrientation.watchHeading().subscribe(
+      (data: DeviceOrientationCompassHeading) => {
+        this.heading = data.magneticHeading;
+      },
+    );
+
     this.storage.get('gegenstand').then((val)=> {
       this.gegenstand= val;
     });
@@ -72,13 +81,6 @@ export class Szene3BWasserfallPage implements OnInit {
     });
     this.sceneLoading(this.currentSoundIndex, 3000);
 
-    //Device Orientation
-    this.deviceOrientation.getCurrentHeading().then(
-      (data: DeviceOrientationCompassHeading) => {
-          this.heading = data.magneticHeading;
-      },
-      (error: any) => console.log(error)
-    );
   }
 
 

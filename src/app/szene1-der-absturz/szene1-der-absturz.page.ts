@@ -17,6 +17,7 @@ export class Szene1DerAbsturzPage implements OnInit {
   soundController;
   heading = 0;
   currentTimer; 
+  subscription;
 
   //Subsciptions must be unsubscribed before leaving Site
   timersubscription;  //Subsciption for timer, to Skip to the next Sound
@@ -26,6 +27,9 @@ export class Szene1DerAbsturzPage implements OnInit {
   constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, private storage: Storage) 
   {
     platform.ready().then(() => {
+      this.soundController= new SoundControllerScene(this.deviceOrientation, 1);
+      this.soundController.initController();
+      this.soundController.initSounds();
       //pause when tapping out of app
       this.platform.pause.subscribe(() => {
         this.pauseGame();
@@ -52,20 +56,13 @@ export class Szene1DerAbsturzPage implements OnInit {
     this.startScene();  
   }
 
-  ngOnInit() {         
+  ionViewDidEnter(){
 
-      this.soundController= new SoundControllerScene(this.deviceOrientation, 1);
-      this.soundController.initController();
-      this.soundController.initSound(0, 0,"scene", 1);
-        this.loadLoading();
+    this.loadLoading();
+  }
 
-                      //Device Orientation
-                      this.deviceOrientation.getCurrentHeading().then(
-                        (data: DeviceOrientationCompassHeading) => {
-                            this.heading = data.magneticHeading;
-                        },
-                        (error: any) => console.log(error)
-                      );
+  ngOnInit() {        
+      
 
   }
 
@@ -104,9 +101,10 @@ export class Szene1DerAbsturzPage implements OnInit {
   
   pauseGame(){
     this.soundController.stopAllSounds();
-    this.soundController.onDestroy();
-    this.soundController= null;
-    this.timersubscription.unsubscribe();
+    // this.soundController.onDestroy();
+    // this.soundController= null;
+    // this.subscription.unsubscribe();
+    // this.timersubscription.unsubscribe();
   }
 
   unpauseGame(){

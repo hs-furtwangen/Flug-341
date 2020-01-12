@@ -14,7 +14,6 @@ export class SoundControllerScene extends SoundController {
 
     //init just the Controller
 initController() {
-    this.initheading = 0;
     this.order= 1; 
 
     //Initialise Device Orientation Listener

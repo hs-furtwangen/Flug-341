@@ -53,7 +53,8 @@
             "name": "003_ATMO_Fluss.wav",
             "order": 1,
             "startpoint": 0,
-            "loop": true
+            "loop": true,
+            "gain": 0.01
         }
     ],
     [

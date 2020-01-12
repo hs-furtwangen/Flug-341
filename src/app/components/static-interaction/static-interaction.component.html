@@ -1,11 +1,12 @@
 <div class="interaction">
   <div class="container">
-    <h1 class="title">{{text}}</h1>
     <app-compass [heading]="heading" class="compass"></app-compass>
     <div class="qte-button-container">
+      <ion-icon [hidden]="hideLeftArrow" color="primary" class="arrow arrow-left" name="arrow-dropleft"></ion-icon>
       <div class="qte-btn" (click)="onClick()" [ngClass]="(isActive)? '': 'not-active'">
         <div class="icon" [ngStyle]="{'background': getIcon()}"></div>
       </div>
+      <ion-icon [hidden]="hideRightArrow" color="primary" class="arrow arrow-right" name="arrow-dropright"></ion-icon>
     </div>
   </div>
 </div>

@@ -71,7 +71,17 @@ export class Szene3AImFlussPage implements OnInit {
     this.startScene(index);      
   }
 
-  ngOnInit() {
+  ngOnInit(){
+
+  }
+
+  ionViewDidEnter() {
+    // Watch Device Orientation
+    this.subscription = this.deviceOrientation.watchHeading().subscribe(
+      (data: DeviceOrientationCompassHeading) => {
+        this.heading = data.magneticHeading;
+      },
+    );
     //get Storage Value 'gegenstand'
     this.storage.get('gegenstand').then((val)=> {
       this.gegenstand= val;
@@ -88,20 +98,6 @@ export class Szene3AImFlussPage implements OnInit {
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 4000);
 
-        //Device Orientation
-        this.deviceOrientation.getCurrentHeading().then(
-          (data: DeviceOrientationCompassHeading) => {
-              this.heading = data.magneticHeading;
-          },
-          (error: any) => console.log(error)
-        );
-
-          // Watch Device Orientation
-          this.subscription = this.deviceOrientation.watchHeading().subscribe(
-            (data: DeviceOrientationCompassHeading) => {
-                this.heading = data.magneticHeading;
-            },
-        );
   }
 
   pauseGame = () =>{

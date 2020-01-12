@@ -27,7 +27,7 @@ export class Szene2ErwachenPage implements OnInit {
   maxSoundIndex: number;
   overlayClosed= true;
   gegenstandsAuswahlOpen= false;
-  showInteraktion= false;
+  showInteraktion=false;
   currentDuration;
   showWayInteraktion= false;
 
@@ -37,25 +37,12 @@ export class Szene2ErwachenPage implements OnInit {
   subscription;
 
 
-  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public activeroute: ActivatedRoute, public vibration: Vibration, private storage: Storage) 
+  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , private router: NavController, public activeroute: ActivatedRoute, private vibration: Vibration, private storage: Storage) 
   {
-    platform.ready().then(() => {
-      //pause when tapping out of app
-      this.platform.pause.subscribe(() => {
-        this.pauseGame();
-      });
-
-      //continue when tapping into app
-       this.platform.resume.subscribe(() => {
-         this.unpauseGame();
-       });
-    });
-
-    this.fromInstruction = this.activeroute.snapshot.paramMap.get('fromInstruction');
 
   }
 
-  async sceneLoading(index, dur) {
+  async sceneLoading(index) {
     const loading = await this.loadingController.create({
       spinner: "bubbles",
       message: 'Lade Scene',
@@ -68,46 +55,53 @@ export class Szene2ErwachenPage implements OnInit {
 
     this.startScene(index);      
   }
+  ionViewDidEnter(){
+    this.sceneLoading(this.currentSoundIndex);
+  }
 
   ngOnInit() {
-    this.soundController= new SoundControllerScene(this.deviceOrientation, 2);
-    this.soundController.initController();
-    this.soundController.initSounds();
 
-    //get Initheading
-    this.storage.get('initheading').then((val) => {
-      this.soundController.setinitHeading(val);
-      this.initheading= val;
+    this.platform.ready().then(() => {
+      this.subscription= this.deviceOrientation.watchHeading().subscribe(
+        (data: DeviceOrientationCompassHeading) => {
+          this.heading = data.magneticHeading;
+        },
+        (error: any) => console.log(error)
+      );
+
+      this.soundController= new SoundControllerScene(this.deviceOrientation, 2);
+      this.soundController.initController();
+      //get Initheading
+      this.storage.get('initheading').then((val) => {
+        this.soundController.setinitHeading(val);
+        this.initheading= val;
+        console.log(val)
+      });
+      this.maxSoundIndex = this.soundController.soundArray.length - 1;
+
+      //pause when tapping out of app
+      this.platform.pause.subscribe(() => {
+        this.pauseGame();
+      });
+
+      //continue when tapping into app
+       this.platform.resume.subscribe(() => {
+        this.unpauseGame();
+       });
     });
-    this.maxSoundIndex = this.soundController.soundArray.length - 1;
-    this.sceneLoading(this.currentSoundIndex, 3000);
 
-        //Device Orientation
-        this.deviceOrientation.getCurrentHeading().then(
-          (data: DeviceOrientationCompassHeading) => {
-              this.heading = data.magneticHeading;
-          },
-          (error: any) => console.log(error)
-        );
-
-        // Watch Device Orientation
-          this.subscription = this.deviceOrientation.watchHeading().subscribe(
-            (data: DeviceOrientationCompassHeading) => {
-              this.heading = data.magneticHeading;
-            },
-          );
+    this.fromInstruction = this.activeroute.snapshot.paramMap.get('fromInstruction');
   }
 
-  pauseGame = () =>{
-    this.stopTimer();
+  pauseGame(){
+    // this.subscription.unsubscribe();
     this.soundController.stopAllSounds();
-    this.soundController.onDestroy();
-    this.soundController= null;
+    // this.soundController.onDestroy();
+    // this.soundController= null;
     this.timersubscription.unsubscribe();
-    this.subscription.unsubscribe();
   }
 
-  unpauseGame = () => {
+  unpauseGame(){
     window.location.reload();
   }
 
@@ -171,7 +165,7 @@ export class Szene2ErwachenPage implements OnInit {
     this.soundController= null;
     this.timersubscription.unsubscribe();
     this.subscription.unsubscribe();
-    this.router.navigateRoot(this.linkNextPage);
+    this.router.navigateRoot(url);
   }
 
   clickGegenstandHandler(){

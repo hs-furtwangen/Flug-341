@@ -37,6 +37,23 @@
         display: block;
         height: 100px;
         margin-top: 2rem;
+
+        .arrow{
+            position: absolute;
+            top: 50%;
+            width: 70px;
+            height: 70px;
+            transform: translateY(-50%);
+            color: --ion-color-primary;
+        }
+
+        .arrow-left{
+            left: 20px;
+        }
+
+        .arrow-right{
+            right: 20px;
+        }
     }
 
     .icon{

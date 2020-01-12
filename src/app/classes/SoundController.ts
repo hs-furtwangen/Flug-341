@@ -23,7 +23,7 @@ export abstract class SoundController {
     context;                            //Audio Context
     orientation: DeviceOrientation;     //Device Orientation
     soundArray: any;                    //This Variable takes on the Json Array of the Current Chapter
-    heading: number;                    //Current Rotation from Device Orientation
+    heading= 0;                    //Current Rotation from Device Orientation
     order= 4;                           //Max Order
     loader_filters;                     //for Loading Filters like HRTF-Curves(sofa.json-files)
     initheading= 0;
@@ -54,9 +54,9 @@ initController() {
             this.heading = data.magneticHeading;
 
             //Update Rotation
-            this.rotator.yaw = ((this.heading) - this.initheading) % 360;
-            this.rotator.updateRotMtx();
-            //this.hoaEncoder(data.magneticHeading);
+                //Update Rotation
+                this.rotator.yaw = (((this.heading - this.initheading)%360)+360) % 360;
+                this.rotator.updateRotMtx();
         },
     );
 
@@ -94,9 +94,9 @@ async initSounds(){
     //Init all Sounds inside Array
     for (let [index ,value] of this.soundArray.entries()) {
         if(value.isHrtf=== true){
-            this.soundMap.set(index, new HRTFSound(this.context, this.orientation, value.name, value.order, value.startpoint , this.rotator, this.mirror));
+            this.soundMap.set(index, new HRTFSound(this.context, this.deviceOrientation, value.name, value.order, value.startpoint , this.rotator, this.mirror));
         } else {
-            this.soundMap.set(index, new SceneSound(this.context, this.orientation, value.name, value.order, value.startpoint, this.rotator, this.mirror));
+            this.soundMap.set(index, new SceneSound(this.context, this.deviceOrientation, value.name, value.order, value.startpoint, this.rotator, this.mirror));
         }
         const sound = this.soundMap.get(index);
         sound.init();
@@ -168,11 +168,11 @@ stopSound(index: number, hrtf= false) {
 initSound(index, startpoint= 0, typ= "", gain= 1) /* Typ: "multi" or else HRTF, Index: Index from JSON-Array */{
     //check Sound-Type
     if(typ=== "multi"){
-        this.soundMap.set(index, new MultichannelSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator));
+        this.soundMap.set(index, new MultichannelSound(this.context, this.deviceOrientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator));
     } else if(typ==="scene") {
-        this.soundMap.set(index, new SceneSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
+        this.soundMap.set(index, new SceneSound(this.context, this.deviceOrientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
     } else {
-        this.soundMap.set(index, new HRTFSound(this.context, this.orientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
+        this.soundMap.set(index, new HRTFSound(this.context, this.deviceOrientation, this.soundArray[index].name, this.soundArray[index].order,  this.setHeading(startpoint), this.rotator, this.mirror));
     }
     const sound = this.soundMap.get(index);
     sound.init();

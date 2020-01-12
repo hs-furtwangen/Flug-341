@@ -61,7 +61,19 @@ export class Szene4DerBaumPage implements OnInit {
     this.startScene(index);      
   }
 
-  ngOnInit() {
+  ngOnInit(){
+
+  }
+
+  ionViewDidEnter() {
+
+        // Watch Device Orientation
+        this.subscription = this.deviceOrientation.watchHeading().subscribe(
+          (data: DeviceOrientationCompassHeading) => {
+              this.heading = data.magneticHeading;
+          },
+      );
+
     this.soundController= new SoundControllerScene(this.deviceOrientation, 5);
     this.soundController.initController();
                 //get Initheading
@@ -71,21 +83,7 @@ export class Szene4DerBaumPage implements OnInit {
                 });
     this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 2000);
-
-            //Device Orientation
-            this.deviceOrientation.getCurrentHeading().then(
-              (data: DeviceOrientationCompassHeading) => {
-                  this.heading = data.magneticHeading;
-              },
-              (error: any) => console.log(error)
-            );
-                
-        // Watch Device Orientation
-        this.subscription = this.deviceOrientation.watchHeading().subscribe(
-          (data: DeviceOrientationCompassHeading) => {
-              this.heading = data.magneticHeading;
-          },
-      );
+   
   }
 
   skip(){
