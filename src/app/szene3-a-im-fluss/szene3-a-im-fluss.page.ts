@@ -112,13 +112,6 @@ export class Szene3AImFlussPage implements OnInit {
     window.location.reload();
   }
 
-  closeOverlay() {
-    this.currentSoundIndex++;
-    this.overlayClosed = true;
-    this.skipButtonActive = false;
-    this.startNextSound();
-  }
-
   skip() {
     if (this.skipButtonActive) {
       if (!this.weg1 && this.currentSoundIndex == 2) {
