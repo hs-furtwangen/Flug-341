@@ -1,9 +1,17 @@
 <ion-content class="scene-content">
   <div class="interaktion-container" *ngIf="showQTE">
     <div class="box">
-        <app-compass [heading]="heading" class="compass-pos"></app-compass>
-        <app-qte-button [isActive]="true" [iconFile]="'Messer_primary.svg'" [animationTime]="'10s'" (clickHandler)="clickFightButton()" class="qte-pos"></app-qte-button>
+      <div class="table-cell">
+        <div class="compass-container">
+          <app-compass [heading]="heading" class="compass-pos"></app-compass>
+        </div>
+        <div class="qte-container">
+          <app-qte-button [isActive]="true" [iconFile]="'Messer_primary.svg'" [animationTime]="'10s'"
+          (clickHandler)="clickFightButton()" class="qte-pos"></app-qte-button>
+        </div>
+      </div>
     </div>
-</div>
-  <ion-button [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
+  </div>
+  <ion-button [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large"
+    (click)="skip()">Weiter</ion-button>
 </ion-content>

@@ -25,9 +25,8 @@ export class Szene3AImFlussPage implements OnInit {
 
   currentSoundIndex = 2;
   maxSoundIndex: number;
-  overlayClosed = true;
   gegenstandsAuswahlOpen = false;
-  showQTE = false
+  showQTE = false;
   currentDuration;
 
   fromInstruction;  //gets set when user is coming straight from the instructions
