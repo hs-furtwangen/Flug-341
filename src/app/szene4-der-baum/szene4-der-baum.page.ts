@@ -6,6 +6,7 @@ import { Platform, NavController, LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { ActivatedRoute } from '@angular/router';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 
 @Component({
   selector: 'app-szene4-der-baum',
@@ -27,13 +28,13 @@ export class Szene4DerBaumPage implements OnInit {
 
   currentSoundIndex = 1;
   maxSoundIndex: number;
-  initheading= 0;
+  initheading = 0;
   heading = 0;
 
   showInteraktion = false;
-  showSecondInteraktion= false;
+  showSecondInteraktion = false;
 
-  constructor(protected deviceOrientation: DeviceOrientation, public platform: Platform, public loadingController: LoadingController, public vibration: Vibration, private router: NavController, private storage: Storage) {
+  constructor(protected deviceOrientation: DeviceOrientation, public platform: Platform, public loadingController: LoadingController, public vibration: Vibration, private router: NavController, private storage: Storage, private insomnia: Insomnia) {
 
   }
 
@@ -79,6 +80,13 @@ export class Szene4DerBaumPage implements OnInit {
       this.platform.resume.subscribe(() => {
         this.unpauseGame();
       });
+
+      //keep Phone awake
+      this.insomnia.keepAwake()
+        .then(
+          () => console.log('success'),
+          () => console.log('error')
+        );
     });
   }
 
@@ -94,14 +102,14 @@ export class Szene4DerBaumPage implements OnInit {
         this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
         this.soundController.playSound(this.currentSoundIndex);
         this.startTimerforNextSound(this.currentDuration, true);
-      } else if (this.currentSoundIndex == 4 || this.currentSoundIndex == 5) {                
+      } else if (this.currentSoundIndex == 4 || this.currentSoundIndex == 5) {
         this.currentSoundIndex = 6;
         this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
         this.soundController.playSound(this.currentSoundIndex);
-        this.startTimerforNextSound(this.currentDuration, false, true); 
-      } else if(this.currentSoundIndex == this.maxSoundIndex){
+        this.startTimerforNextSound(this.currentDuration, false, true);
+      } else if (this.currentSoundIndex == this.maxSoundIndex) {
         this.closeSite();
-      }else {
+      } else {
         this.currentSoundIndex++;
         this.startNextSound(this.currentSoundIndex);
       }
@@ -124,21 +132,21 @@ export class Szene4DerBaumPage implements OnInit {
     console.log("timer stoped")
   }
 
-  startTimerforNextSound(timerlength: number, interaktion = false, staticInteraktion= false) {
+  startTimerforNextSound(timerlength: number, interaktion = false, staticInteraktion = false) {
     console.log(timerlength);
     this.currentTimer = timer(timerlength * 1000);
-    if (!interaktion&& !staticInteraktion) {
+    if (!interaktion && !staticInteraktion) {
       this.timersubscription = this.currentTimer.subscribe(() => {
         this.skipButtonActive = true;
         this.timersubscription.unsubscribe();
       });
-    } else if(staticInteraktion== true){
+    } else if (staticInteraktion == true) {
       this.timersubscription = this.currentTimer.subscribe(() => {
         this.showSecondInteraktion = true;
         this.vibration.vibrate(500);
         this.timersubscription.unsubscribe();
       });
-    }else{
+    } else {
       this.timersubscription = this.currentTimer.subscribe(() => {
         this.showInteraktion = true;
         this.vibration.vibrate(500);
@@ -165,12 +173,19 @@ export class Szene4DerBaumPage implements OnInit {
   }
 
   closeSite() {
-      this.soundController.stopAllSounds();
-      this.soundController.onDestroy();
-      this.soundController = null;
-      this.timersubscription.unsubscribe();
-      this.subscription.unsubscribe();
-      this.router.navigateRoot(this.linkNextPage);
+    this.soundController.stopAllSounds();
+    this.soundController.onDestroy();
+    this.soundController = null;
+    this.timersubscription.unsubscribe();
+    this.subscription.unsubscribe();
+
+    //allow Sleepmode
+    this.insomnia.allowSleepAgain()
+      .then(
+        () => console.log('success'),
+        () => console.log('error')
+      );
+    this.router.navigateRoot(this.linkNextPage);
   }
 
   onClickHandler() {

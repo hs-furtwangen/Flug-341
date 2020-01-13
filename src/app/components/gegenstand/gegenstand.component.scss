@@ -3,46 +3,26 @@ $border-top: 5vh;
 
 .gegenstand-container{
     text-align: center;
-    width: 100%;
-    height: 100%;
+    width: 96%;
+    height: 98%;
+    left: 2vw;
+    top: 1vh;
     position: absolute;
     background-color: #06292F;
     z-index: 10;
 
-    .gegenstand{
-        width: 100%;
-        margin-top: 20px;
-        z-index: 11;
 
-        .unterschrift{
-            display: block;
-            padding-top: 10px;
-            font-size: 16pt;
+    .title-container{
+        width: 96vw;
+        display: block;
+        color: #fff;
+        text-shadow: 0px 4px 10px rgba($color: #000, $alpha: 0.1);
+
+        .title{
+          max-width: 80vw;
+          font-size: 24pt;
+          margin: -10vh auto 0px auto;
         }
-    
-        .gegenstand-icon{
-            
-            width:150px;
-            background-color: #79271B;
-            padding: 16px 8px;
-            border-radius: 10px;
-            transition: all 0.2s;
-            border: #fff solid 2px;
-
-            &:hover, &:active{
-                transform: scale(1.1);
-            }
-        }
-
-        &:first-of-type{
-            margin-top: 50px;
-        }
-    
-
-    }
-
-    .title{
-        margin-top: 50px;
     }
       
       .suitcase{
@@ -51,13 +31,13 @@ $border-top: 5vh;
         left:0;
         width: 100%;
         height: 100%;
-        background: #854836;
+        background: #98651E;
         z-index: -1;
         
         &::after{
           content: "";
           position: absolute;
-          background: #e08f62;
+          background: #C38F5E;
           width: 83%;
           height: 91%;
           border-radius: 10px;
@@ -75,33 +55,33 @@ $border-top: 5vh;
           z-index: 1;
       
         &.top-left{
-          border-bottom: $border-top solid #a65a44;
+          border-bottom: $border-top solid #A57532;
           border-right: $border-left solid transparent;
           }
         
         &.bottom-left{
           bottom: 0;
-          border-top: $border-top solid #a65a44;
+          border-top: $border-top solid #A57532;
           border-right: $border-left solid transparent;
         }
       
         &.top-right{
           top: 0;
           right: 0;
-          border-bottom: $border-top solid #bf674e;
+          border-bottom: $border-top solid #B2803A;
           border-left: $border-left solid transparent;
         }
       
         &.bottom-right{
           bottom: 0;
           right: 0;
-          border-top: $border-top solid #bf674e;
+          border-top: $border-top solid #B2803A;
           border-left: $border-left solid transparent;
         }
       }
       
       .left-side{
-        background: #a65a44;
+        background: #A57532;
         position: absolute;
         left: 0;
         top: $border-top;
@@ -111,7 +91,7 @@ $border-top: 5vh;
       
       .right-side{
         position: absolute;
-        background: #bf674e;
+        background: #B2803A;
         z-index: 1;
         width: $border-left;
         top: $border-top;
@@ -120,4 +100,95 @@ $border-top: 5vh;
       }
         
     }
+
+    .table{
+      width: 100%;
+      height: 100%;
+      display: table;
+    }
+
+    .table-cell{
+      display: table-cell;
+      width: 100%;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    .slider{
+      margin-top: 2rem;
+      overflow: visible;
+
+      ion-slide{
+        position: relative;
+        display: block;
+        width: 96%;
+
+        .gegenstand-box{
+          position: relative;
+          display: block;
+          width: 96vw;
+
+        .gegenstand{
+          position: relative;
+          display: block;
+          margin: auto;
+          border-radius: 20px;
+          width: 200px;
+          height: 200px;
+          background-color: #B57E4C;
+          border: 2px solid #fff;
+          box-shadow: 0px 25px 30px rgba(0, 0, 0, 0.1);
+
+          .icon{
+          }
+
+          .unterschrift{
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            transform: translateX(-50%);
+            font-size: 16pt;
+          }
+        }
+
+        .arrow{
+          width: 64px;
+          height: 64px;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .arrow-right{
+          right: 0;
+        }
+
+        .arrow-left{
+          left: 0;
+        }
+      }
+      }
+
+    }
+
+    .btn-container{
+      position: relative;
+      display: block;
+      width: 96vw;
+      margin-top: 4rem;
+
+      .auswahl-btn{
+        --ion-color-base: #883A0E !important;
+      }
+
+    }
+
+}
+
+.container{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #6E4B1F;
+  z-index: 2;
 }

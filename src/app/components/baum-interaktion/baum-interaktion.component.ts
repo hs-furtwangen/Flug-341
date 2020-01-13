@@ -36,12 +36,24 @@ export class BaumInteraktionComponent implements OnInit, OnChanges {
       this.hideRightArrow= true;
     } else {
       this.isActive= false;
-      if(((360-direction)+90)>= ((direction)+90)){
-        this.hideRightArrow= false;
-        this.hideLeftArrow= true;
+      let betrag1;
+      let betrag2;
+      if (90 > direction) {
+        betrag1 = 90;
+        betrag2 = direction;
       } else {
-        this.hideLeftArrow= false;
-        this.hideRightArrow= true;
+        betrag1 = direction;
+        betrag2 = 90;
+      }
+      let value1 = betrag1 - betrag2;
+      let value2 = ((360 - betrag1) + betrag2);
+
+      if ((betrag1 == 90 && value1 < value2) || (betrag1 == direction && value1 > value2)) {
+        this.hideLeftArrow = true;
+        this.hideRightArrow = false;
+      } else {
+        this.hideLeftArrow = false;
+        this.hideRightArrow = true;
       }
     }
   }

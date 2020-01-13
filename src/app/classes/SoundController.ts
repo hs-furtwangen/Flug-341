@@ -213,20 +213,21 @@ getDuration(index: number){
 }
 
 
-crossfade(indexSound1: number, indexSound2: number, duration: number, gainSound2=1.0){
+async crossfade(indexSound1: number, indexSound2: number, duration: number, gainSound2=1.0){
     // 1. Sound: fades to 0
-    let sound1 = this.soundMap.get(indexSound1);
+    let sound1 = await this.soundMap.get(indexSound1);
     // 2. Sound fades to 1
-    let sound2 = this.soundMap.get(indexSound2);
+    let sound2 = await this.soundMap.get(indexSound2);
     console.log("start Crossfade");
 
+
+    sound2.playloop();
+    //ramp gain up to 1
+    sound2.summator.gain.linearRampToValueAtTime(gainSound2, this.context.currentTime + duration);   //linear
+    //sound2.summator.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + duration);    //exponetial
     //ramp gain down to 0
     sound1.summator.gain.linearRampToValueAtTime(0.0, this.context.currentTime + duration);   //linear
     //sound1.summator.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + duration);    //exponetial
-
-    //ramp gain up to 1
-    sound2.summator.gain.linearRampToValueAtTime(1.0, this.context.currentTime + duration);   //linear
-    //sound2.summator.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + duration);    //exponetial
 
     const fadetimer= timer(duration*1000);
     const subscription= fadetimer.subscribe(()=>{
@@ -256,6 +257,7 @@ fadein(indexSound1: number, duration: number){
         // 1. Sound: fades to 0
         let sound1 = this.soundMap.get(indexSound1);
     
+        sound1.playloop();
         //ramp gain up to 1
         sound1.summator.gain.linearRampToValueAtTime(1.0, this.context.currentTime + duration);   //linear
         //sound2.summator.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + duration);    //exponetial

@@ -1,25 +1,55 @@
-<div class="gegenstand-container">
-  <h1 class="title">Wähle einen Gegenstand</h1>
-  <div class="gegenstand">
-    <img (click)="onclick(0)" class="gegenstand-icon" src="assets/imgs/Messer_white.svg" alt="Messer">
-    <span class="unterschrift">Messer</span>
-  </div>
-  <div class="gegenstand">
-    <img (click)="onclick(1)" class="gegenstand-icon" src="assets/imgs/Seil_white.svg" alt="Seil">
-    <span class="unterschrift">Seil</span>
-  </div>
-  <div class="gegenstand">
-    <img (click)="onclick(2)" class="gegenstand-icon" src="assets/imgs/Taschenlampe_white.svg" alt="Taschenlampe">
-    <span class="unterschrift">Taschenlampe</span>
-  </div>
-
-  <!-- Background -->
-  <div class="suitcase">
-    <div class="corner top-left"></div>
-    <div class="corner left-side"></div>
-    <div class="corner bottom-left"></div>
-    <div class="corner top-right"></div>
-    <div class="corner right-side"></div>
-    <div class="corner bottom-right"></div>
-  </div>
+<div class="container">
+  <div class="gegenstand-container">
+    <div class="table">
+      <div class="table-cell">
+        <div class="title-container">
+          <h1 class="title">Wähle einen Gegenstand</h1>
+        </div>
+        <div>
+          <ion-slides class="slider" #slider pager="false" [options]="slideOpts">
+            <ion-slide>
+              <div class="gegenstand-box">
+                <div class="gegenstand">
+                  <img class="icon" src="../../../assets/imgs/Messer_white.svg" alt="Messer">
+                  <span class="unterschrift">Messer</span>
+                </div>
+                <ion-icon class="arrow arrow-right" name="arrow-forward" (click)="swipeToNext()"></ion-icon>
+              </div>
+            </ion-slide>
+            <ion-slide>
+              <div class="gegenstand-box">
+                <ion-icon class="arrow arrow-left" name="arrow-back" (click)="swipeToPrev()"></ion-icon>
+                <div class="gegenstand">
+                  <img class="icon" src="../../../assets/imgs/Seil_white.svg" alt="Seil">
+                  <span class="unterschrift">Seil</span>
+                </div>
+                <ion-icon class="arrow arrow-right" name="arrow-forward" (click)="swipeToNext()"></ion-icon>
+              </div>
+            </ion-slide>
+            <ion-slide>
+              <div class="gegenstand-box">
+                <ion-icon class="arrow arrow-left" name="arrow-back" (click)="swipeToPrev()"></ion-icon>
+                <div class="gegenstand">
+                  <img class="icon" src="../../../assets/imgs/Taschenlampe_white.svg" alt="Taschenlampe">
+                  <span class="unterschrift">Taschenlampe</span>
+                </div>
+              </div>
+            </ion-slide>
+          </ion-slides>
+          <div class="btn-container">
+            <ion-button (click)="onclick()" color="#883A0E" class="auswahl-btn" size="large">Auswählen</ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Background -->
+    <div class="suitcase">
+      <div class="corner top-left"></div>
+      <div class="corner left-side"></div>
+      <div class="corner bottom-left"></div>
+      <div class="corner top-right"></div>
+      <div class="corner right-side"></div>
+      <div class="corner bottom-right"></div>
+    </div>
+  </div>  
 </div>

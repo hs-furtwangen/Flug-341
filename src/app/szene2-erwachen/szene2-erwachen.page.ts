@@ -7,6 +7,7 @@ import { LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 
 @Component({
   selector: 'app-szene2-erwachen',
@@ -37,7 +38,7 @@ export class Szene2ErwachenPage implements OnInit {
   subscription;
 
 
-  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, public activeroute: ActivatedRoute, private vibration: Vibration, private storage: Storage) {
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, public activeroute: ActivatedRoute, private vibration: Vibration, private storage: Storage, private insomnia: Insomnia) {
 
   }
 
@@ -87,6 +88,13 @@ export class Szene2ErwachenPage implements OnInit {
       this.platform.resume.subscribe(() => {
         this.unpauseGame();
       });
+
+      //keep Phone awake
+      this.insomnia.keepAwake()
+        .then(
+          () => console.log('success'),
+          () => console.log('error')
+        );
     });
 
     this.fromInstruction = this.activeroute.snapshot.paramMap.get('fromInstruction');
@@ -122,10 +130,13 @@ export class Szene2ErwachenPage implements OnInit {
         this.vibration.vibrate(500);
         this.showWayInteraktion = true;
       } else if (this.currentSoundIndex == 3) {
-        this.soundController.playSound(6)
         this.currentSoundIndex++;
         this.startNextSound();
         this.soundController.crossfade(0, 6, 14);
+      } else if (this.currentSoundIndex == 4) {
+        this.currentSoundIndex++;
+        this.startNextSound();
+        this.soundController.crossfade(6, 7, 20);
       } else {
         this.currentSoundIndex++;
         this.startNextSound();
@@ -164,6 +175,13 @@ export class Szene2ErwachenPage implements OnInit {
     this.soundController = null;
     this.timersubscription.unsubscribe();
     this.subscription.unsubscribe();
+
+    //allow Sleepmode
+    this.insomnia.allowSleepAgain()
+      .then(
+        () => console.log('success'),
+        () => console.log('error')
+      );
     this.router.navigateRoot(url);
   }
 

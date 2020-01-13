@@ -6,6 +6,7 @@ import { Platform, NavController, LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { ActivatedRoute } from '@angular/router';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 
 @Component({
   selector: 'app-szene3-a-im-fluss',
@@ -40,7 +41,7 @@ export class Szene3AImFlussPage implements OnInit {
   weg1 = true;
 
 
-  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, public router: NavController, public vibration: Vibration, private storage: Storage, public activeroute: ActivatedRoute) {
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, public router: NavController, public vibration: Vibration, private storage: Storage, public activeroute: ActivatedRoute, private insomnia: Insomnia) {
 
   }
 
@@ -91,6 +92,13 @@ export class Szene3AImFlussPage implements OnInit {
       this.platform.resume.subscribe(() => {
         this.unpauseGame();
       });
+
+      //keep Phone awake
+      this.insomnia.keepAwake()
+        .then(
+          () => console.log('success'),
+          () => console.log('error')
+        );
     });
   }
 
@@ -195,6 +203,13 @@ export class Szene3AImFlussPage implements OnInit {
     this.soundController = null;
     this.subscription.unsubscribe();
     this.timersubscription.unsubscribe();
+
+    //allow Sleepmode
+    this.insomnia.allowSleepAgain()
+      .then(
+        () => console.log('success'),
+        () => console.log('error')
+      );
     this.router.navigateRoot(url);
   }
 
@@ -206,7 +221,7 @@ export class Szene3AImFlussPage implements OnInit {
 
   async fighttimer(timerlength) {
     let promise = new Promise((resolve, reject) => {
-       setTimeout(() => resolve("done!"), ((timerlength*1000)));
+      setTimeout(() => resolve("done!"), ((timerlength * 1000)));
     });
     await promise;
     await this.soundController.loadHRTF();

@@ -6,6 +6,7 @@ import { Platform, NavController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { timer } from 'rxjs';
 import { Storage } from '@ionic/storage';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 
 @Component({
   selector: 'app-szene5-ende',
@@ -33,7 +34,7 @@ export class Szene5EndePage implements OnInit {
   gegenstand;
   weg1 = false; //weg1 == mit Taschenlampe
 
-  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, public router: NavController, public vibration: Vibration, private storage: Storage) {
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, public router: NavController, public vibration: Vibration, private storage: Storage, private insomnia: Insomnia) {
 
   }
 
@@ -83,6 +84,13 @@ export class Szene5EndePage implements OnInit {
       this.platform.resume.subscribe(() => {
         this.unpauseGame();
       });
+
+      //keep Phone awake
+      this.insomnia.keepAwake()
+        .then(
+          () => console.log('success'),
+          () => console.log('error')
+        );
     });
   }
 
@@ -110,10 +118,10 @@ export class Szene5EndePage implements OnInit {
   startTimerforNextSound(timerlength: number) {
     console.log(timerlength);
     this.currentTimer = timer(timerlength * 1000);
-      this.timersubscription = this.currentTimer.subscribe(() => {
-        this.skipButtonActive = true;
-        this.timersubscription.unsubscribe();
-      });
+    this.timersubscription = this.currentTimer.subscribe(() => {
+      this.skipButtonActive = true;
+      this.timersubscription.unsubscribe();
+    });
   }
 
   startScene(index) {
@@ -131,12 +139,11 @@ export class Szene5EndePage implements OnInit {
       if (this.currentSoundIndex == 2) {
         this.currentSoundIndex++;
         this.startNextSound();
-        this.fadeout(5);
+        this.soundController.crossfade(0, 7, 5);
       } else if (this.currentSoundIndex == 3) {
         this.currentSoundIndex++;
-        this.soundController.playSound(1);
         this.currentAthmoIndex = 1;
-        this.fadein(5);
+        this.soundController.crossfade(7, 1, 5);
         this.closeSite(this.weg1);
       } else {
         this.currentSoundIndex++;
@@ -156,17 +163,17 @@ export class Szene5EndePage implements OnInit {
     this.soundController.fadeout(0, duration);
   }
 
-  fadein(duration) {
-    this.soundController.fadein(1, duration);
+  fadein(index, duration) {
+    this.soundController.fadein(index, duration);
   }
 
-  async closeSite(weg1=false) {
+  async closeSite(weg1 = false) {
     this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);
     let promise = new Promise((resolve, reject) => {
-      setTimeout(() => resolve("done!"), this.currentDuration*1000)
+      setTimeout(() => resolve("done!"), this.currentDuration * 1000)
     });
-    this.currentSoundIndex= (weg1)? 6: 5;
+    this.currentSoundIndex = (weg1) ? 6 : 5;
     await promise;
     this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);
@@ -178,6 +185,12 @@ export class Szene5EndePage implements OnInit {
       this.timersubscription.unsubscribe();
       this.subscription.unsubscribe();
       closesub.unsubscribe();
+      //allow Sleepmode
+      this.insomnia.allowSleepAgain()
+        .then(
+          () => console.log('success'),
+          () => console.log('error')
+        );
       this.router.navigateRoot(this.linkNextPage);
     });
   }

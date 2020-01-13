@@ -4,6 +4,7 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
 import { Storage } from '@ionic/storage';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { Platform, NavController, LoadingController } from '@ionic/angular';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 import { timer } from 'rxjs';
 
 @Component({
@@ -31,7 +32,7 @@ export class Szene3BWasserfallPage implements OnInit {
   gegenstand;
   weg1 = false;
 
-  constructor(private storage: Storage, protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController) {
+  constructor(private storage: Storage, protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, private insomnia: Insomnia) {
 
   }
 
@@ -77,6 +78,13 @@ export class Szene3BWasserfallPage implements OnInit {
       this.platform.resume.subscribe(() => {
         this.unpauseGame();
       });
+
+      //keep Phone awake
+      this.insomnia.keepAwake()
+        .then(
+          () => console.log('success'),
+          () => console.log('error')
+        );
     });
   }
 
@@ -117,6 +125,13 @@ export class Szene3BWasserfallPage implements OnInit {
     this.soundController.onDestroy();
     this.soundController = null;
     this.timersubscription.unsubscribe();
+
+    //allow Sleepmode
+    this.insomnia.allowSleepAgain()
+      .then(
+        () => console.log('success'),
+        () => console.log('error')
+      );
     this.router.navigateRoot(this.linkNextPage);
   }
 
@@ -124,7 +139,6 @@ export class Szene3BWasserfallPage implements OnInit {
     if (this.skipButtonActive) {
       if (this.currentSoundIndex == 1) {
         this.currentAthmoIndex = 5
-        this.soundController.playSound(5);
         this.currentSoundIndex++;
         this.skipButtonActive = false;
         this.soundController.crossfade(0, 5, 20);

@@ -1,25 +1,33 @@
 [   	
     [{
-            "name": "01_DIALOG_Absturz_01.wav",
+            "name": "01_DIALOG_Absturz_01_final.wav",
             "order": 1,
             "startpoint": 0,
             "loop": false,
-            "duration": 37
+            "duration": 46
+        },
+        {
+            "name": "09_ATMO_BrennendesFlugzeug.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true,
+            "gain": 0.01
         }
     ],
     [
         {
-            "name": "002_ATMO_WaldWasser.wav",
+            "name": "09_ATMO_BrennendesFlugzeug.wav",
             "order": 1,
             "startpoint": 0,
-            "loop": true
+            "loop": true,
+            "gain": 0.01
         },
         {
-            "name": "02_DIALOG_Absturz_02.wav",
+            "name": "02_DIALOG_Absturz_02_final.wav",
             "order": 1,
             "startpoint": 0,
             "loop": false,
-            "duration": 44
+            "duration": 34
         },
         {
             "name": "03_DIALOG_Absturz_03.wav",
@@ -48,6 +56,13 @@
             "startpoint": 0,
             "loop": false,
             "duration": 57
+        },
+        {
+            "name": "02_ATMO_WaldWasser.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true,
+            "gain": 0.01
         },
         {
             "name": "003_ATMO_Fluss.wav",
@@ -278,6 +293,14 @@
             "startpoint": 0,
             "loop": false,
             "duration": 79
+        },
+        {
+            "name": "07_ATMO_Schlucht.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true,
+            "gain": 0.01
         }
+        
     ]
 ]

@@ -14,6 +14,7 @@ import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-nativ
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { Platform } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { IonicStorageModule } from '@ionic/storage';
     DeviceOrientation,
     Vibration,
     Platform,
+    Insomnia,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

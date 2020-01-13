@@ -5,6 +5,7 @@ import { Platform } from '@ionic/angular';
 import { LoadingController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { timer } from 'rxjs';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 
 @Component({
   selector: 'app-szene1-der-absturz',
@@ -24,7 +25,7 @@ export class Szene1DerAbsturzPage implements OnInit {
   titleTimersub;  //Subscription for titlescreen timer
   hideTitleScreen = true;  //bool for hiding titlescreen
 
-  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, private storage: Storage) {
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, private storage: Storage, private insomnia: Insomnia) {
     platform.ready().then(() => {
       this.soundController = new SoundControllerScene(this.deviceOrientation, 1);
       this.soundController.initController();
@@ -38,6 +39,13 @@ export class Szene1DerAbsturzPage implements OnInit {
       this.platform.resume.subscribe(() => {
         this.unpauseGame();
       });
+
+      //keep Phone awake
+      this.insomnia.keepAwake()
+        .then(
+          () => console.log('success'),
+          () => console.log('error')
+        );
     });
   }
 
@@ -65,17 +73,23 @@ export class Szene1DerAbsturzPage implements OnInit {
 
   }
 
-  startTimerforNextSound(timerlength: number) {
+  async startTimerforNextSound(timerlength: number) {
     console.log(timerlength);
     this.currentTimer = timer(timerlength * 1000);
     this.timersubscription = this.currentTimer.subscribe(() => {
       this.closeSite(this.nextSite);
       this.timersubscription.unsubscribe();
     });
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("done!"), 28000);
+    });
+    await promise;
+    this.hideTitleScreen = false;
 
-    const titletimer = timer(28000);
+    const titletimer = timer(13000);
     this.titleTimersub = titletimer.subscribe(() => {
-      this.hideTitleScreen = false;
+      this.soundController.fadein(1, 5);
+      this.titleTimersub.unsubscribe();
     });
 
   }
@@ -94,6 +108,13 @@ export class Szene1DerAbsturzPage implements OnInit {
     this.soundController.onDestroy();
     this.soundController = null;
     this.timersubscription.unsubscribe();
+    
+    //allow Sleepmode
+    this.insomnia.allowSleepAgain()
+      .then(
+        () => console.log('success'),
+        () => console.log('error')
+      );
     this.router.navigateRoot(url);
   }
 
