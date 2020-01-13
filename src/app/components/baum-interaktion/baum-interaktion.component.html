@@ -1,11 +1,12 @@
 <div class="baum-interaktion">
   <div class="qte-button" class="container">
-    <h1 class="title">Dreh dich rechts zur Liane</h1>
     <div class="compass">
       <app-compass [heading]="heading" ></app-compass>
     </div>
     <div class="qte-button">
+      <ion-icon [hidden]="hideLeftArrow" color="primary" class="arrow arrow-left" name="arrow-dropleft"></ion-icon>
       <app-qte-button (clickHandler)="onclickHandler()" [animationTime]= "'10s'" [isActive]="isActive"></app-qte-button>
+      <ion-icon [hidden]="hideRightArrow" color="primary" class="arrow arrow-right" name="arrow-dropright"></ion-icon>
     </div>
   </div>
 </div>

@@ -14,22 +14,22 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./szene2-erwachen.page.scss'],
 })
 export class Szene2ErwachenPage implements OnInit {
-  linkNextPage='/szene3-aufbruch';
+  linkNextPage = '/szene3-aufbruch';
 
   soundController;
   heading = 0;
-  initheading= 0;
-  skipButtonActive= false;
+  initheading = 0;
+  skipButtonActive = false;
 
   currentTimer;
 
-  currentSoundIndex= 1;
+  currentSoundIndex = 1;
   maxSoundIndex: number;
-  overlayClosed= true;
-  gegenstandsAuswahlOpen= false;
-  showInteraktion=false;
+  overlayClosed = true;
+  gegenstandsAuswahlOpen = false;
+  showInteraktion = false;
   currentDuration;
-  showWayInteraktion= false;
+  showWayInteraktion = false;
 
   fromInstruction;  //gets set when user is coming straight from the instructions
 
@@ -37,8 +37,7 @@ export class Szene2ErwachenPage implements OnInit {
   subscription;
 
 
-  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , private router: NavController, public activeroute: ActivatedRoute, private vibration: Vibration, private storage: Storage) 
-  {
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, public activeroute: ActivatedRoute, private vibration: Vibration, private storage: Storage) {
 
   }
 
@@ -53,28 +52,28 @@ export class Szene2ErwachenPage implements OnInit {
     await this.soundController.initSounds();
     await loading.dismiss(); //called when Loader is Dismissed
 
-    this.startScene(index);      
+    this.startScene(index);
   }
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.sceneLoading(this.currentSoundIndex);
   }
 
   ngOnInit() {
 
     this.platform.ready().then(() => {
-      this.subscription= this.deviceOrientation.watchHeading().subscribe(
+      this.subscription = this.deviceOrientation.watchHeading().subscribe(
         (data: DeviceOrientationCompassHeading) => {
           this.heading = data.magneticHeading;
         },
         (error: any) => console.log(error)
       );
 
-      this.soundController= new SoundControllerScene(this.deviceOrientation, 2);
+      this.soundController = new SoundControllerScene(this.deviceOrientation, 2);
       this.soundController.initController();
       //get Initheading
       this.storage.get('initheading').then((val) => {
         this.soundController.setinitHeading(val);
-        this.initheading= val;
+        this.initheading = val;
         console.log(val)
       });
       this.maxSoundIndex = this.soundController.soundArray.length - 1;
@@ -85,15 +84,15 @@ export class Szene2ErwachenPage implements OnInit {
       });
 
       //continue when tapping into app
-       this.platform.resume.subscribe(() => {
+      this.platform.resume.subscribe(() => {
         this.unpauseGame();
-       });
+      });
     });
 
     this.fromInstruction = this.activeroute.snapshot.paramMap.get('fromInstruction');
   }
 
-  pauseGame(){
+  pauseGame() {
     // this.subscription.unsubscribe();
     this.soundController.stopAllSounds();
     // this.soundController.onDestroy();
@@ -101,28 +100,28 @@ export class Szene2ErwachenPage implements OnInit {
     this.timersubscription.unsubscribe();
   }
 
-  unpauseGame(){
+  unpauseGame() {
     window.location.reload();
   }
 
-  closeOverlay(){
-    this.overlayClosed=true;
-    this.skipButtonActive= false;
-    this.showInteraktion= true;
+  closeOverlay() {
+    this.overlayClosed = true;
+    this.skipButtonActive = false;
+    this.showInteraktion = true;
   }
 
   skip() {
     if (this.skipButtonActive) {
-      if ( this.currentSoundIndex== 1){
+      if (this.currentSoundIndex == 1) {
         this.vibration.vibrate(500);
-        this.overlayClosed= false;
-      } else if (this.currentSoundIndex== 2) {
-        this.gegenstandsAuswahlOpen= true;
+        this.overlayClosed = false;
+      } else if (this.currentSoundIndex == 2) {
+        this.gegenstandsAuswahlOpen = true;
         this.vibration.vibrate(500);
-      } else if(this.currentSoundIndex== 5){
+      } else if (this.currentSoundIndex == 5) {
         this.vibration.vibrate(500);
-        this.showWayInteraktion=true;
-      } else if(this.currentSoundIndex== 3){
+        this.showWayInteraktion = true;
+      } else if (this.currentSoundIndex == 3) {
         this.soundController.playSound(6)
         this.currentSoundIndex++;
         this.startNextSound();
@@ -131,65 +130,65 @@ export class Szene2ErwachenPage implements OnInit {
         this.currentSoundIndex++;
         this.startNextSound();
       }
-      this.skipButtonActive= false;
+      this.skipButtonActive = false;
     }
   }
 
-  startScene(index){
+  startScene(index) {
     this.soundController.playSound(0);
     if (this.fromInstruction == null) {
       this.startNextSound();
     } else {
-      this.skipButtonActive= false;
-      this.showInteraktion= true;
+      this.skipButtonActive = false;
+      this.showInteraktion = true;
     }
   }
 
-  startTimerforNextSound(timerlength: number){
+  startTimerforNextSound(timerlength: number) {
     console.log(timerlength);
-    this.currentTimer = timer(timerlength*1000);
+    this.currentTimer = timer(timerlength * 1000);
     this.timersubscription = this.currentTimer.subscribe(() => {
-        this.skipButtonActive = true;
-        this.timersubscription.unsubscribe();
+      this.skipButtonActive = true;
+      this.timersubscription.unsubscribe();
     });
   }
 
-  stopTimer(){
+  stopTimer() {
     this.timersubscription.unsubscribe();
     console.log("timer stoped")
   }
 
-  closeSite(url){
+  closeSite(url) {
     this.soundController.stopAllSounds();
     this.soundController.onDestroy();
-    this.soundController= null;
+    this.soundController = null;
     this.timersubscription.unsubscribe();
     this.subscription.unsubscribe();
     this.router.navigateRoot(url);
   }
 
-  clickGegenstandHandler(){
-    this.gegenstandsAuswahlOpen= false;
+  clickGegenstandHandler() {
+    this.gegenstandsAuswahlOpen = false;
     this.currentSoundIndex++;
     this.startNextSound();
-    this.skipButtonActive= false;
+    this.skipButtonActive = false;
   }
 
-  startNextSound(){
-    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+  startNextSound() {
+    this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);
     this.startTimerforNextSound(this.currentDuration);
   }
 
-  onClickHandler(){
+  onClickHandler() {
     this.currentSoundIndex++;
     this.startNextSound();
-    this.showInteraktion= false;
+    this.showInteraktion = false;
   }
 
-  interaktionClickHandler(url){
+  interaktionClickHandler(url) {
     console.log(url);
-    this.showInteraktion= false;
+    this.showInteraktion = false;
     this.closeSite(url);
   }
 }

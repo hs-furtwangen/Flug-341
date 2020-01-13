@@ -10,7 +10,6 @@ export class HRTFSound extends Sound {
     constructor(context, protected deviceOrientation: DeviceOrientation, path: String, order: number, startpoint: number, rotator, mirror){
         super(context, deviceOrientation, path, order, startpoint, rotator);
         this.mirror= mirror;
-        console.log("He you")
     }
     /*Methods*/
     play() {
@@ -45,7 +44,6 @@ export class HRTFSound extends Sound {
                     });
             }
         )));
-        console.log("loaded");
         return true;
 
     //     this.loader_filters = new ambisonics.HRIRloader_ircam(this.context, this.order, (buffer)=> {
@@ -62,7 +60,6 @@ export class HRTFSound extends Sound {
         // Summing and routing of Audio Sources
         this.summator.connect(this.rotator.in);
         this.hoaEncoder(this.startpoint);
-        console.log("hrtf loaded")
         //console.log(this.source.buffer);
         //this.hoaEncoder(this.order, this.startpoint);
 
@@ -74,7 +71,6 @@ export class HRTFSound extends Sound {
         this.encoder.azim = azim; // Horizontal Position
         // this.encoder.elev = this.elev; // Vertical Position
         this.encoder.updateGains();
-        console.log("baum");
     }
 
     //set Gain

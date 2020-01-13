@@ -214,6 +214,20 @@
             "startpoint": 0,
             "loop": false,
             "duration": 14
+        },
+        {
+            "name": "23_DIALOG_Kakaobohne_01.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 49
+        },
+        {
+            "name": "24_DIALOG_Kakaobohne_02.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": false,
+            "duration": 15
         }
     ],
     [
@@ -229,20 +243,6 @@
             "startpoint": 0,
             "loop": true,
             "gain": 0.01
-        },
-        {
-            "name": "23_DIALOG_Kakaobohne_01.wav",
-            "order": 1,
-            "startpoint": 0,
-            "loop": false,
-            "duration": 49
-        },
-        {
-            "name": "24_DIALOG_Kakaobohne_02.wav",
-            "order": 1,
-            "startpoint": 0,
-            "loop": false,
-            "duration": 15
         },
         {
             "name": "25_DIALOG_Schlucht_01.wav",

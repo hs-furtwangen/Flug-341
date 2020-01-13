@@ -12,6 +12,8 @@ export class BaumInteraktionComponent implements OnInit, OnChanges {
   @Output() clickHandler : EventEmitter<any> = new EventEmitter();
 
   isActive=false;
+  hideLeftArrow= true;
+  hideRightArrow= true;
 
   constructor() { }
 
@@ -30,8 +32,17 @@ export class BaumInteraktionComponent implements OnInit, OnChanges {
     let direction= (((this.heading - this.initheading)%360)+360) % 360;
     if((direction+10)>90 && (direction-10)<90 ){
       this.isActive= true;
+      this.hideLeftArrow= true;
+      this.hideRightArrow= true;
     } else {
       this.isActive= false;
+      if(((360-direction)+90)>= ((direction)+90)){
+        this.hideRightArrow= false;
+        this.hideLeftArrow= true;
+      } else {
+        this.hideLeftArrow= false;
+        this.hideRightArrow= true;
+      }
     }
   }
 }

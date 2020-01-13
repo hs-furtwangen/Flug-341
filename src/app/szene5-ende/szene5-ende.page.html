@@ -1,4 +1,3 @@
 <ion-content class="scene-content">
-  <app-static-interaction [text]="'Drehe dich nach Links'" [interaktiondirection]="270" (clickHandler)="onClickHandler()" [initheading]="initheading" [heading]="heading" *ngIf="(showInteraktion)"></app-static-interaction>
   <ion-button [hidden]="(showInteraktion)" [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
 </ion-content>

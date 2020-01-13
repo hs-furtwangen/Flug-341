@@ -13,41 +13,31 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./szene5-ende.page.scss'],
 })
 export class Szene5EndePage implements OnInit {
-  linkNextPage='/menu';
+  linkNextPage = '/menu';
 
   soundController;
   heading = 0;
-  skipButtonActive= false;
+  skipButtonActive = false;
 
   currentTimer;
   timersubscription;
   subscription;
-  showInteraktion= false;
-  initheading= 0;
+  showInteraktion = false;
+  initheading = 0;
 
-  currentAthmoIndex=0;
-  currentSoundIndex= 2;
+  currentAthmoIndex = 0;
+  currentSoundIndex = 2;
   maxSoundIndex: number;
   currentDuration;
 
   gegenstand;
-  weg1= false; //weg1 == mit Taschenlampe
+  weg1 = false; //weg1 == mit Taschenlampe
 
-  constructor ( protected deviceOrientation: DeviceOrientation , public loadingController: LoadingController , public platform: Platform , public router: NavController, public vibration: Vibration, private storage: Storage)  {
-    platform.ready().then(() => {
-      //pause when tapping out of app
-      this.platform.pause.subscribe(() => {
-        this.pauseGame();
-      });
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, public router: NavController, public vibration: Vibration, private storage: Storage) {
 
-      //continue when tapping into app
-       this.platform.resume.subscribe(() => {
-         this.unpauseGame();
-       });
-    });
-   }
+  }
 
-   async sceneLoading(index, dur) {
+  async sceneLoading(index, dur) {
     const loading = await this.loadingController.create({
       spinner: "bubbles",
       message: 'Lade Scene',
@@ -58,39 +48,50 @@ export class Szene5EndePage implements OnInit {
     await this.soundController.initSounds(); //load all Soundbuffer
     await loading.dismiss(); //called when Loader is Dismissed
 
-    this.startScene(index);      
+    this.startScene(index);
   }
 
-  ngOnInit(){
+  ngOnInit() {
+    this.platform.ready().then(() => {
 
+      // Watch Device Orientation
+      this.subscription = this.deviceOrientation.watchHeading().subscribe(
+        (data: DeviceOrientationCompassHeading) => {
+          this.heading = data.magneticHeading;
+        },
+      );
+
+      this.storage.get('gegenstand').then((val) => {
+        this.gegenstand = val;
+      });
+      this.soundController = new SoundControllerScene(this.deviceOrientation, 6);
+      this.soundController.initController();
+
+      //get Initheading
+      this.storage.get('initheading').then((val) => {
+        this.soundController.setinitHeading(val);
+        this.initheading = val;
+      });
+      this.maxSoundIndex = this.soundController.soundArray.length - 1;
+
+      //pause when tapping out of app
+      this.platform.pause.subscribe(() => {
+        this.pauseGame();
+      });
+
+      //continue when tapping into app
+      this.platform.resume.subscribe(() => {
+        this.unpauseGame();
+      });
+    });
   }
 
   ionViewDidEnter() {
-
-        // Watch Device Orientation
-        this.subscription = this.deviceOrientation.watchHeading().subscribe(
-          (data: DeviceOrientationCompassHeading) => {
-              this.heading = data.magneticHeading;
-          },
-      );
-
-    this.storage.get('gegenstand').then((val)=> {
-      this.gegenstand= val;
-    });
-    this.soundController= new SoundControllerScene(this.deviceOrientation, 6);
-    this.soundController.initController();
-
-    //get Initheading
-    this.storage.get('initheading').then((val) => {
-      this.soundController.setinitHeading(val);
-      this.initheading= val;
-    });
-    this.maxSoundIndex = this.soundController.soundArray.length - 1;
     this.sceneLoading(this.currentSoundIndex, 5000);
-   
+
   }
 
-  pauseGame = () =>{
+  pauseGame = () => {
     this.timersubscription.unsubscribe();
     this.soundController.stopSound(this.currentAthmoIndex);
     this.soundController.stopSound(this.currentSoundIndex);
@@ -100,87 +101,80 @@ export class Szene5EndePage implements OnInit {
     window.location.reload();
   }
 
-  startNextSound(){
-    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+  startNextSound() {
+    this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);
     this.startTimerforNextSound(this.currentDuration);
   }
 
-  startTimerforNextSound(timerlength: number, interaktion= false){
+  startTimerforNextSound(timerlength: number) {
     console.log(timerlength);
-    this.currentTimer = timer(timerlength*1000);
-    if(!interaktion){
+    this.currentTimer = timer(timerlength * 1000);
       this.timersubscription = this.currentTimer.subscribe(() => {
-          this.skipButtonActive = true;
-          this.timersubscription.unsubscribe();
-      });
-    } else {
-      this.timersubscription = this.currentTimer.subscribe(() => {
-        this.showInteraktion= true;
-        this.vibration.vibrate(500);
+        this.skipButtonActive = true;
         this.timersubscription.unsubscribe();
-    });
-    }
+      });
   }
 
-  startScene(index){
-    this.weg1= (this.gegenstand == 'Taschenlampe')? true: false;
-    this.initheading= this.soundController.initheading;
+  startScene(index) {
+    console.log(this.gegenstand);
+    this.weg1 = (this.gegenstand == 'Taschenlampe') ? true : false;
+    this.initheading = this.soundController.initheading;
     this.soundController.playSound(this.currentAthmoIndex);
-    this.currentDuration= this.soundController.getDuration(index);
+    this.currentDuration = this.soundController.getDuration(index);
     this.soundController.playSound(index);
-    this.startTimerforNextSound(this.currentDuration, true);
+    this.startTimerforNextSound(this.currentDuration);
   }
 
   skip() {
     if (this.skipButtonActive) {
-      if(this.currentSoundIndex==4){
+      if (this.currentSoundIndex == 2) {
         this.currentSoundIndex++;
         this.startNextSound();
         this.fadeout(5);
-      } else if(this.currentSoundIndex==5) {
+      } else if (this.currentSoundIndex == 3) {
         this.currentSoundIndex++;
-        this.currentAthmoIndex= 1;
-        this.soundController.playSound(this.currentAthmoIndex);
-        this.startNextSound();
+        this.soundController.playSound(1);
+        this.currentAthmoIndex = 1;
         this.fadein(5);
-      } else if(this.currentSoundIndex==6){
-        if(!this.weg1){
-          this.currentSoundIndex=7;
-        } else {
-          this.currentSoundIndex=8;
-        }
-        this.closeSite();
+        this.closeSite(this.weg1);
       } else {
         this.currentSoundIndex++;
         this.startNextSound();
       }
-      this.skipButtonActive= false;
+      this.skipButtonActive = false;
     }
   }
 
-  onClickHandler(){
+  onClickHandler() {
     this.currentSoundIndex++;
     this.startNextSound();
-    this.showInteraktion= false;
+    this.showInteraktion = false;
   }
 
-  fadeout(duration){
-      this.soundController.fadeout(0, duration);
+  fadeout(duration) {
+    this.soundController.fadeout(0, duration);
   }
 
-  fadein(duration){
+  fadein(duration) {
     this.soundController.fadein(1, duration);
   }
 
-  closeSite(){
-    this.currentDuration= this.soundController.getDuration(this.currentSoundIndex);
+  async closeSite(weg1=false) {
+    this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);
-    const closetimer= timer(this.currentDuration*1000);
-    const closesub= closetimer.subscribe(()=>{
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("done!"), this.currentDuration*1000)
+    });
+    this.currentSoundIndex= (weg1)? 6: 5;
+    await promise;
+    this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
+    this.soundController.playSound(this.currentSoundIndex);
+    const closetimer = timer(this.currentDuration * 1000);
+    const closesub = closetimer.subscribe(() => {
       this.soundController.stopAllSounds();
       this.soundController.onDestroy();
-      this.soundController= null;
+      this.soundController = null;
       this.timersubscription.unsubscribe();
       this.subscription.unsubscribe();
       closesub.unsubscribe();

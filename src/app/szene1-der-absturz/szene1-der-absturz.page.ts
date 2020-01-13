@@ -12,22 +12,21 @@ import { timer } from 'rxjs';
   styleUrls: ['./szene1-der-absturz.page.scss'],
 })
 export class Szene1DerAbsturzPage implements OnInit {
-  nextSite= "/szene2-erwachen";
+  nextSite = "/szene2-erwachen";
 
   soundController;
   heading = 0;
-  currentTimer; 
+  currentTimer;
   subscription;
 
   //Subsciptions must be unsubscribed before leaving Site
   timersubscription;  //Subsciption for timer, to Skip to the next Sound
   titleTimersub;  //Subscription for titlescreen timer
-  hideTitleScreen= true;  //bool for hiding titlescreen
+  hideTitleScreen = true;  //bool for hiding titlescreen
 
-  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, private storage: Storage) 
-  {
+  constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, private storage: Storage) {
     platform.ready().then(() => {
-      this.soundController= new SoundControllerScene(this.deviceOrientation, 1);
+      this.soundController = new SoundControllerScene(this.deviceOrientation, 1);
       this.soundController.initController();
       this.soundController.initSounds();
       //pause when tapping out of app
@@ -36,9 +35,9 @@ export class Szene1DerAbsturzPage implements OnInit {
       });
 
       //continue when tapping into app
-       this.platform.resume.subscribe(() => {
-         this.unpauseGame();
-       });
+      this.platform.resume.subscribe(() => {
+        this.unpauseGame();
+      });
     });
   }
 
@@ -53,53 +52,53 @@ export class Szene1DerAbsturzPage implements OnInit {
     await loading.present();
     await loading.onDidDismiss();
 
-    this.startScene();  
+    this.startScene();
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
 
     this.loadLoading();
   }
 
-  ngOnInit() {        
-      
+  ngOnInit() {
+
 
   }
 
-  startTimerforNextSound(timerlength: number){
+  startTimerforNextSound(timerlength: number) {
     console.log(timerlength);
-    this.currentTimer = timer(timerlength*1000);
+    this.currentTimer = timer(timerlength * 1000);
     this.timersubscription = this.currentTimer.subscribe(() => {
-        this.closeSite(this.nextSite);
-        this.timersubscription.unsubscribe();
+      this.closeSite(this.nextSite);
+      this.timersubscription.unsubscribe();
     });
 
-    const titletimer= timer(28000);
-    this.titleTimersub= titletimer.subscribe(()=>{
-      this.hideTitleScreen= false;
+    const titletimer = timer(28000);
+    this.titleTimersub = titletimer.subscribe(() => {
+      this.hideTitleScreen = false;
     });
 
   }
 
-  startScene(){
+  startScene() {
     this.soundController.getinitHeading();
-    let currentDuration= this.soundController.getDuration(0);
+    let currentDuration = this.soundController.getDuration(0);
     this.soundController.playSound(0);
-    this.startTimerforNextSound(currentDuration)    
+    this.startTimerforNextSound(currentDuration)
     this.storage.set('initheading', this.soundController.initheading);;
   }
 
-  closeSite(url){
+  closeSite(url) {
     //this.soundController.stopSound(0);
     this.soundController.stopAllSounds();
     this.soundController.onDestroy();
-    this.soundController= null;
+    this.soundController = null;
     this.timersubscription.unsubscribe();
     this.router.navigateRoot(url);
   }
 
-  
-  pauseGame(){
+
+  pauseGame() {
     this.soundController.stopAllSounds();
     // this.soundController.onDestroy();
     // this.soundController= null;
@@ -107,7 +106,7 @@ export class Szene1DerAbsturzPage implements OnInit {
     // this.timersubscription.unsubscribe();
   }
 
-  unpauseGame(){
+  unpauseGame() {
     window.location.reload();
   }
 }

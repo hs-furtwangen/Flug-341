@@ -63,8 +63,9 @@ initController() {
         this.decoder.resetFilters();
     }
 
-    loadHRTF(){
-        this.loader_filters.load("assets/IRs/IRC_1076_C_HRIR_44100.sofa.json");
+    async loadHRTF(){
+        await this.loader_filters.load("assets/IRs/IRC_1076_C_HRIR_44100.sofa.json");
         console.log(this.loader_filters);
+        return true;
     }
 }
