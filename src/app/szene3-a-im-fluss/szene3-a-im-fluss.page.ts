@@ -189,7 +189,6 @@ export class Szene3AImFlussPage implements OnInit {
   }
 
   afterInteraction(index) {
-    this.soundController.resetFilter();
     this.soundController.stopSound(1);
     this.soundController.stopSound(7);
     this.showQTE = false;
@@ -224,7 +223,6 @@ export class Szene3AImFlussPage implements OnInit {
       setTimeout(() => resolve("done!"), ((timerlength * 1000)));
     });
     await promise;
-    await this.soundController.loadHRTF();
 
     this.startfight();
   }

@@ -24,7 +24,7 @@ export class SoundController {
     orientation: DeviceOrientation;     //Device Orientation
     soundArray: any;                    //This Variable takes on the Json Array of the Current Chapter
     heading = 0;                    //Current Rotation from Device Orientation
-    order = 4;                           //Max Order
+    order = 1;                           //Max Order
     loader_filters;                     //for Loading Filters like HRTF-Curves(sofa.json-files)
     initheading = 0;
     subscription;                //Initial Rotation
@@ -33,9 +33,10 @@ export class SoundController {
     decoder;
     mirror                            //Ambisonics Bineural Decoder
 
-    constructor(protected deviceOrientation: DeviceOrientation, chapter: number) {
+    constructor(protected deviceOrientation: DeviceOrientation, chapter: number, order= 1) {
         this.soundMap = new Map();
         this.context = new AudioContext();
+        this.order= order;
         //this.context = /*(window.AudioContext) ? */new window.AudioContext /*: new window.webkitAudioContext*/;
         this.orientation = this.deviceOrientation;
         this.heading = 0;
