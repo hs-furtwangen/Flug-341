@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SoundControllerScene } from '../classes/SoundControllerScene';
+import { SoundController } from '../classes/SoundController';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { Platform } from '@ionic/angular';
 import { LoadingController, NavController } from '@ionic/angular';
@@ -27,7 +27,7 @@ export class Szene1DerAbsturzPage implements OnInit {
 
   constructor(protected deviceOrientation: DeviceOrientation, public loadingController: LoadingController, public platform: Platform, private router: NavController, private storage: Storage, private insomnia: Insomnia) {
     platform.ready().then(() => {
-      this.soundController = new SoundControllerScene(this.deviceOrientation, 1);
+      this.soundController = new SoundController(this.deviceOrientation, 1);
       this.soundController.initController();
       this.soundController.initSounds();
       //pause when tapping out of app

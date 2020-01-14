@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SoundControllerScene } from '../classes/SoundControllerScene';
+import { SoundController } from '../classes/SoundController';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { Platform, NavController } from '@ionic/angular';
@@ -69,7 +69,7 @@ export class Szene2ErwachenPage implements OnInit {
         (error: any) => console.log(error)
       );
 
-      this.soundController = new SoundControllerScene(this.deviceOrientation, 2);
+      this.soundController = new SoundController(this.deviceOrientation, 2);
       this.soundController.initController();
       //get Initheading
       this.storage.get('initheading').then((val) => {

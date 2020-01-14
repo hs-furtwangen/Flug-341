@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SoundControllerScene } from '../classes/SoundControllerScene';
+import { SoundController } from '../classes/SoundController';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { Platform, NavController, LoadingController } from '@ionic/angular';
@@ -62,7 +62,7 @@ export class Szene4DerBaumPage implements OnInit {
         },
       );
 
-      this.soundController = new SoundControllerScene(this.deviceOrientation, 5);
+      this.soundController = new SoundController(this.deviceOrientation, 5);
       this.soundController.initController();
       //get Initheading
       this.storage.get('initheading').then((val) => {

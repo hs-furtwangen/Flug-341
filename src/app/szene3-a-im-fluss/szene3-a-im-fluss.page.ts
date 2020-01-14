@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SoundControllerGame } from '../classes/SoundControllerGame';
+import { SoundController } from '../classes/SoundController';
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { Platform, NavController, LoadingController } from '@ionic/angular';
@@ -73,7 +73,7 @@ export class Szene3AImFlussPage implements OnInit {
         this.gegenstand = val;
       });
       //Initialise SoundController
-      this.soundController = new SoundControllerGame(this.deviceOrientation, 3);
+      this.soundController = new SoundController(this.deviceOrientation, 3);
       this.soundController.initController();
 
       //get Initheading
