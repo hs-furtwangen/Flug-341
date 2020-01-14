@@ -101,10 +101,10 @@ export class Szene2ErwachenPage implements OnInit {
   }
 
   pauseGame() {
-    // this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
     this.soundController.stopAllSounds();
-    // this.soundController.onDestroy();
-    // this.soundController= null;
+    this.soundController.onDestroy();
+    this.soundController= null;
     this.timersubscription.unsubscribe();
   }
 

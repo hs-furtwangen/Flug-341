@@ -247,7 +247,7 @@
     ],
     [
         {
-            "name": "006_ATMO_Wald.wav",
+            "name": "06_ATMO_Dschungel_final.wav",
             "order": 1,
             "startpoint": 0,
             "loop": true
@@ -302,5 +302,13 @@
             "gain": 0.01
         }
         
+    ],
+    [
+        {
+            "name": "06_ATMO_Dschungel_final.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        }
     ]
 ]

@@ -101,8 +101,8 @@ export class Szene5EndePage implements OnInit {
 
   pauseGame = () => {
     this.timersubscription.unsubscribe();
-    this.soundController.stopSound(this.currentAthmoIndex);
-    this.soundController.stopSound(this.currentSoundIndex);
+    this.soundController.stopAllSounds();
+    this.soundController.onDestroy() 
   }
 
   unpauseGame = () => {
