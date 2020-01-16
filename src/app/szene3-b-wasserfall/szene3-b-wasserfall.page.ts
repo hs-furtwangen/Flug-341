@@ -52,6 +52,8 @@ export class Szene3BWasserfallPage implements OnInit {
   ngOnInit() {
     this.platform.ready().then(() => {
 
+      //this.storage.set('gegenstand', 'Seil');
+
       this.subscription = this.deviceOrientation.watchHeading().subscribe(
         (data: DeviceOrientationCompassHeading) => {
           this.heading = data.magneticHeading;
@@ -135,31 +137,40 @@ export class Szene3BWasserfallPage implements OnInit {
     this.router.navigateRoot(this.linkNextPage);
   }
 
-  skip() {
+  async skip() {
     if (this.skipButtonActive) {
+      this.skipButtonActive = false;
       if (this.currentSoundIndex == 1) {
         this.currentAthmoIndex = 5
         this.currentSoundIndex++;
-        this.skipButtonActive = false;
         this.soundController.crossfade(0, 5, 20);
         this.startNextSound(this.currentSoundIndex);
       } else if (this.weg1 && this.currentSoundIndex == 2) {
         this.currentSoundIndex = 3;
-        this.skipButtonActive = false;
         this.startNextSound(this.currentSoundIndex);
+        await this.wait(84);
+        this.soundController.crossfade(5, 6, 10);
       } else if (!this.weg1 && this.currentSoundIndex == 2) {
         this.currentSoundIndex = 4;
-        this.skipButtonActive = false;
         this.startNextSound(this.currentSoundIndex);
+        await this.wait(26);
+        this.soundController.crossfade(5, 6, 6);
       } else if (this.currentSoundIndex == 3 || this.currentSoundIndex == 4) {
         this.linkNextPage = '/szene4-der-baum';
         this.closeSite();
       } else {
         this.currentSoundIndex++;
-        this.skipButtonActive = false;
         this.startNextSound(this.currentSoundIndex);
       }
     }
+  }
+
+  async wait(duration: number){
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("done!"), ((duration * 1000)));
+    });
+    await promise;
+    return true;
   }
 
   startNextSound(index) {

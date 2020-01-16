@@ -1,5 +1,5 @@
 <ion-content class="scene-content">
-  <div [hidden]="(!showEndscreen)" class="endscreen">
+  <div [ngClass]="(!showEndscreen)? 'hide': ''" class="endscreen">
     <div class="endscreen-container">
       <div class="table-cell">
         <h1 class="title">Ende</h1>

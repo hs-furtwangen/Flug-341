@@ -61,7 +61,7 @@ export class Szene3AImFlussPage implements OnInit {
 
   ngOnInit() {
     this.platform.ready().then(() => {
-      this.storage.set('gegenstand', 'Messer');
+      //this.storage.set('gegenstand', 'Messer');
 
       // Watch Device Orientation
       this.subscription = this.deviceOrientation.watchHeading().subscribe(
@@ -121,12 +121,15 @@ export class Szene3AImFlussPage implements OnInit {
     window.location.reload();
   }
 
-  skip() {
+  async skip() {
     if (this.skipButtonActive) {
+      this.skipButtonActive = false;
       if (!this.weg1 && this.currentSoundIndex == 2) {
         this.currentSoundIndex = 4;
         this.skipButtonActive = false;
         this.startNextSound();
+        await this.wait(60);
+        this.soundController.crossfade(0, 10, 15);
       } else if ((this.currentSoundIndex == 4) || this.currentSoundIndex == 3) {
         this.closeSite('/szene4-der-baum');
       } else if (this.weg1 && this.currentSoundIndex == 2) {
@@ -134,12 +137,20 @@ export class Szene3AImFlussPage implements OnInit {
       } else if (this.currentSoundIndex == 9 || this.currentSoundIndex == 8) {
         this.currentSoundIndex = 3;
         this.startNextSound();
+        await this.wait(32);
+        this.soundController.crossfade(0, 10, 25);
       } else {
         this.currentSoundIndex++;
         this.startNextSound();
       }
-      this.skipButtonActive = false;
     }
+  }
+  async wait(duration: number){
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("done!"), ((duration * 1000)));
+    });
+    await promise;
+    return true;
   }
 
   startsound() {

@@ -6,6 +6,7 @@
     height: 100%;
     z-index: 10;
     transition: all 5s linear;
+    opacity: 1;
 
     .endscreen-container{
         width: 100%;
@@ -27,4 +28,12 @@
             }
         }
     }
+}
+
+.skip-button{
+    z-index: 20 !important;
+}
+
+.hide{
+    opacity: 0;
 }

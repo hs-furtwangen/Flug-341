@@ -142,11 +142,18 @@
             "startpoint": 0,
             "loop": false,
             "duration": 5
+        },
+        {
+            "name": "06_ATMO_Dschungel_final.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true,
+            "gain": 0.1
         }
     ],
     [
         {
-            "name": "003_ATMO_Fluss.wav",
+            "name": "03_ATMO_Fluss.wav",
             "order": 1,
             "startpoint": 0,
             "loop": true
@@ -185,6 +192,13 @@
             "startpoint": 0,
             "loop": true,
             "gain": 0.01
+        },
+        {
+            "name": "06_ATMO_Dschungel_final.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true,
+            "gain": 0.01
         }
     ],
     [
@@ -192,8 +206,7 @@
             "name": "06_ATMO_Dschungel_final.wav",
             "order": 1,
             "startpoint": 0,
-            "loop": true,
-            "gain": 0.4
+            "loop": true
         },
         {
             "name": "14_DIALOG_Wollaffen_01.wav",
@@ -243,7 +256,20 @@
             "startpoint": 0,
             "loop": false,
             "duration": 15
+        },
+        {
+            "name": "05_ATMO_Baum.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
+        },
+        {
+            "name": "06_ATMO_Dschungel_final.wav",
+            "order": 1,
+            "startpoint": 0,
+            "loop": true
         }
+
     ],
     [
         {

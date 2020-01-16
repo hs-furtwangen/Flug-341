@@ -95,8 +95,9 @@ export class Szene4DerBaumPage implements OnInit {
 
   }
 
-  skip() {
+  async skip() {
     if (this.skipButtonActive) {
+      this.skipButtonActive = false;
       if (this.currentSoundIndex == 2) {
         this.currentSoundIndex++;
         this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
@@ -107,14 +108,22 @@ export class Szene4DerBaumPage implements OnInit {
         this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
         this.soundController.playSound(this.currentSoundIndex);
         this.startTimerforNextSound(this.currentDuration, false, true);
+        this.soundController.crossfade(8, 9, 10);
       } else if (this.currentSoundIndex == this.maxSoundIndex) {
         this.closeSite();
       } else {
         this.currentSoundIndex++;
         this.startNextSound(this.currentSoundIndex);
       }
-      this.skipButtonActive = false;
     }
+  }
+
+  async wait(duration: number){
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve("done!"), ((duration * 1000)));
+    });
+    await promise;
+    return true;
   }
 
   pauseGame = () => {
@@ -156,10 +165,12 @@ export class Szene4DerBaumPage implements OnInit {
     }
   }
 
-  startScene(index) {
+  async startScene(index) {
     this.initheading = this.soundController.initheading;
     this.soundController.playSound(0);
     this.startNextSound(index);
+    await this.wait(110);
+    this.soundController.crossfade(0, 8, 18);
   }
 
   startInteractionTimer() {

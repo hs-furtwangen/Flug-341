@@ -1,8 +1,8 @@
 <ion-content>
+    <div *ngIf="(ingame== null)" class="back-icon"><a href="/menu"><ion-icon class="icon-undo" name="undo"></ion-icon></a></div>
     <ion-slides pager="true" [options]="slideOpts">
         <ion-slide>
           <div class="slide-page">
-              <div *ngIf="(ingame== null)" class="back-icon"><a href="/menu"><ion-icon class="icon-undo" name="undo"></ion-icon></a></div>
               <h1 class="slider-title">So wird gespielt</h1>
               <div class="img-container">
                   <img src="/assets/imgs/Slider1.svg" alt="Slider1">

@@ -222,14 +222,15 @@ export class SoundController {
         let sound2 = await this.soundMap.get(indexSound2);
         console.log("start Crossfade");
 
-
-        sound2.playloop();
         //ramp gain up to 1
+        sound2.summator.gain.setValueAtTime(0.00001, 0);
         sound2.summator.gain.linearRampToValueAtTime(gainSound2, this.context.currentTime + duration);   //linear
         //sound2.summator.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + duration);    //exponetial
         //ramp gain down to 0
+        sound1.summator.gain.setValueAtTime(1, 0);
         sound1.summator.gain.linearRampToValueAtTime(0.0, this.context.currentTime + duration);   //linear
         //sound1.summator.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + duration);    //exponetial
+        sound2.playloop();
 
         const fadetimer = timer(duration * 1000);
         const subscription = fadetimer.subscribe(() => {
