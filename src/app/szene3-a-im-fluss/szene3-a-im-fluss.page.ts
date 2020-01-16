@@ -61,7 +61,7 @@ export class Szene3AImFlussPage implements OnInit {
 
   ngOnInit() {
     this.platform.ready().then(() => {
-      //this.storage.set('gegenstand', 'Messer');
+      this.storage.set('gegenstand', 'Messer');
 
       // Watch Device Orientation
       this.subscription = this.deviceOrientation.watchHeading().subscribe(

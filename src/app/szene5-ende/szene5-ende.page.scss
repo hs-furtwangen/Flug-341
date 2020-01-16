@@ -1,0 +1,30 @@
+.endscreen{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    transition: all 5s linear;
+
+    .endscreen-container{
+        width: 100%;
+        height: 100%;
+        display: table;
+        text-align: center;
+
+        .table-cell{
+            display: table-cell;
+            width: 100%;
+            height: 100%;
+            vertical-align: middle;
+
+            .title{
+                margin-top: -10vh;
+                font-family: DCCAsh;
+                letter-spacing: 0.02em;
+                font-size: 80pt;
+            }
+        }
+    }
+}

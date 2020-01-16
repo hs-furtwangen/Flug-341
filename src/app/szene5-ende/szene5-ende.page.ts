@@ -24,12 +24,14 @@ export class Szene5EndePage implements OnInit {
   timersubscription;
   subscription;
   showInteraktion = false;
+  endScreenTimersub;
   initheading = 0;
 
   currentAthmoIndex = 0;
   currentSoundIndex = 2;
   maxSoundIndex: number;
   currentDuration;
+  showEndscreen= true;
 
   gegenstand;
   weg1 = false; //weg1 == mit Taschenlampe
@@ -101,6 +103,7 @@ export class Szene5EndePage implements OnInit {
 
   pauseGame = () => {
     this.timersubscription.unsubscribe();
+    this.endScreenTimersub.unsubscribe();
     this.soundController.stopAllSounds();
     this.soundController.onDestroy() 
   }
@@ -177,6 +180,11 @@ export class Szene5EndePage implements OnInit {
     await promise;
     this.currentDuration = this.soundController.getDuration(this.currentSoundIndex);
     this.soundController.playSound(this.currentSoundIndex);
+    const enScreentimer = timer(15000);
+    this.endScreenTimersub = enScreentimer.subscribe(() => {
+      this.showEndscreen= true;
+      this.endScreenTimersub.unsubscribe();
+    });
     const closetimer = timer(this.currentDuration * 1000);
     const closesub = closetimer.subscribe(() => {
       this.soundController.stopAllSounds();

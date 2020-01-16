@@ -13,12 +13,11 @@ export class Sound {
     decoder;
     summator;
     rotator
-    subscription;
     duration= 0;
 
 
     //compass value
-    heading;
+    heading= 0;
 
     path: String;
     order: number;
@@ -28,7 +27,7 @@ export class Sound {
     isPlaying = false;
 
     /*Constructor*/
-    constructor(context, protected deviceOrientation: DeviceOrientation, path: String, order: number, startpoint: number, rotator) {
+    constructor(context, path: String, order: number, startpoint: number, rotator) {
         //this.encoder= encoder;
         this.context = context;                             //Audio Context
         this.source = this.context.createBufferSource();    

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { SoundController } from '../classes/SoundController';
-import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
+import { StaticAudio } from '../classes/StaticAudio'
 
 @Component({
   selector: 'app-menu',
@@ -12,25 +11,11 @@ export class MenuPage implements OnInit {
   overlayHidden = false;
   soundController;
 
-  constructor(protected deviceOrientation: DeviceOrientation, public platform: Platform ) { }
+  constructor() { }
 
   ngOnInit() {
-    this.platform.ready().then(() => {
-      this.soundController = new SoundController(this.deviceOrientation, 7);
-      this.soundController.initController();
-      this.soundController.initSounds();
-      this.soundController.playSound(0);
-
-            //pause when tapping out of app
-      this.platform.pause.subscribe(() => {
-        this.pauseGame();
-      });
-
-      //continue when tapping into app
-      this.platform.resume.subscribe(() => {
-        this.unpauseGame();
-      });
-    });
+   const athmo= new StaticAudio('assets/sounds/06_ATMO_Dschungel_final.wav', 1, true)
+   athmo.play();
   }
   pauseGame() {
     this.soundController.stopAllSounds();

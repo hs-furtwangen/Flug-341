@@ -7,8 +7,8 @@ declare const ambisonics;
 export class SceneSound extends Sound{
     converter;
 
-     constructor(context, protected deviceOrientation: DeviceOrientation, path: String, order: number, startpoint: number, rotator, converter){
-        super(context, deviceOrientation, path, order, startpoint, rotator);
+     constructor(context, path: String, order: number, startpoint: number, rotator, converter){
+        super(context, path, order, startpoint, rotator);
         this.converter= converter;
     }
 

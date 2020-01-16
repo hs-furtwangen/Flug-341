@@ -12,11 +12,19 @@
     transition: all 5s linear;
     opacity: 1;
 
-    .game-title{
+    .titel-container{
         font-family: DCCAsh;
+        width: 100%;
+        height: 100%;
         font-size: 100px;
         display: table-cell;
         vertical-align: middle;
+
+        .game-title{
+            margin-top: -10vh;
+            font-size: 100px;
+            letter-spacing: 0.02em;
+        }
     }
 }
 

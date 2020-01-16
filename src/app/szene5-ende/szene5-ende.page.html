@@ -1,3 +1,11 @@
 <ion-content class="scene-content">
-  <ion-button [hidden]="(showInteraktion)" [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
+  <div [hidden]="(!showEndscreen)" class="endscreen">
+    <div class="endscreen-container">
+      <div class="table-cell">
+        <h1 class="title">Ende</h1>
+      </div>
+    </div>
+  </div>
+  <ion-button [hidden]="(showInteraktion)" [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'"
+    class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
 </ion-content>

@@ -8,7 +8,7 @@ export class MultichannelSound extends Sound{
     loader_sound;
 
      constructor(context, protected deviceOrientation: DeviceOrientation, path: String, order: number, startpoint: number, rotator){
-        super(context, deviceOrientation, path, order, startpoint, rotator);
+        super(context, path, order, startpoint, rotator);
     }
 
     async loadSound() {

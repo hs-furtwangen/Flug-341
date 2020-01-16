@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'szene5-ende',
     loadChildren: () => import('./szene5-ende/szene5-ende.module').then( m => m.Szene5EndePageModule)
+  },  {
+    path: 'credits',
+    loadChildren: () => import('./credits/credits.module').then( m => m.CreditsPageModule)
   },
+
 
 ];
 

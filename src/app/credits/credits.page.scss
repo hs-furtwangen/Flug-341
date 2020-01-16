@@ -1,0 +1,67 @@
+.credit-content{
+    z-index: 10;
+}
+
+.container{
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+
+    .credits-content{
+        margin-top: 4rem;
+        text-align: center;
+        max-width: 90%;
+        margin-right: auto;
+        margin-left: auto;
+        color: #d9d9d9;
+
+        h1, h2{
+            font-family: DCCAsh;
+            letter-spacing: 0.02em;
+        }
+
+        h1{
+            font-size: 28pt;
+            color: #fff;
+        }
+
+        h2{
+            font-size: 24pt;
+            margin-bottom: 5px;
+        }
+
+        p{
+            font-size: 14pt;
+            margin-top: 0px;
+            margin-bottom: 2rem;
+        }
+
+        .zusatz{
+            font-size: 11pt;
+            font-weight: 300;
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hfu-logo{
+            width: 80%;
+        }
+    }
+
+}
+
+.back-icon{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 48px;
+    z-index: 100;
+
+    .icon-undo{
+        padding: 6px;
+        width: 36px;
+        height: 36px;
+    }
+}
