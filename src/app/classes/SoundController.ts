@@ -96,7 +96,7 @@ export class SoundController {
         //Init all Sounds inside Array
         for (let [index, value] of this.soundArray.entries()) {
             if (value.isHrtf === true) {
-                this.soundMap.set(index, new HRTFSound(this.context, this.deviceOrientation, value.name, value.order, value.startpoint, this.rotator, this.mirror));
+                this.soundMap.set(index, new HRTFSound(this.context, value.name, value.order, value.startpoint, this.rotator, this.mirror));
             } else {
                 this.soundMap.set(index, new SceneSound(this.context, value.name, value.order, value.startpoint, this.rotator, this.mirror));
             }
@@ -174,7 +174,7 @@ export class SoundController {
         } else if (typ === "scene") {
             this.soundMap.set(index, new SceneSound(this.context, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator, this.mirror));
         } else {
-            this.soundMap.set(index, new HRTFSound(this.context, this.deviceOrientation, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator, this.mirror));
+            this.soundMap.set(index, new HRTFSound(this.context, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator, this.mirror));
         }
         const sound = this.soundMap.get(index);
         sound.init();

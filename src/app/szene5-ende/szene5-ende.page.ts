@@ -14,7 +14,7 @@ import { Insomnia } from '@ionic-native/insomnia/ngx';
   styleUrls: ['./szene5-ende.page.scss'],
 })
 export class Szene5EndePage implements OnInit {
-  linkNextPage = '/menu';
+  linkNextPage = '/credits';
 
   soundController;
   heading = 0;

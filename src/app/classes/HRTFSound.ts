@@ -6,24 +6,11 @@ declare const ambisonics;
 
 export class HRTFSound extends Sound {
     mirror;
-    subscription;
 
-    constructor(context, protected deviceOrientation: DeviceOrientation, path: String, order: number, startpoint: number, rotator, mirror){
+    constructor(context, path: String, order: number, startpoint: number, rotator, mirror){
         super(context, path, order, startpoint, rotator);
         this.mirror= mirror;
         this.encoder= new ambisonics.monoEncoder(this.context, this.order);
-
-        this.subscription = this.deviceOrientation.watchHeading().subscribe(
-            (data: DeviceOrientationCompassHeading) => {
-                this.heading = data.magneticHeading;
-
-                //Update Rotation
-                //Update Rotation
-                this.encoder.azim = (((this.heading - startpoint) % 360) + 360) % 360;
-                this.encoder.updateGains();
-
-            },
-        );
 
     }
     /*Methods*/
@@ -46,7 +33,6 @@ export class HRTFSound extends Sound {
     stop() {
         this.source.stop();
         this.isPlaying = false;
-        this.subscription.unsubscribe();
     }
 
     async loadSound() {
@@ -75,7 +61,7 @@ export class HRTFSound extends Sound {
 
         // Summing and routing of Audio Sources
         this.summator.connect(this.mirror.in);
-        this.encoder.azim = (((this.heading - this.startpoint) % 360) + 360) % 360;
+        this.encoder.azim = this.startpoint;
                 this.encoder.updateGains();
         //console.log(this.source.buffer);
         //this.hoaEncoder(this.order, this.startpoint);

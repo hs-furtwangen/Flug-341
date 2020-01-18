@@ -109,7 +109,7 @@ export class Szene4DerBaumPage implements OnInit {
         this.soundController.playSound(this.currentSoundIndex);
         this.startTimerforNextSound(this.currentDuration, false, true);
         this.soundController.crossfade(8, 9, 10);
-      } else if (this.currentSoundIndex == this.maxSoundIndex) {
+      } else if (this.currentSoundIndex == 7) {
         this.closeSite();
       } else {
         this.currentSoundIndex++;

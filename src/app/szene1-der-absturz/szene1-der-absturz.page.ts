@@ -53,7 +53,7 @@ export class Szene1DerAbsturzPage implements OnInit {
     const loading = await this.loadingController.create({
       spinner: "bubbles",
       duration: 5000,
-      message: '<h2>Lade Abenteuer</h2><p>Bitte halten sie ihr Gerät still. Es wird kalibriert</p>',
+      message: '<h2>Lade Abenteuer</h2><p>Richten Sie ihr Gerät aus. Es wird kalibriert</p>',
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });

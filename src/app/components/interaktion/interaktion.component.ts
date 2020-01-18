@@ -23,7 +23,7 @@ export class InteraktionComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     let direction= (((this.heading - this.initheading)%360)+360) % 360;
-    if(direction>=0 && direction< 180){
+    if(direction>=0 && direction< 90 || direction<=360 && direction>= 270){
       this.element=1;
     } else {
       this.element=0;

@@ -61,7 +61,6 @@ export class Szene3AImFlussPage implements OnInit {
 
   ngOnInit() {
     this.platform.ready().then(() => {
-      //this.storage.set('gegenstand', 'Messer');
 
       // Watch Device Orientation
       this.subscription = this.deviceOrientation.watchHeading().subscribe(
@@ -76,6 +75,9 @@ export class Szene3AImFlussPage implements OnInit {
       //Initialise SoundController
       this.soundController = new SoundController(this.deviceOrientation, 3);
       this.soundController.initController();
+
+      //testing
+      //this.storage.set('gegenstand', 'Messer');
 
       //get Initheading
       this.storage.get('initheading').then((val) => {
@@ -97,15 +99,14 @@ export class Szene3AImFlussPage implements OnInit {
       //keep Phone awake
       this.insomnia.keepAwake()
         .then(
-          () => console.log('success'),
+          () => console.log('success'),    
           () => console.log('error')
         );
     });
   }
 
-  ionViewDidEnter() {
-    this.sceneLoading(this.currentSoundIndex, 4000);
-
+  ionViewDidEnter(){
+    this.sceneLoading(this.currentSoundIndex, 4000);   
   }
 
   pauseGame = () => {
