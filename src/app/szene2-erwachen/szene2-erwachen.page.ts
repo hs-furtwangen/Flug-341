@@ -45,7 +45,7 @@ export class Szene2ErwachenPage implements OnInit {
   async sceneLoading(index) {
     const loading = await this.loadingController.create({
       spinner: "bubbles",
-      message: 'Lade Scene',
+      message: 'Lade Szene',
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });

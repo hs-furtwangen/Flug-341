@@ -9,7 +9,7 @@ export class StaticInteractionComponent implements OnInit, OnChanges {
   @Input() heading = 0;
   @Input() initheading = 0;
   @Input() interaktiondirection: number;
-  @Input() text: String;
+  @Input() text= "";
   @Input() iconFile = "";
   direction;
 

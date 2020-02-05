@@ -39,7 +39,7 @@ export class Szene3BWasserfallPage implements OnInit {
   async sceneLoading(index, dur) {
     const loading = await this.loadingController.create({
       spinner: "bubbles",
-      message: 'Lade Scene',
+      message: 'Lade Szene',
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });

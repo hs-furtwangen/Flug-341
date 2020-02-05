@@ -26,7 +26,6 @@ export class Szene3AImFlussPage implements OnInit {
 
   currentSoundIndex = 2;
   maxSoundIndex: number;
-  gegenstandsAuswahlOpen = false;
   showQTE = false;
   currentDuration;
 
@@ -48,7 +47,7 @@ export class Szene3AImFlussPage implements OnInit {
   async sceneLoading(index, dur) {
     const loading = await this.loadingController.create({
       spinner: "bubbles",
-      message: 'Lade Scene',
+      message: 'Lade Szene',
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });

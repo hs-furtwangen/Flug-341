@@ -19,9 +19,6 @@
         }
     }
     
-    .compass-container{
-        margin-top: -20vh;
-    }
 
     .qte-container{
         margin-top: 2rem;
@@ -35,5 +32,14 @@
     
     .qte-pos{
         z-index: 22;
+    }
+
+    .aufgabe{
+        margin-top: -20vh;
+        letter-spacing: 0.02em;
+        font-size: 28pt;
+        font-family: DCCAsh;
+        position: relative;
+        display: block;
     }
 }

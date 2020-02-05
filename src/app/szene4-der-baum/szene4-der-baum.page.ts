@@ -41,7 +41,7 @@ export class Szene4DerBaumPage implements OnInit {
   async sceneLoading(index, dur) {
     const loading = await this.loadingController.create({
       spinner: "bubbles",
-      message: 'Lade Scene',
+      message: 'Lade Szene',
       translucent: true,
       cssClass: 'custom-class custom-loading'
     });

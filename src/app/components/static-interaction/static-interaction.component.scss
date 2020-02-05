@@ -71,7 +71,15 @@
     }
 
     .compass{
-        margin-top: -20vh;
+        // margin-top: -20vh;
     }
 
+    .title{
+        font-family: DCCAsh;
+        position: relative;
+        display: block;
+        margin-top: -20vh;
+        letter-spacing: 0.02em;
+        font-size: 28pt;
+    }
 }

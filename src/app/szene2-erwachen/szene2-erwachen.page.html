@@ -1,7 +1,7 @@
 <ion-content class="scene-content">
     <app-interaktion *ngIf="(showWayInteraktion)" (clickHandler)="interaktionClickHandler($event)" [initheading]="initheading" [heading]="heading"></app-interaktion>
     <app-gegenstand  *ngIf="(gegenstandsAuswahlOpen)" (clickHandler)="clickGegenstandHandler()"></app-gegenstand >
-    <app-static-interaction [iconFile]="'Erste_Hilfe.svg'" [text]="'Drehe dich nach hinten'" [interaktiondirection]="180" (clickHandler)="onClickHandler()" [initheading]="initheading" [heading]="heading" *ngIf="(showInteraktion)"></app-static-interaction>
+    <app-static-interaction [iconFile]="'Erste_Hilfe.svg'" [text]="'Drehe dich zum Pfeil'" [interaktiondirection]="180" (clickHandler)="onClickHandler()" [initheading]="initheading" [heading]="heading" *ngIf="(showInteraktion)"></app-static-interaction>
 <ion-button [hidden]="(showInteraktion || showWayInteraktion)" [ngClass]="(skipButtonActive)? 'button-active': 'button-deactivated'" class="skip-button" size="large" (click)="skip()">Weiter</ion-button>
 <div class="overlay-zu-Anleitung" [hidden]="overlayClosed" >
     <div class="overlay-content">
