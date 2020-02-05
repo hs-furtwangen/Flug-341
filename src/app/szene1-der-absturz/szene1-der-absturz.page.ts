@@ -95,7 +95,7 @@ export class Szene1DerAbsturzPage implements OnInit {
   }
 
   startScene() {
-    this.soundController.getinitHeading();
+    this.soundController.initHeading();
     let currentDuration = this.soundController.getDuration(0);
     this.soundController.playSound(0);
     this.startTimerforNextSound(currentDuration)

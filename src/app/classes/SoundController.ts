@@ -2,8 +2,7 @@
 //Custom Classes
 import { SceneSound } from './SceneSound';
 import { Sound } from './Sound';
-import { HRTFSound } from './HRTFSound'; //class for multichannel Sounds
-import { MultichannelSound } from './MultichannelSound'; //class for multichannel Sounds
+import { HRTFSound } from './HRTFSound'; //class for encoded Sounds
 
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation/ngx';
 
@@ -62,6 +61,7 @@ export class SoundController {
         );
 
         //initalise Scene Rotator
+        //+ Fix for Sound Positions (Scene must be inverted)
         this.mirror = new ambisonics.sceneMirror(this.context, this.order);
         const firstmirror = new ambisonics.sceneMirror(this.context, this.order);
         const secondmirror = new ambisonics.sceneMirror(this.context, this.order);
@@ -102,7 +102,9 @@ export class SoundController {
             }
             const sound = this.soundMap.get(index);
             sound.init();
-            await sound.loadSound();
+            await sound.loadSound(); //wait for Sound to load
+
+            //set Gain
             if (value.gain != null) {
                 sound.setGain(value.gain);
             } else {
@@ -134,10 +136,12 @@ export class SoundController {
         }
     }
 
-    getinitHeading() {
+    //Initialise Heading of this Sound Controller
+    initHeading() {
         this.initheading = this.heading;
     }
 
+    //set Heading for this Sound Controller
     setinitHeading(initheading) {
         this.initheading = initheading;
     }
@@ -169,9 +173,7 @@ export class SoundController {
     //init one specific sound
     initSound(index, startpoint = 0, typ = "", gain = 1) /* Typ: "multi" or else HRTF, Index: Index from JSON-Array */ {
         //check Sound-Type
-        if (typ === "multi") {
-            this.soundMap.set(index, new MultichannelSound(this.context, this.deviceOrientation, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator));
-        } else if (typ === "scene") {
+        if (typ === "scene") {
             this.soundMap.set(index, new SceneSound(this.context, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator, this.mirror));
         } else {
             this.soundMap.set(index, new HRTFSound(this.context, this.soundArray[index].name, this.soundArray[index].order, this.setHeading(startpoint), this.rotator, this.mirror));
