@@ -1,6 +1,8 @@
 # flug_341
 
-## Benötigt: Node, npm
+## Setup
+
+### Benötigt: Node, npm
 
 ### Ionic-Installieren: 
 https://ionicframework.com/docs/installation/cli
